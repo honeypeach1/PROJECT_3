@@ -1,0 +1,120 @@
+html {
+  background: #FFFFFF !important;
+
+  #app {
+
+    #signup {
+
+      .signMenu {
+        width: 100%;
+        height: 310px;
+        background: #d8efff;
+        display: block;
+
+        .title {
+          font-size: 20px;
+          font-weight: bold;
+          padding-top: 10px;
+          margin-bottom: 10px;
+          text-align: center;
+        }
+
+        .form-group {
+          margin-bottom: 15px;
+
+          label {
+            float: left;
+            text-align: right;
+            width: 31%;
+
+            .required:before {
+              content: "";
+              width: 5px;
+              height: 5px;
+              background-color: #ff0400;
+              display: inline-block;
+              /*position: absolute;*/
+              border-radius: 50%;
+              top: 5px;
+              left: 8px;
+            }
+          }
+
+          div {
+            float: left;
+            width: 41.66%;
+
+            .login_input, select {
+              display: block;
+              width: 100%;
+              height: 24px;
+              padding: 6px 12px;
+              font-size: 14px;
+              line-height: 1.42857143;
+              color: #555;
+              margin-bottom: 7px;
+              background-color: #FFFFFF;
+              background-image: none;
+              border: 1px solid #cccccc;
+            }
+
+            select {
+              height: 100%;
+            }
+          }
+        }
+      }
+
+      .noticeMenu {
+        width: 100%;
+        height: 310px;
+        background: #d8efff;
+        display: block;
+        margin-top: 15px;
+        text-align: center;
+
+        .title {
+          font-size: 20px;
+          font-weight: bold;
+          padding-top: 10px;
+          margin-bottom: 10px;
+          text-align: center;
+        }
+
+        div {
+          textarea {
+            width: 45%;
+            height: 190px;
+            margin-left: 5px;
+            resize: none;
+          }
+        }
+      }
+
+      .buttonArea {
+        text-align: center;
+
+        button {
+          height: 45px;
+          padding: 6px 12px;
+          display: inline-block;
+          margin-bottom: 0;
+          font-size: 14px;
+          text-align: center;
+          border-radius: 3px;
+          border: 1px solid transparent;
+          font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        }
+
+        .signupButton {
+          background-color: #0086e5;
+        }
+
+        .cancelButton {
+          background-color: #f4f4f4;
+        }
+
+      }
+    }
+  }
+}
