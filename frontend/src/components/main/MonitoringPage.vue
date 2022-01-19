@@ -17,12 +17,20 @@
 <script>
 import MainHeader from "../layout/header";
 import MainFooter from "../layout/footer";
+import axios from "axios";
 
 export default {
   components: {
     'main-header': MainHeader,
     'main-footer': MainFooter
-  }
+  },
+  data() {
+    return {
+      login_id: "",
+      login_pass: "",
+      csrf_token:""
+    };
+  },
 }
 </script>
 

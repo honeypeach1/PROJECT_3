@@ -7,14 +7,15 @@
     <!--로그인 폼 영역-->
     <div class="form_area">
       <form id="login_form">
+        <input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}" />
         <div class="inputDiv">
-          <input id="user_id" class="login_input" type="text" placeholder="아이디" required aria-required="true">
+          <input id="login_id" v-model="login_id" class="login_input" type="text" placeholder="아이디" required aria-required="true">
         </div>
         <div class="inputDiv">
-          <input id="user_pwd" class="login_input" type="password" placeholder="비밀번호" required aria-required="true">
+          <input id="login_pass" v-model="login_pass" class="login_input" type="password" placeholder="비밀번호" required aria-required="true">
         </div>
         <div class="inputDiv">
-          <button class="btn_small" id="login_btn" type="submit" v-on:click="loginForm">로그인</button>
+          <button class="btn_small" id="login_btn" v-on:click="login" type="submit">로그인</button>
           <button class="btn_small" type="button" v-on:click="register">회원가입</button>
         </div>
       </form>
@@ -27,26 +28,43 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      user_id: "",
-      isLogin: true,
-      isRegister: true,
-      register_id: "",
-      register_pwd: "",
-      register_role: 1
+      login_id: "",
+      login_pass: "",
+      csrf_token:""
     };
   },
   methods: {
-    loginSubmit: function () {
-      console.log("로그인 처리");
+    ckCookie: function () {
+      /*쿠키 세션을 활용하여 도메인 monioring 메인페이지로 이동 기능*/
       this.$router.push("/");
     },
-    loginForm: function () {
-      this.isLogin = true;
-      this.isRegister = false;
-      this.$router.push("/monitoring");
+    login: function () {
+      axios({
+        url:"/api/loginCheck",
+        method: "POST",
+        data: {
+          login_id:this.login_id,
+          login_pass: this.login_pass,
+          csrf_token:this.csrf_token
+        }
+      }).then((res) => {
+        if(res){
+          this.$router.push("/monitoring");
+          console.log("res : ",res)
+          /*로그인 성공 처리*/
+        }else{
+          alert("계정 정보를 찾을 수 없습니다.");
+        }
+      }).catch((error) => {
+        console.log("로그인 처리 에러 : ",error)
+      }).finally((error) => {
+        console.log("파이날리 : ",error)
+      })
     },
     register: function () {
       this.isLogin = false;

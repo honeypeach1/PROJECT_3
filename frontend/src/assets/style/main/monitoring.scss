@@ -1,29 +1,40 @@
-html, body {
+html {
+  height: 100%;
 
-  #body-wrapper {
-    min-height: 100%;
-    position: relative;
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 
-    #header {
-      background-color: #0086e5;
-      width: 100%;
-      height: 60px;
-      position: relative;
-      top: 0;
-      left: 0;
-    }
+    #app {
+      background: linear-gradient(to bottom, #5c6f7e, #212d3b);
 
-    #body-content {
-      margin-top: 0px;
-    }
+      #body-wrapper {
+        min-height: 100%;
+        position: relative;
 
-    #footer {
-      background-color: aliceblue;
-      width: 100%;
-      height: 100px;
-      position: relative;
-      bottom: 0;
-      left: 0;
+        #header {
+          background-color: #0086e5;
+          width: 100%;
+          height: 60px;
+          position: relative;
+          top: 0;
+          left: 0;
+        }
+
+        #body-content {
+          margin-top: 0px;
+        }
+
+        #footer {
+          background-color: aliceblue;
+          width: 100%;
+          height: 100px;
+          position: relative;
+          bottom: 0;
+          left: 0;
+        }
+      }
     }
   }
 }
