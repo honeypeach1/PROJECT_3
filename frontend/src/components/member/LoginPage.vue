@@ -54,16 +54,16 @@ export default {
         }
       }).then((res) => {
         if(res){
-          this.$router.push("/monitoring");
           console.log("res : ",res)
+          this.$router.push("/monitoring");
           /*로그인 성공 처리*/
         }else{
           alert("계정 정보를 찾을 수 없습니다.");
         }
       }).catch((error) => {
-        console.log("로그인 처리 에러 : ",error)
+        console.log(error)
       }).finally((error) => {
-        console.log("파이날리 : ",error)
+        console.log(error)
       })
     },
     register: function () {
