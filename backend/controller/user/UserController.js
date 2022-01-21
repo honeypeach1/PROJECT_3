@@ -26,7 +26,8 @@ router.route('/:csrf').get(csrfProtection, function (req,res,next){
     return res.render('/monitoring',{csrfToken:req.csrf_token()});
 })
 
-router.post('/', function (req, res) {
+//로그인 체크
+router.post('/loginCheck', function (req, res) {
     console.log("로그인 아이디 : ", req.body.login_id)
     console.log("로그인 패스워드 : ", req.body.login_pass)
     console.log("csrf_token : ", req.csrf_token)
@@ -53,6 +54,14 @@ router.post('/', function (req, res) {
     return res.status(200).json({
         message: '통신 성공',
     })
+})
+
+//로그아웃
+router.get('/logout',function(req,res){
+    res.clearCookie("loginCookie");
+
+    console.log("로그아웃 실행")
+    res.redirect("/")
 })
 
 module.exports = router;

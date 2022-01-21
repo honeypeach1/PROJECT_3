@@ -4,7 +4,7 @@
       <nav class="gnb">
         <router-link to="/monitoring">악취</router-link>
         <router-link to="/static">통계</router-link>
-        <router-link to="/logout">로그아웃</router-link>
+        <router-link to="/api/user/logout">로그아웃</router-link>
       </nav>
     </div>
   </header>

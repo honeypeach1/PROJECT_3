@@ -7,8 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var loginController = require('./controller/user/LoginController')
-var logoutController = require('./controller/user/LogoutController')
+var userController = require('./controller/user/UserController')
 
 //소켓 서버 생성
 var socketServer = require('./modules/socketServer')
@@ -47,11 +46,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.use('/api/loginCheck', loginController);
+app.use('/api/user', userController);
 //app.use('/users',require('./controller/user'));
 app.use('/auth',require('./controller/auth/auth.controller'));
-
-app.use('/logout', logoutController);
 
 
 // catch 404 and forward to error handler

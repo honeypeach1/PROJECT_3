@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const loginController =  require('../controller/user/LoginController');
+const loginController =  require('../controller/user/UserController');
 const logoutController = require('../controller/user/LogoutController');
 
 // router.get('',loginController.showall);

@@ -45,7 +45,7 @@ export default {
     },
     login: function () {
       axios({
-        url:"/api/loginCheck",
+        url:"/api/user/loginCheck",
         method: "POST",
         data: {
           login_id:this.login_id,
