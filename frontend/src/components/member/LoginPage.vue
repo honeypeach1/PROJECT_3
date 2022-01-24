@@ -40,12 +40,12 @@ export default {
   },
   methods: {
     ckCookie: function () {
-      /*쿠키 세션을 활용하여 도메인 monioring 메인페이지로 이동 기능*/
+      /*쿠키 세션을 활용하여 도메인 monitoring 메인페이지로 이동 기능*/
       this.$router.push("/");
     },
     login: function () {
       axios({
-        url:"/api/user/loginCheck",
+        url:"/user/loginCheck",
         method: "POST",
         data: {
           login_id:this.login_id,

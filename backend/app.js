@@ -1,13 +1,16 @@
 var createError = require('http-errors');
 var express = require('express');
+var bodyParser = require('body-parser');
+var cors = require('cors');
 var path = require('path');
+var csurf = require('csurf')
+    , csrfProtection = csurf({cookie: true});
+var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var userController = require('./controller/user/UserController')
+var userRouter = require('./routers/users');
+var authRouter = require('./routers/auth');
 
 //소켓 서버 생성
 var socketServer = require('./modules/socketServer')
@@ -15,6 +18,10 @@ socketServer.socketServer.listen(9000);
 
 var app = express();
 
+app.use(cors({
+  origin:'/api/loginCheck',
+  credential:true,
+}));
 
 //dotenv의 config()가 호출되면 '.env'파일의 설정값들이 process.env에 저장됨.
 //이후 process.env.COOKIE_SECRET 처럼 설정값들을 사용할 수 있음.
@@ -43,13 +50,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(''));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
-app.use('/api/user', userController);
-//app.use('/users',require('./controller/user'));
-app.use('/auth',require('./controller/auth/auth.controller'));
-
+/*유저 처리 컨트롤러*/
+app.use(cors());
+app.use('/user', userRouter);
+/*인증 처리 컨트롤러*/
+app.use('/auth',authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
