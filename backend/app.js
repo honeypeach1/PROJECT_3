@@ -19,7 +19,7 @@ socketServer.socketServer.listen(9000);
 var app = express();
 
 app.use(cors({
-  origin:'/api/loginCheck',
+  origin:'http://127.0.0.1:8080',
   credential:true,
 }));
 

@@ -7,7 +7,7 @@
     <!--로그인 폼 영역-->
     <div class="form_area">
       <form id="login_form">
-        <input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}" />
+<!--        <input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}" />-->
         <div class="inputDiv">
           <input id="login_id" v-model="login_id" class="login_input" type="text" placeholder="아이디" required aria-required="true">
         </div>
@@ -34,8 +34,7 @@ export default {
   data() {
     return {
       login_id: "",
-      login_pass: "",
-      csrf_token:""
+      login_pass: ""
     };
   },
   methods: {
@@ -49,16 +48,16 @@ export default {
         method: "POST",
         data: {
           login_id:this.login_id,
-          login_pass: this.login_pass,
-          csrf_token:this.csrf_token
+          login_pass: this.login_pass
         }
       }).then((res) => {
-        if(res){
+        if(res.data.success == true){
           console.log("res : ",res)
+          alert(res.data.message);
           this.$router.push("/monitoring");
           /*로그인 성공 처리*/
         }else{
-          alert("계정 정보를 찾을 수 없습니다.");
+          alert(res.data.message);
         }
       }).catch((error) => {
         console.log(error)
@@ -67,8 +66,6 @@ export default {
       })
     },
     register: function () {
-      this.isLogin = false;
-      this.isRegister = true;
       this.$router.push("/signup");
     },
   }

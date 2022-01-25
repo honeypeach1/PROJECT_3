@@ -1,3 +1,0 @@
-exports.KEY = {
-    'secret': 'ACEN'
-}

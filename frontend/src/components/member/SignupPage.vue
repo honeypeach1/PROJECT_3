@@ -1,36 +1,40 @@
 <template>
   <div id="signup">
     <div class="register_box">
-      <form id="register_form">
+<!--      <form method="post" v-on:submit.prevent="registUser">-->
         <!--회원가입 폼 작성 영역-->
         <div class="signMenu">
           <div class="title">회원가입</div>
           <div class="form-group row">
-            <label>아이디<span class="required" aria-required="true"></span></label>
-            <div><input id="register_id" v-model="register_id" class="login_input" type="text" placeholder="등록하실 ID를 입력하십시오."></div>
+            <label for="register_id">아이디<span class="required" aria-required="true"></span></label>
+            <div><input id="register_id" ref="register_id" v-model="register_id" class="login_input" type="text"
+                        placeholder="등록하실 ID를 입력하십시오."></div>
           </div>
           <div class="form-group row">
-            <label>비밀번호<span class="required" aria-required="true"></span></label>
-            <div><input id="register_pwd" v-model="register_pwd" class="login_input" type="password" placeholder="등록하실 비밀 번호를 입력해주세요.">
+            <label for="register_pwd">비밀번호<span class="required" aria-required="true"></span></label>
+            <div><input id="register_pwd" ref="register_pwd" v-model="register_pwd" class="login_input" type="password"
+                        placeholder="등록하실 비밀 번호를 입력해주세요.">
             </div>
           </div>
           <div class="form-group row">
-            <label>비밀번호 확인<span class="required" aria-required="true"></span></label>
-            <div><input id="register_pwd_ck" v-model="register_pwd_ck" class="login_input" type="password"
+            <label for="register_pwd_ck">비밀번호 확인<span class="required" aria-required="true"></span></label>
+            <div><input id="register_pwd_ck" ref="register_pwd_ck" v-model="register_pwd_ck" class="login_input" type="password"
                         placeholder="입력하신 비밀 번호와 동일한 값을 입력하세요."></div>
           </div>
           <div class="form-group row">
-            <label>이름<span class="required" aria-required="true"></span></label>
-            <div><input id="register_name" v-model="register_name" class="login_input" type="text" placeholder="이름을 입력하세요"></div>
+            <label for="register_name">이름<span class="required" aria-required="true"></span></label>
+            <div><input id="register_name" ref="register_name" v-model="register_name" class="login_input" type="text"
+                        placeholder="이름을 입력하세요"></div>
           </div>
           <div class="form-group row">
-            <label>전화번호<span class="required" aria-required="true"></span></label>
-            <div><input id="register_tel" v-model="register_tel" class="login_input" type="text" placeholder="전화번호를 입력해주세요."></div>
+            <label for="register_tel">전화번호<span class="required" aria-required="true"></span></label>
+            <div><input id="register_tel" ref="register_tel" v-model="register_tel" class="login_input" type="text"
+                        placeholder="전화번호를 입력해주세요."></div>
           </div>
           <div class="form-group row">
-            <label>유저권한<span class="required" aria-required="true"></span></label>
+            <label for="register_role">유저권한<span class="required" aria-required="true"></span></label>
             <div class="form-group row">
-              <select id="register_role" v-model="register_role">
+              <select id="register_role" ref="register_role" v-model="register_role">
                 <option value="1">관리자</option>
                 <option value="2">유저</option>
               </select>
@@ -41,7 +45,7 @@
         <!--이용약관 영역-->
         <div class="noticeMenu">
           <div class="title">이용약관<span class="required" aria-required="true"></span></div>
-          <div><input class="tooltipster" id="agreement" name="agreement" type="checkbox">
+          <div><input class="tooltipster" id="agreement" ref="agreement" v-model="agreement" name="agreement" type="checkbox">
             <font size="3px">
               <label for="agreement">(주)에이스엔 이용약관 동의<font color="#dc143c">(필수)</font></label>
             </font>
@@ -113,7 +117,7 @@
         <div class="noticeMenu">
           <div class="title">개인정보 처리 방침<span class="required" aria-required="true"></span></div>
           <div>
-            <input class="tooltipstered" id="information" name="information" type="checkbox">
+            <input class="tooltipstered" id="information" ref="information" v-model="information" name="information" type="checkbox">
             <font size="3px">
               <label for="information">(주)에이스엔 개인정보 처리 방침 동의<font color="#dc143c">(필수)</font></label>
             </font>
@@ -179,10 +183,10 @@
 
         <!--회원가입 폼 버튼 영역-->
         <div class="buttonArea">
-          <button class="signupButton" type="submit" v-on:click="registUser">회원가입</button>
+          <button class="signupButton" type="button" v-on:click="registUser">회원가입</button>
           <button class="cancelButton" type="button" v-on:click="cancelBtn">취소</button>
         </div>
-      </form>
+<!--      </form>-->
     </div>
   </div>
 </template>
@@ -196,54 +200,81 @@ export default {
       register_id: "",
       register_pwd: "",
       register_pwd_ck: "",
-      register_name: "",
-      register_tel: "",
-      register_role: ""
-    };
+      register_name: null,
+      register_tel: null,
+      register_role: null,
+      agreement: false,
+      information: false
+    }
   },
   methods: {
-    registUser: function () {
-      /*if(this.register_pwd == null && this.register_pwd != this.register_pwd_ck){
-        alert('패스워드가 일치하지 않습니다. 다시 입력해주세요.')
-        return;
+    /*form 체크 함수*/
+    validationCk() {
+      this.errors = [];
+      if (this.register_id == null) {
+        this.errors.push("아이디를 입력하셔야 합니다.");
+        this.$refs.register_id.focus();
       }
-      if(this.agreement.checked == false && this.information.checked == false){
-        alert('이용약관 또는 개인 처리 방침에 동의를 하셔야 합니다.')
-        return;
+      if (this.register_pwd != this.register_pwd_ck) {
+        this.errors.push("패스워드 확인이 일치하지 않습니다. 다시 입력해주세요.");
+        this.$refs.register_pwd_ck.focus();
       }
-      console.log("확인 : ",this.register_id)
-      console.log("확인 :",this.register_pwd)
-      console.log("확인 : ",this.register_name)
-      console.log("확인 : ",this.register_tel)
-      console.log("확인 : ",this.register_role)*/
-      axios({
-        url:"/user/registerUser",
-        method: "POST",
-        data: {
-          register_id: this.register_id,
-          register_pwd: this.register_pwd,
-          register_name: this.register_name,
-          register_tel: this.register_tel,
-          register_role: this.register_role
-        }
-      }).then((res) => {
-        if(res){
-          alert('회원가입이 성공하였습니다.')
-          this.$router.push("/");
-        }else{
-          alert('회원가입이 실패하였습니다.')
-        }
-      }).catch((error) => {
-        console.log("에러1 : ",error)
-      }).finally((error) => {
-        console.log("에러2: ",error)
-      })
+      if (this.register_name == null) {
+        this.errors.push("이름을 입력하셔야 합니다.");
+        this.$refs.register_name.focus();
+      }
+      if (this.register_tel == null) {
+        this.errors.push("전화 번호를 입력해 주세요.");
+        this.$refs.register_tel.focus();
+      }
+      if (this.register_role == null) {
+        this.errors.push("유저 권한을 선택하여야 합니다.");
+        this.$refs.register_role.focus();
+      }
+      if (this.agreement == false){
+        this.errors.push('이용약관에 동의를 하셔야 합니다.');
+        this.$refs.agreement.focus();
+      }
+      if(this.information == false) {
+        this.errors.push('개인 처리 방침에 동의를 하셔야 합니다.');
+        this.$refs.information.focus();
+      }
+      return this.errors;
+    },
+    registUser: function() {
+      this.validationCk();
+      if (this.errors.length == 0) {
+        axios({
+          url: "/user/registerUser",
+          method: "POST",
+          data: {
+            register_id: this.register_id,
+            register_pwd: this.register_pwd,
+            register_name: this.register_name,
+            register_tel: this.register_tel,
+            register_role: this.register_role
+          }
+        }).then((res) => {
+          if (res.data.success) {
+            alert(res.data.message)
+            this.$router.push("/");
+          } else {
+            alert(res.data.message);
+          }
+        }).catch((error) => {
+          console.log(error)
+        }).finally((error) => {
+          console.log(error)
+        })
+      } else {
+        for(let i in this.errors) alert(this.errors[i])
+      }
     },
     cancelBtn: function () {
       if (confirm("로그인 화면으로 돌아가시겠습니까?")) {
         this.$router.push("/");
       } else {
-        alert("회원가입이 취소되었습니다.")
+        alert("취소되었습니다.")
       }
     }
   }
