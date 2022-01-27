@@ -27,7 +27,7 @@ exports.CRYPTO = function (param) {
 //단방향 salt 복호화(비동기)
 /*exports.DECRYPTO = async (pass,salt) =>
     new Promise((resolve,reject) => {
-        return {salt : crypto.pbkdf2Sync(pass,salt,100000,64,'sha512').toString('base64')};
+        return {salt : crypto.pbkdf2Sync(pass, salt,100000,64,'sha512').toString('base64')};
     })*/
 
 //단방향 salt 복호화(동기)

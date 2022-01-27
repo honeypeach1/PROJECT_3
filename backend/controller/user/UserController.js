@@ -7,14 +7,9 @@ const dbConnect = mariaDB.createConnection(db.mariaConfig);
 const crypto = require('crypto');
 const path = require("path");
 const secret = require("../../config/crypto");
-//const secret = require("../../config/crypto").KEY.secret;
 
 //쿠키 보증 기간 설정
 const expiryDate = new Date(Date.now() + 60 * 60 * 1000 * 24 * 7) //24 hour 7일
-
-/*router.route('/:csrf').get(csrfProtection, function (req,res,next){
-    return res.render('/monitoring',{csrfToken:req.csrf_token()});
-})*/
 
 const userCon = {
     /*
@@ -23,9 +18,9 @@ const userCon = {
     loginCheck: (req, res) => {
         //먼저 로그인한 계정이 있는지 확인하고 있으면 salt값을 가져옴.
         dbConnect.query('SELECT MEMBER_ID, SALT FROM MEMBER WHERE MEMBER_ID = ?',req.body.login_id,
-        function(err,val){
+            function(err,val){
             if(err) throw err;
-            //로그인한 계정의 salt값이 있음.
+            //로그인한 아이디가 존재하며 존재하는 salt값을 가져옴.
             if(val != null){
                 var dataList = [];
                 for (var data of val){
@@ -33,38 +28,44 @@ const userCon = {
                     dataList.push(data.SALT);
                 };
                 /*
-                복호화 처리
+                단방향 입력 패스워드 암호화 처리 후 로그인한 계정 비교
+                로그인으로 입력한 패스워드와 입력한 아이디가 존재할때 해당 아이디의 salt값을 가져와서 서로
+                동일한 암호화 알고리즘을 실행하여 패스워드 값을 decryption에 리턴함.
+                해당 패스워드 값과 로그인으로 입력한 아이디와 동시에 일치하면 로그인 성공.
                     param1 -> 입력 password
                     param2 -> 조회된 salt값
                     return 암호값
                 */
-                const decyption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
+                const decryption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
                 dbConnect.query('SELECT MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
-                    [dataList[0], decyption], function (err, val) {
+                    [req.body.login_id, decryption.salt], function (err, data) {
                         if (err) throw err;
                         //암호가 일치하는 유저가 있음.
-                        if (val.length > 0) {
-                            /*res.session.login_id = rows.MEMBER_ID;
-                            req.session.save();*/
+                        if (data.length > 0) {
+
+                            req.session.user_cookie = data.MEMBER_ID;
+                            res.cookie('user_cookie', data, {
+                                expires: expiryDate,
+                                httpOnly: true
+                            })
+
                             res.json({
                                 success: true,
                                 message: '로그인에 성공하였습니다.'
                             })
-                            /*res.cookie('loginCookie', rows, {
-                                expires: expiryDate,
-                                httpOnly: true,
-                                signed: true
-                            })*/
+
+                            return res;
                         } else {
                             res.json({
                                 success: false,
                                 message: '일치하는 회원 정보가 없습니다. 아이디와 패스워드를 다시 입력해주세요.'
                             });
+                            return res;
                         }
                     })
-                return res.status(200).json({
+                /*return res.status(200).json({
                     message: '통신 성공',
-                })
+                })*/
             }else{
                 return res.json({
                     success: false,
@@ -130,9 +131,8 @@ const userCon = {
 
     //로그아웃
     userLogout: (req, res) => {
-        res.clearCookie("loginCookie");
-        console.log("로그아웃 실행")
-        res.redirect("/")
+        req.session.destroy();
+        res.clearCookie('user_cookie');
     }
 }
 module.exports = userCon;

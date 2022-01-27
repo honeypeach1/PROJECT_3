@@ -1,19 +1,44 @@
 <template>
   <header id="header" class="header">
     <div class="row">
-      <nav class="gnb">
-        <router-link to="/monitoring">악취</router-link>
-        <router-link to="/static">통계</router-link>
-        <router-link to="/user/logout">로그아웃</router-link>
-      </nav>
+      <div class="header_Logo_area">
+        <!--헤더 이미지 로고 영역-->
+      </div>
+      <div class="header_list_area">
+        <ul class="menu_ul">
+          <li><div v-on:click="monitoring">악취</div></li>
+          <li><div v-on:click="static">모니터링</div></li>
+          <li><div v-on:click="userLogout">로그아웃</div></li>
+        </ul>
+      </div>
     </div>
   </header>
 </template>
 
 <script>
-  export default {
-    name: 'main-header'
+import axios from "axios";
+
+export default {
+  name: 'main-header',
+  methods: {
+    monitoring: () => {
+      this.$router.push('/monitoring')
+    },
+    static: () => {
+      this.$router.push('/static')
+    },
+    userLogout: () => {
+      axios.get('/user/logout')
+        .then(() => {
+          alert('실행')
+          this.$router.push("/");
+      })
+      .catch((err) => {
+        alert("에러")
+      })
+    }
   }
+}
 </script>
 
 <style scoped>

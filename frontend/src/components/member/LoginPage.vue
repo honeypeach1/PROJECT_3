@@ -6,19 +6,23 @@
     </p>
     <!--로그인 폼 영역-->
     <div class="form_area">
-      <form id="login_form">
-<!--        <input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}" />-->
+      <div id="login_form">
+        <!--      <form id="login_form" @submit="login">-->
+        <!--        <input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}" />-->
         <div class="inputDiv">
-          <input id="login_id" v-model="login_id" class="login_input" type="text" placeholder="아이디" required aria-required="true">
+          <input id="login_id" v-model="login_id" class="login_input" type="text" placeholder="아이디" required
+                 aria-required="true">
         </div>
         <div class="inputDiv">
-          <input id="login_pass" v-model="login_pass" class="login_input" type="password" placeholder="비밀번호" required aria-required="true">
+          <input id="login_pass" v-model="login_pass" class="login_input" type="password" placeholder="비밀번호" required
+                 aria-required="true">
         </div>
         <div class="inputDiv">
           <button class="btn_small" id="login_btn" v-on:click="login" type="submit">로그인</button>
           <button class="btn_small" type="button" v-on:click="register">회원가입</button>
         </div>
-      </form>
+        <!--      </form>-->
+      </div>
     </div>
     <!--로그인 하단 로고 이미지 영역-->
     <div class="loginLogo">
@@ -44,19 +48,16 @@ export default {
     },
     login: function () {
       axios({
-        url:"/user/loginCheck",
+        url: "/user/loginCheck",
         method: "POST",
         data: {
-          login_id:this.login_id,
+          login_id: this.login_id,
           login_pass: this.login_pass
         }
       }).then((res) => {
-        if(res.data.success == true){
-          console.log("res : ",res)
-          alert(res.data.message);
+        if (res.data.success == true) {
           this.$router.push("/monitoring");
-          /*로그인 성공 처리*/
-        }else{
+        } else {
           alert(res.data.message);
         }
       }).catch((error) => {
