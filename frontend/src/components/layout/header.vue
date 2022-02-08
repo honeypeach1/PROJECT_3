@@ -10,46 +10,50 @@
             <div v-on:click="monitoring">악취</div>
           </li>
           <li>
-            <div v-on:click="static">모니터링</div>
+            <div v-on:click="static">통계</div>
           </li>
           <li>
             <div v-on:click="userLogout">로그아웃</div>
           </li>
         </ul>
       </div>
+
     </div>
   </header>
 </template>
 
 <script>
 import axios from "axios";
+import router from '../../router'
 
 export default {
   name: 'main-header',
   methods: {
     monitoring: () => {
-      this.$router.push('/monitoring')
+      router.push('/monitoring').catch(() => {
+        //동일 페이지 접근시 새로고침 처리
+        router.go();
+      });
     },
     static: () => {
-      this.$router.push('/static')
+      router.push('/static').catch(() => {
+        //동일 페이지 접근시 새로고침 처리
+        router.go();
+      })
     },
     userLogout: () => {
-      /*axios.get('/user/logout')
-        .then(() => {
-          this.$router.push("/");
-      })*/
       axios({
         url: "/user/logout",
-        method: "GET",
+        method: "POST",
       }).then((res) => {
         alert(res.data.message);
-        this.$router.push("/");
+        router.push("/");
       })
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+@import '../../assets/style/layout/header';
 </style>

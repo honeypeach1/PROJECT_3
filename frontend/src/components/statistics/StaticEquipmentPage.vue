@@ -5,27 +5,73 @@
   </div>
 
   <div id="staticPage">
-    <h1>장비 통계 페이지</h1>
-  </div>
+    <!--장비 맵 영역-->
+    <div class="staticLeftArea showMap" id="staticMapArea">
+      <div id="staticMap"></div>
+    </div>
+    <!--장비 셀렉트 영역-->
+    <div class="staticLeftArea showList" id="staticListArea">
+    </div>
 
-  <div id="footer">
-    <main-footer/>
+    <!--장비 데이터 조회 영역-->
+    <div id="staticCenterArea">
+      <div id="selectDateArea">기간 설정 영역</div>
+      <div id="showGraphArea">그래프 영역</div>
+      <div id="showChartArea">그래프 영역</div>
+    </div>
+    <!--풍배도 및 빈도 표현 영역-->
+    <div id="staticRightArea">
+      <div id="dataControlArea">데이터 조회</div>
+      <div id="showWindRoseArea">풍배도 영역</div>
+    </div>
   </div>
 
 </template>
 
 <script>
 import MainHeader from "../layout/header";
-import MainFooter from "../layout/footer";
+import axios from "axios";
+
+/*API 키*/
+import dotenv from 'dotenv';
+
+dotenv.config();
+let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
+/**/
 
 export default {
   components: {
     'main-header': MainHeader,
-    'main-footer': MainFooter
+  },
+  data() {
+    return {
+      map: null,
+    };
+  },
+  mounted() {
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement("script");
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
+      document.head.appendChild(script);
+    }
+  },
+  methods: {
+    initMap() {
+      const container = document.getElementById("staticMap");
+      const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 5,
+      };
+      this.map = new kakao.maps.Map(container, options);
+    }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+@import "../../assets/style/main/static";
 </style>

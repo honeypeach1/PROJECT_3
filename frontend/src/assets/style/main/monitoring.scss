@@ -13,32 +13,79 @@ html {
         min-height: 100%;
         position: relative;
 
-        #header {
-          background-color: #0086e5;
-          width: 100%;
-          height: 60px;
-          position: relative;
-          top: 0;
-          left: 0;
-        }
-
-
         /**/
         #body-content {
-          margin-top: 0px;
+          width: 100%;
+          height: 900px;
+          margin: 10px auto;
 
-          #map {
-            width: 400px;
-            height: 400px;
+          #leftArea {
+            width: 30%;
+            height: 100%;
+            background: #42b983;
+            float: left;
+            margin-right: 10px;
+
+            #equipmentListArea {
+              width: 100%;
+              height: 100%;
+              padding: 10px;
+              background: #5c6f7e;
+              font-family: 'Avenir', Helvetica, Arial, sans-serif;
+
+              #HeaderArea {
+                width:100%;
+                height: 10%;
+                margin: 10px;
+                font-size: 15px;
+                background: antiquewhite;
+              }
+
+              #sensorArea {
+                width: 100%;
+                height: 40%;
+                margin: 10px;
+                padding: 5px;
+                background: blueviolet;
+
+                .sensorData {
+                  width: 45%;
+                  height: 45%;
+                  float: left;
+                  background: darkgrey;
+                  margin: 10px;
+                }
+              }
+
+              #windArea {
+                width: 100%;
+                height: 40%;
+                padding: 10px;
+                background: darksalmon;
+              }
+            }
           }
 
-          .button-group {
-            margin: 10px 0px;
+          #rightArea {
+            width: 69%;
+            height: 100%;
+            background: #42b983;
+            float: left;
+
+            #map {
+              width: 100%;
+              height: 100%;
+            }
+
+            .button-group {
+              margin: 10px 0px;
+
+              button {
+                margin: 0 3px;
+              }
+            }
           }
 
-          button {
-            margin: 0 3px;
-          }
           /**/
 
 
