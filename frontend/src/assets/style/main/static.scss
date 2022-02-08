@@ -1,3 +1,63 @@
-#staticPage {
+html {
+  height: 100%;
 
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    #app {
+      background: linear-gradient(to bottom, #5c6f7e, #212d3b);
+
+      #body-wrapper {
+        min-height: 100%;
+        position: relative;
+
+        #staticPage {
+          width: 100%;
+          height: 900px;
+
+          .showMap {
+            display: inline-block;
+          }
+
+          .showList {
+            display: none;
+          }
+
+          .staticLeftArea {
+            width: 20%;
+            height: 100%;
+            background: #5c6f7e;
+            padding: 10px;
+            float: left;
+            margin: 5px;
+
+            #staticMap {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          #staticCenterArea {
+            width: 50%;
+            height: 100%;
+            background: #42b983;
+            padding: 10px;
+            float: left;
+            margin: 5px;
+          }
+
+          #staticRightArea {
+            width: 25%;
+            height: 100%;
+            background: darksalmon;
+            padding: 10px;
+            float: left;
+            margin: 5px;
+          }
+        }
+      }
+    }
+  }
 }
