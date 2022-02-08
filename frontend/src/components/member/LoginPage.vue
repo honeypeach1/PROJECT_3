@@ -8,7 +8,7 @@
     <div class="form_area">
       <div id="login_form">
         <!--      <form id="login_form" @submit="login">-->
-        <!--        <input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}" />-->
+        <input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}"/>
         <div class="inputDiv">
           <input id="login_id" v-model="login_id" class="login_input" type="text" placeholder="아이디" required
                  aria-required="true">
@@ -38,7 +38,8 @@ export default {
   data() {
     return {
       login_id: "",
-      login_pass: ""
+      login_pass: "",
+      csrf_token: ""
     };
   },
   methods: {
@@ -52,7 +53,8 @@ export default {
         method: "POST",
         data: {
           login_id: this.login_id,
-          login_pass: this.login_pass
+          login_pass: this.login_pass,
+          csrf_token: this.csrf_token
         }
       }).then((res) => {
         if (res.data.success == true) {

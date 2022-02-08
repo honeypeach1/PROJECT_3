@@ -9,7 +9,7 @@ const path = require("path");
 const secret = require("../../config/crypto");
 
 //쿠키 보증 기간 설정
-const expiryDate = new Date(Date.now() + 60 * 60 * 1000 * 24 * 7) //24 hour 7일
+const expiryDate = new Date(Date.now() + 60 * 60 * 1000 * 24 * 3) //24 hour 3일
 
 const userCon = {
     /*
@@ -133,6 +133,10 @@ const userCon = {
     userLogout: (req, res) => {
         req.session.destroy();
         res.clearCookie('user_cookie');
+        res.json({
+            success: true,
+            message: '로그아웃 되었습니다.'
+        })
     }
 }
 module.exports = userCon;

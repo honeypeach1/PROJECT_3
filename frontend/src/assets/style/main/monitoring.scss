@@ -22,8 +22,26 @@ html {
           left: 0;
         }
 
+
+        /**/
         #body-content {
           margin-top: 0px;
+
+          #map {
+            width: 400px;
+            height: 400px;
+          }
+
+          .button-group {
+            margin: 10px 0px;
+          }
+
+          button {
+            margin: 0 3px;
+          }
+          /**/
+
+
         }
 
         #footer {
