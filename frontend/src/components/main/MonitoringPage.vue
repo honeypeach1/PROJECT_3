@@ -1,20 +1,36 @@
 <template>
   <div id="body-wrapper">
-    <div id="header">
+    <div id="header" style="height: 8%">
       <main-header/>
     </div>
 
     <div id="body-content">
       <div id="leftArea">
         <div id="equipmentListArea">
-          <div id="HeaderArea">장비 목록창</div>
+          <div id="HeaderArea">
+            <b-form-select v-model="selected" :options="options"></b-form-select>
+          </div>
           <div id="sensorArea">
             <div class="sensorData" id="sensor_1"></div>
             <div class="sensorData" id="sensor_2"></div>
             <div class="sensorData" id="sensor_3"></div>
             <div class="sensorData" id="sensor_4"></div>
           </div>
-          <div id="windArea"></div>
+          <div id="windArea">
+            <div class="wind_head_area">
+              <div class="wind_head_name_area">
+                풍향(wind direction)
+              </div>
+            </div>
+            <div class="wind_data_area">
+              <img class="wind_image" src="../../assets/images/svg/Windrose.svg"/>
+            </div>
+            <div class="wind_name_area">
+              <div class="wind_name_data_area">
+                북서(NW)
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div id="rightArea">
@@ -58,6 +74,24 @@ export default {
     },*/
   data() {
     return {
+      selected: null,
+      options: [
+        { value: null, text: '장비를 선택해주세요.' },
+        {
+          label: 'AMS-1000',
+          options: [
+            { value: { C: '1' }, text: 'BBQ치킨' },
+            { value: { R: '2' }, text: '지코바' }
+          ]
+        },
+        {
+          label: 'AMS-2000',
+          options: [
+            { value: { C: '3' }, text: '피자나라치킨공주' },
+            { value: { R: '4' }, text: '신당동장독대를뛰쳐나온' }
+          ]
+        }
+      ],
       map: null,
       markerPositions1: [
         [33.452278, 126.567803],

@@ -1,24 +1,130 @@
-#header {
-  background-color: #0086e5;
-  width: 100%;
+#header_area {
+  background-image: url("../../assets/images/layout/background.png");
+  background-size: cover;
   height: 60px;
-  position: relative;
-  top: 0;
-  left: 0;
 
   .row {
+    width: 100%;
+    height: 100%;
 
     .header_Logo_area {
+      width: 20%;
+      height: 100%;
+      float: left;
 
+      #header_page_reload {
+        height: 100%;
+        padding: 11px 0 0 15px;
+
+        #header_img {
+          width: 100px;
+        }
+      }
     }
 
     .header_list_area {
+      width: 60%;
+      height: 100%;
+      float: left;
+      margin: 0 auto;
 
       .menu_ul {
+        margin: 0 auto;
+        display: table;
+        height: 100%;
+
+        .divider {
+          width: 2px;
+          height: 60px;
+          background-image: url("../../assets/images/layout/divider.png");
+          float: left;
+          box-shadow: -1px 0px rgb(0, 0, 0, 35%);
+        }
 
         li {
           float: left;
+          color: #ffffff;
+          display: inline;
+          font-family: "NanumSquare", sans-serif;
+          font-size: 20px;
+          min-width: 120px;
+          max-width: 158px;
+          width: 150px;
+          height: 100%;
+          text-align: center;
+          line-height: 60px;
+          cursor: pointer;
 
+          .select {
+            color: #ffcb00;
+            background-size: 100% 100%;
+            background-image: url("../../assets/images/layout/menu.png");
+          }
+        }
+      }
+    }
+
+    .header_right_area {
+      width: 20%;
+      height: 100%;
+      float: right;
+
+      .box_button_area {
+        margin: 9px;
+        width: 60px;
+        height: 40px;
+        float: right;
+        cursor: pointer;
+        background: #efeded;
+        border: 1px solid #0086e5;
+
+        .button_svg {
+          margin: 8px 0px 0px 19px;
+          fill: rgb(40, 44, 45);
+        }
+
+        .alert_dot {
+          fill: rgb(212, 76, 76);
+          position: absolute;
+          right: 95px;
+          top: 26px;
+        }
+      }
+
+      .header_user_control_area {
+        height: 160px;
+        width: 190px;
+        top: 50px;
+        right: 7px;
+        float: right;
+        background: #FFFFFF;
+        position: absolute;
+        border-radius: 5px;
+        font-size: 18px;
+        color: #666666;
+        border: 1px solid #666666;
+        padding: 5px 15px 5px 15px;
+        z-index: 10;
+
+        div {
+          border-bottom: 1px solid #666666;
+          margin-top: 5px;
+          margin-bottom: 5px;
+          display: block;
+          color: #666666;
+
+          img {
+            text-align: left;
+            float: left;
+            width: 24px;
+            height: 24px;
+
+          }
+
+          p {
+            text-align: center;
+            margin: 0 auto;
+          }
         }
       }
     }

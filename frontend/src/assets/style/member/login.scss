@@ -1,54 +1,52 @@
-#app {
+#login {
+  width: 610px;
+  height: 610px;
+  margin: 7% auto 0;
+  background: #4f5f6f;
+  border-radius: 50px;
 
-  #login {
-    width: 610px;
-    height: 610px;
-    margin: 7% auto;
-    background: #4f5f6f;
-    border-radius: 50px;
+  .loginBodyLogo {
+    text-align: center;
+    padding-top: 55px;
+    padding-bottom: 20px;
 
-    .loginBodyLogo {
-      text-align: center;
-      padding-top: 55px;
-      padding-bottom: 20px;
-
-      img {
-        vertical-align: middle;
-      }
+    img {
+      vertical-align: middle;
     }
+  }
 
-    .form_area {
+  .form_area {
 
-      #login_form {
+    #login_form {
 
-        .inputDiv {
-          text-align: center;
+      .inputDiv {
+        text-align: center;
 
-          .login_input {
-            width: 407px;
-            height: 63px;
-            margin-bottom: 22px;
-            font-size: 25px;
+        .login_input {
+          width: 407px;
+          height: 63px;
+          margin-bottom: 22px;
+          font-size: 25px;
 
-          }
+        }
 
-          .btn_small {
-            width: 407px;
-            height: 63px;
-            margin-bottom: 25px;
-            font-size: 25px;
-            background: #063859;
-            color: #FFFFFF;
-          }
+        .btn_small {
+          width: 407px;
+          height: 63px;
+          margin-bottom: 25px;
+          font-size: 25px;
+          background: #063859;
+          color: #FFFFFF;
         }
       }
     }
+  }
 
-    .loginLogo {
-      text-align: center;
-      marin-top: 5px;
-    }
+  .loginLogo {
+    text-align: center;
+    marin-top: 5px;
   }
 }
+
 
 
