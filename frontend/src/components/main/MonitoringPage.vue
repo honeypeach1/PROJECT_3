@@ -1,14 +1,21 @@
 <template>
   <div id="body-wrapper">
     <div id="header" style="height: 8%">
-      <main-header/>
+      <main-header v-bind:currentTab="currentTab"/>
     </div>
 
     <div id="body-content">
       <div id="leftArea">
         <div id="equipmentListArea">
           <div id="HeaderArea">
-            <b-form-select v-model="selected" :options="options"></b-form-select>
+            <select>
+              <option value="0" selected disabled>장비를 선택해주세요.</option>
+            <optgroup v-for="(group, name) in options" :label="name">
+              <option v-for="option in group" :value="option.value">
+                {{ option.text }}
+              </option>
+            </optgroup>
+            </select>
           </div>
           <div id="sensorArea">
             <div class="sensorData" id="sensor_1"></div>
@@ -58,6 +65,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 /**/
+let web_socket = null;
 
 export default {
   components: {
@@ -72,26 +80,19 @@ export default {
         csrf_token:""
       };
     },*/
-  data() {
+  data: function () {
     return {
-      selected: null,
-      options: [
-        { value: null, text: '장비를 선택해주세요.' },
-        {
-          label: 'AMS-1000',
-          options: [
-            { value: { C: '1' }, text: 'BBQ치킨' },
-            { value: { R: '2' }, text: '지코바' }
-          ]
-        },
-        {
-          label: 'AMS-2000',
-          options: [
-            { value: { C: '3' }, text: '피자나라치킨공주' },
-            { value: { R: '4' }, text: '신당동장독대를뛰쳐나온' }
-          ]
-        }
-      ],
+      currentTab: 0,
+      options: {
+        'AMS-1000': [
+          {text: 'BBQ치킨', value: 1},
+          {text: '지코바', value: 2}
+        ],
+        'AMS-2000': [
+          {text: '피자나라치킨공주', value: 3},
+          {text: '신당동장독대를뛰쳐나온', value: 4}
+        ]
+      },
       map: null,
       markerPositions1: [
         [33.452278, 126.567803],
@@ -113,6 +114,8 @@ export default {
     };
   },
   mounted() {
+    this.connect();
+    /*setInterval(this.connect.bind(this),30000)*/
     if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {
@@ -124,6 +127,33 @@ export default {
     }
   },
   methods: {
+    /*웹소켓 파트 시작*/
+    async connect() {
+      alert("connect")
+      this.socket = new WebSocket("wss://echo.websocket.org");
+      this.socket.onopen = () => {
+        this.status = "connected";
+        this.logs.push({ event: "연결 완료: ", data: 'wss://echo.websocket.org'})
+
+        this.socket.onmessage = ({data}) => {
+          this.logs.push({ event: "메세지 수신", data });
+          alert("data : "+data)
+        };
+      };
+      await this.disconnect();
+    },
+    async disconnect() {
+      this.socket.close();
+      this.status = "disconnected";
+      this.logs = [];
+    },
+/*
+    sendMessage(e) {
+      this.socket.send(this.message);
+      this.logs.push({ event: "메시지 전송", data: this.message });
+      this.message = "";
+    },*/
+   /*웹소켓 파트 끝*/
     initMap() {
       const container = document.getElementById("map");
       const options = {

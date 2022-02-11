@@ -1,7 +1,7 @@
 <template>
   <div id="body-wrapper">
     <div id="header">
-      <main-header/>
+      <main-header v-bind:currentTab="currentTab"/>
     </div>
     <div id="staticPage">
       <!--장비 맵 영역-->
@@ -42,12 +42,14 @@ export default {
   components: {
     'main-header': MainHeader,
   },
-  data() {
+  data: function () {
     return {
       map: null,
+      currentTab: 1,
     };
   },
   mounted() {
+    this.$emit('currentTab',1)
     if (window.kakao && window.kakao.maps) {
       this.initStaticMap();
     } else {

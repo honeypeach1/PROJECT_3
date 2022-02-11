@@ -55,11 +55,12 @@
           line-height: 60px;
           cursor: pointer;
 
-          .select {
-            color: #ffcb00;
-            background-size: 100% 100%;
-            background-image: url("../../assets/images/layout/menu.png");
-          }
+        }
+
+        .active {
+          color: #ffcb00;
+          background-size: 100% 100%;
+          background-image: url("../../assets/images/layout/menu.png");
         }
       }
     }
@@ -91,24 +92,49 @@
         }
       }
 
+      .header_alert_area {
+        height: 380px;
+        width: 250px;
+        background: #f4f4f4;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        position: absolute;
+        top: 50px;
+        right: 90px;
+        z-index: 10;
+
+        .alert_list {
+          height: 45px;
+          width: 100%;
+          color: #f6f6f6;
+          text-align: center;
+          padding-top: 10px;
+          background: #5c6f7e;
+          border: 1px solid #d8efff;
+          font-family: "NanumSquare", sans-serif;
+        }
+      }
+
       .header_user_control_area {
-        height: 160px;
-        width: 190px;
+        height: 185px;
+        width: 140px;
         top: 50px;
         right: 7px;
         float: right;
-        background: #FFFFFF;
+        background: #f4f4f4;
         position: absolute;
         border-radius: 5px;
         font-size: 18px;
         color: #666666;
         border: 1px solid #666666;
         padding: 5px 15px 5px 15px;
+        font-family: "NanumSquare", sans-serif;
         z-index: 10;
 
         div {
           border-bottom: 1px solid #666666;
-          margin-top: 5px;
+          margin-top: 7px;
+          height: 28px;
           margin-bottom: 5px;
           display: block;
           color: #666666;
