@@ -129,7 +129,6 @@ export default {
   methods: {
     /*웹소켓 파트 시작*/
     async connect() {
-      alert("connect")
       this.socket = new WebSocket("wss://echo.websocket.org");
       this.socket.onopen = () => {
         this.status = "connected";

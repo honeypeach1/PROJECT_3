@@ -10,12 +10,32 @@ exports.socketServer = net.createServer(function (socket){
     //Check for Client Socket Information.
     console.log("Client IP : " + remoteIp + ", Client Port : " + remotePort)
 
+
+    /*
+        서버 to 장비 tcp/ip 소켓 통신 설명
+        tcp/ip 서버는 하나의 포트를 가지고 상시 listen상태로 구성한다.
+        해당 서버로 통신하기 위한 장비는 연결하기 위한 tcp/ip 서버 아이피와 포트로 연결 요청한다.
+        상시 오픈 상태의 tcp/ip서버는 연결받기 위한 장비로 부터 연결이 되고,
+        장비에서 정해진 형태의 데이터 로우를 송신한다.(기본 송신 주기 30초)
+        성공적으로 데이터를 받았음을 서버에서 $GSD를 SENDING한다.
+        서버의 포트를 닫는다.
+
+        만약 장비로 원격 명령을 보낼때는 서버로 부터 연결 요청이 왔을때, $GSD를 송신하는것이 아니라,
+        $RS~~ 와 같은 채취 명령을 송신한다.
+     */
+
     //tcp/ip 소켓 서버 구성시 서버단에서 연결 장비(클라이언트)로 보내야 하는 기본 명령어
     socket.write("$GSD\r\n")
 
-    socket.on('data',function (chunk){
-        console.log('Client received data : ',chunk.toString())
-        chunk.toString();
+    let buffer = new Uint8Array([]);
+
+    socket.on('data',async function (chunk){
+        buffer = Uint8Array.from([...buffer, ...chunk])
+        buffer = new Uint8Array(buffer)
+        buffer = Buffer.from(buffer);
+
+        //console.log('Client received data : ',chunk.toString())
+        //chunk.toString();
 
         //데이터 처리&데이터베이스화 부분
         const dataRow = () => {
@@ -30,6 +50,10 @@ exports.socketServer = net.createServer(function (socket){
     })
     socket.on('close',function (){
         console.log("Socket Server closed.\n")
+        //(, 탭) 제거
+        let rawArray = buffer.toString().split((/,|\t/));
+        //null 제거
+        let fullArray = rawArray.filter(Boolean);
     })
 })
 
