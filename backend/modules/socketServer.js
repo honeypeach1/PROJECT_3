@@ -1,5 +1,6 @@
 //장비, 웹 서버간 통신 소켓 서버 구축
 var net = require('net')
+let remoteData = "";
 
 exports.socketServer = net.createServer(function (socket){
     console.log("socket server created.")
@@ -25,7 +26,17 @@ exports.socketServer = net.createServer(function (socket){
      */
 
     //tcp/ip 소켓 서버 구성시 서버단에서 연결 장비(클라이언트)로 보내야 하는 기본 명령어
-    socket.write("$GSD\r\n")
+    //but 소켓 연결이 들어오기전에 원격 명령을 내릴시, 해당 원격 명령을 가지고 있다가 소켓 연결 들어오면 write해야함.
+    const returnData = "$GSD\r\n";
+
+    //받은 원격 명령 할당(로컬화)
+    //remoteData = "";
+    //소켓 통신전 원격 명령을 받았다면, 전역 변수를 가져와서 null여부를 체크한다.
+    if(remoteData != ""){
+        socket.write(remoteData);
+    }else{
+        socket.write(returnData);
+    }
 
     let buffer = new Uint8Array([]);
 
@@ -54,6 +65,8 @@ exports.socketServer = net.createServer(function (socket){
         let rawArray = buffer.toString().split((/,|\t/));
         //null 제거
         let fullArray = rawArray.filter(Boolean);
+        //로컬 변수 remoteData 초기화
+        remoteData = "";
     })
 })
 

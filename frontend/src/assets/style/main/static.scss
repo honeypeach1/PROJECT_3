@@ -5,16 +5,8 @@
 
   #staticPage {
     width: 100%;
-    height: 100%;
+    height: 89%;
     margin-top: 10px;
-
-    .showMap {
-      display: inline-block;
-    }
-
-    .showList {
-      display: none;
-    }
 
     .staticLeftArea {
       width: 20%;
@@ -24,9 +16,35 @@
       float: left;
       margin: 5px;
 
+      #staticequipSelect {
+        z-index: 10;
+        float: left;
+        position: absolute;
+        top: 100px;
+        left: 40px;
+
+        .inlineMapSelectList {
+          width: 330px;
+          height: 40px;
+          font-size: 100%;
+          text-align: center;
+          border-radius: 15px;
+          font-family: "NanumSquare", sans-serif;
+
+          option {
+
+          }
+
+          optgroup {
+
+          }
+        }
+      }
+
       #staticMap {
         width: 100%;
         height: 100%;
+        border: 1px solid #021f33;
       }
     }
 
@@ -37,6 +55,138 @@
       padding: 10px;
       float: left;
       margin: 5px;
+
+      #selectDateArea {
+        height: 5%;
+        font-family: 'NanumSquare', sans-serif;
+
+        .dataLabel {
+          width: 110px;
+          height: 30px;
+          color: #ffffff;
+          text-align: center;
+          background-image: url("../../assets/images/layout/button.png");
+          box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 16%);
+          paddint-top: 5px;
+          float: left;
+        }
+
+        .dateArea {
+          position: absolute;
+          float: left;
+
+          label {
+            float: left;
+
+            .dateTime {
+
+            }
+
+            div {
+              float: left;
+            }
+
+            .calendarLogo {
+              float: left;
+              background: #ffffff;
+            }
+          }
+
+          .dot {
+            float: left;
+          }
+
+          .periodType {
+            color: #FFFFFF;
+            background-image: url("../../assets/images/layout/button.png");
+          }
+
+          .selectPeriodArea {
+
+            .selectPeriodData {
+
+            }
+          }
+
+          .alarmButton {
+            float: right;
+            width: 150px;
+            height: 30px;
+            cursor: pointer;
+            background-image: url("../../assets/images/layout/new_Box_Img_Select.gif");
+
+            :hover {
+              background-image: url("../../assets/images/layout/new_Box_Img.png");
+
+            }
+          }
+        }
+      }
+
+      #showGraphArea {
+        height: 60%;
+
+        .ContentsBodyGraph {
+
+          #datatable {
+
+            thead {
+
+              tr {
+
+                .title {
+                  border: 1px solid #000000;
+                  background-image: linear-gradient(to top, rgba(59, 97, 116, 0.65) 27%, rgba(82, 121, 138, 0.65) 84%, rgba(134, 175, 193, 0.65));
+                  border-left-color: rgba(216, 216, 216, 0.18);
+                }
+
+                .subTitle {
+                  border: 1px solid #000000;
+                  box-shadow: inset 0px 6px 0px 1px rgb(28, 45, 57, 70%);
+                  background-image: linear-gradient(to top, rgba(47, 83, 108, 1), rgba(39, 70, 92, 1));
+                  border-left-color: rgba(216, 216, 216, 0.18);
+                }
+
+                th {
+                  border: 1px solid #000000;
+                  font-weight: bold;
+                  color: #ffffff;
+                  text-align: center;
+                  padding: 5px;
+                  font-size: 20px;
+                }
+              }
+            }
+
+            tbody {
+              background-image: linear-gradient(to top, #1b2d38 41%, #121413);
+              background-attachment: fixed;
+              background-repeat: no-repeat;
+
+              tr {
+                .odd {
+                  background: transparent;
+                  font-size: 18px;
+                }
+
+                .even {
+                  background: rgba(255, 255, 255, 0.1) !important;
+                  font-size: 18px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      #showChartArea {
+        height: 35%;
+        background-image: linear-gradient(320deg, #1a4361, #001c30);
+        border: 1px solid #001c30;
+        overflow: hidden;
+      }
+
+
     }
 
     #staticRightArea {
@@ -46,6 +196,37 @@
       padding: 10px;
       float: left;
       margin: 5px;
+
+      #dataControlArea {
+        height: 6%;
+        margin-top: 10px;
+
+        #dataDown {
+
+          img {
+            float: left;
+            margin-right: 5px;
+            margin-left: 5px;
+          }
+
+          .excelLogo {
+            cursor: pointer;
+          }
+
+          .emptyLogo {
+
+          }
+        }
+      }
+
+      #showWindRoseArea {
+        height: 93%;
+        background: linear-gradient(320deg, #1a4361, #001c30);
+
+        #windRose {
+        }
+
+      }
     }
   }
 }
