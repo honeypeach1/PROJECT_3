@@ -22,17 +22,19 @@
       <!--장비 데이터 조회 영역-->
       <div id="staticCenterArea">
         <div id="selectDateArea">
-          <div class="dateArea">
+          <div class="sort_front_area">
             <label class="dataLabel">시작일/종료일</label>
             <label>
               <datetime class="startDateTime" type="date" v-model="date" id="beginDate" @change=""></datetime>
               <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
             </label>
-            <span class="dot">~</span>
+            <span class="dot">-</span>
             <label>
               <datetime class="endDateTime" type="date" v-model="date" id="endDate" @change=""></datetime>
               <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
             </label>
+          </div>
+          <div class="sort_back_area">
             <label class="periodType">데이터구분</label>
             <label class="selectPeriodArea">
               <select class="selectPeriodData">
@@ -118,6 +120,7 @@ import 'vue-datetime/dist/vue-datetime.css';
 Vue.use(DateTime);
 /*API 키*/
 import dotenv from 'dotenv';
+
 dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 /**/

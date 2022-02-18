@@ -131,6 +131,10 @@
         font-family: "NanumSquare", sans-serif;
         z-index: 10;
 
+        .click {
+          cursor: pointer;
+        }
+
         div {
           border-bottom: 1px solid #666666;
           margin-top: 7px;

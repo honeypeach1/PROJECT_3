@@ -46,19 +46,28 @@
             <img class="user_info" src="../../assets/images/svg/User.svg"/>
             <p>님</p>
           </div>
-          <div class="admin_user_div" id="user_authority_area">
+          <div class="admin_user_div click" @click="isUserView=true" id="user_authority_area">
+            <userModalView v-if="isUserView" @close-modal="isUserView=false">
+              <Content />
+            </userModalView>
             <img class="user_setting" src="../../assets/images/svg/User_Control.svg"/>
             <p>회원관리</p>
           </div>
-          <div class="admin_user_div" id="equipment_setting_area">
+          <div class="admin_user_div click" @click="isSettingView=true" id="equipment_setting_area">
+            <SettingModalView v-if="isSettingView" @close-modal="isSettingView=false">
+              <Content />
+            </SettingModalView>
             <img class="admin_setting" src="../../assets/images/svg/setting.svg"/>
             <p>설정관리</p>
           </div>
-          <div class="admin_user_div" id="map_setting_area">
+          <div class="admin_user_div click" @click="isMapView=true" id="map_setting_area">
+            <mapModalView v-if="isMapView" @close-modal="isMapView=false">
+              <Content />
+            </mapModalView>
             <img class="map_setting" src="../../assets/images/svg/Map_Setting.svg"/>
             <p>맵 설 정</p>
           </div>
-          <div v-on:click="userLogout" class="common_user_div" id="logout_area">
+          <div v-on:click="userLogout" class="common_user_div click" id="logout_area">
             <img class="map_setting" src="../../assets/images/svg/LogOut.svg"/>
             <p>로그아웃</p>
           </div>
@@ -75,14 +84,25 @@
 <script>
 import axios from "axios";
 import router from '../../router'
+import mapModalView from '../../components/popup/mapModalPopup'
+import settingModalView from '../../components/popup/settingModalPopup'
+import userModalView from '../../components/popup/userModalPopup'
 
 export default {
   name: 'main-header',
   props: ["currentTab"],
+  components: {
+    mapModalView,
+    settingModalView,
+    userModalView
+  },
   data: function () {
     return {
       info_show: false,
       alert_show: false,
+      isMapView: false,
+      isSettingView: false,
+      isUserView: false
     }
   },
   methods: {
