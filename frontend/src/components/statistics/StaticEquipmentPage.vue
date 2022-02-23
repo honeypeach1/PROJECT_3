@@ -9,7 +9,7 @@
         <div id="staticequipSelect">
           <select class="inlineMapSelectList">
             <option value="0" selected disabled>장비를 선택해주세요.</option>
-            <optgroup v-for="(group, name) in options" :label="name">
+            <optgroup v-for="(group, name) in selectOptions" :label="name">
               <option v-for="option in group" :value="option.value">
                 {{ option.text }}
               </option>
@@ -33,8 +33,6 @@
               <datetime class="endDateTime" type="date" v-model="date" id="endDate" @change=""></datetime>
               <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
             </label>
-          </div>
-          <div class="sort_back_area">
             <label class="periodType">데이터구분</label>
             <label class="selectPeriodArea">
               <select class="selectPeriodData">
@@ -45,6 +43,8 @@
                 <option value="4">1일</option>
               </select>
             </label>
+          </div>
+          <div class="sort_back_area">
             <button class="alarmButton">알람조회</button>
           </div>
         </div>
@@ -52,7 +52,7 @@
         <!--데이터 테이블 영역-->
         <div id="showGraphArea">
           <div class="ContentsBodyGraph">
-            <table id="datatable" class="commonTable" style="width:100%;">
+            <table class="commonTable" style="width:100%;">
               <thead>
               <tr>
                 <th class="timeClass title" rowspan="3" style="width: 150px">시간</th>
@@ -76,17 +76,17 @@
                 <th class="badClass subTitle">상태</th>
               </tr>
               </thead>
-              <tbody id="selectDatatable">
-              </tbody>
+              <tbody id="datatable"></tbody>
             </table>
+            <!--
+                        <datatable :columns="datatable.data.columns" :data="datatable.data.rows"></datatable>
+            -->
           </div>
         </div>
 
         <!--데이터 차트 영역-->
         <div id="showChartArea">
-          <canvas id="chartBar">
-
-          </canvas>
+          <div id="chartBar"></div>
         </div>
       </div>
       <!--풍배도 및 빈도 표현 영역-->
@@ -100,7 +100,6 @@
         </div>
         <div id="showWindRoseArea">
           <div id="windRose">
-
           </div>
         </div>
       </div>
@@ -111,12 +110,22 @@
 <script>
 import MainHeader from "../layout/header";
 import axios from "axios";
-import ChartJs from 'vue-chartjs';
+import Chart from 'chart.js';
+//import Plotly from 'plotly.js-dist';
+
+import lineChart from './chart_attribute/lineChart'
+import windRose from "./chart_attribute/windrose";
+import datatable from './chart_attribute/datatable';
+
 import DateTime from 'vue-datetime';
 import Vue from 'vue';
 
-import 'vue-datetime/dist/vue-datetime.css';
+import $ from 'jquery';
 
+import 'vue-datetime/dist/vue-datetime.css';
+import {VuejsDatatableFactory} from 'vuejs-datatable';
+
+Vue.use(VuejsDatatableFactory);
 Vue.use(DateTime);
 /*API 키*/
 import dotenv from 'dotenv';
@@ -124,29 +133,30 @@ import dotenv from 'dotenv';
 dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 /**/
+let datatableValue;
 
 export default {
-  /*  props: ['chartData', 'options'],*/
   components: {
     'main-header': MainHeader,
-    //datetime: DateTime,
-    chartJs: ChartJs
   },
   data: function () {
     return {
       map: null,
       currentTab: 1,
-      options: {
+      selectOptions: {
         'AMS-1000': [
           {text: 'BBQ치킨', value: 1},
           {text: '지코바', value: 2}
         ],
         'AMS-2000': [
           {text: '피자나라치킨공주', value: 3},
-          {text: '신당동장독대를뛰쳐나온', value: 4}
+          {text: '맛초킹', value: 4}
         ]
       },
-    };
+      lineChart: lineChart,
+      windRose: windRose,
+      datatables: datatable,
+    }
   },
   mounted() {
     this.$emit('currentTab', 1)
@@ -161,6 +171,8 @@ export default {
     }
 
     this.initChart();
+    this.initDataTable();
+    this.initRadarChart();
   },
   methods: {
     initStaticMap() {
@@ -172,8 +184,21 @@ export default {
       this.map = new kakao.maps.Map(container, options);
     },
     initChart() {
-      const ctx = document.getElementById("chartBar").getContext("2d");
-      new Chart(ctx, this.chartJs)
+      /*const script = document.createElement("script");
+      script.src = "https://cdn.plot.ly/plotly-2.9.0.min.js";
+      document.head.appendChild(script);*/
+      Plotly.newPlot('chartBar', this.lineChart.data, this.lineChart.layout, this.lineChart.options)
+
+    },
+    initDataTable() {
+      if (datatableValue != undefined) {
+        datatableValue.clear();
+        datatableValue.destroy();
+      }
+      //datatableValue = $('#datatable').DataTable({datatable});
+    },
+    initRadarChart() {
+      Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout);
     }
   },
 }

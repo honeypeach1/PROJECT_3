@@ -90,7 +90,7 @@ export default {
         ],
         'AMS-2000': [
           {text: '피자나라치킨공주', value: 3},
-          {text: '신당동장독대를뛰쳐나온', value: 4}
+          {text: '맛초킹', value: 4}
         ]
       },
       map: null,
