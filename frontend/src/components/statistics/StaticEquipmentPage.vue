@@ -23,16 +23,21 @@
       <div id="staticCenterArea">
         <div id="selectDateArea">
           <div class="sort_front_area">
-            <label class="dataLabel">시작일/종료일</label>
-            <label>
-              <datetime class="startDateTime" type="date" v-model="date" id="beginDate" @change=""></datetime>
-              <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
-            </label>
-            <span class="dot">-</span>
-            <label>
-              <datetime class="endDateTime" type="date" v-model="date" id="endDate" @change=""></datetime>
-              <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
-            </label>
+            <label class="dataLabel">기간 설정</label>
+            <DatePicker
+              :i18n="dateType">
+            </DatePicker>
+            <!--
+                        <label>
+                          <Datetime class="startDateTime" type="datetime" v-model="datetime" id="beginDate"></Datetime>
+                          <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
+                        </label>
+                        <span class="dot">-</span>
+                        <label>
+                          <Datetime class="endDateTime" type="datetime" v-model="datetime" id="endDate"></Datetime>
+                          <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
+                        </label>
+            -->
             <label class="periodType">데이터구분</label>
             <label class="selectPeriodArea">
               <select class="selectPeriodData">
@@ -101,6 +106,212 @@
         <div id="showWindRoseArea">
           <div id="windRose">
           </div>
+          <div id="windCountGraph">
+            <table>
+              <thead>
+              <tr class="head_title">
+                <th>m/s</th>
+                <th>0.5~1.0</th>
+                <th>1.0~1.5</th>
+                <th>1.5~2.0</th>
+                <th>2.0~2.5</th>
+                <th>2.5~3.0</th>
+                <th>3.0~3.5</th>
+                <th>3.5~</th>
+                <th>계</th>
+              </tr>
+              <tr class="head_subTitle">
+                <th></th>
+                <th class="legend_1"></th>
+                <th class="legend_2"></th>
+                <th class="legend_3"></th>
+                <th class="legend_4"></th>
+                <th class="legend_5"></th>
+                <th class="legend_6"></th>
+                <th class="legend_7"></th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="odd_row">
+                <td class="windDirect_1">북</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_2">북북동</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="odd_row">
+                <td class="windDirect_3">북동</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_4">동북동</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="odd_row">
+                <td class="windDirect_5">동</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_6">동남동</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="odd_row">
+                <td class="windDirect_7">남동</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_8">남남동</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="odd_row">
+                <td class="windDirect_9">남</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_10">남남서</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="odd_row">
+                <td class="windDirect_11">남서</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_12">서남서</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="odd_row">
+                <td class="windDirect_13">서</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_14">서북서</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="odd_row">
+                <td class="windDirect_15">북서</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="even_row">
+                <td class="windDirect_16">북북서</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -122,7 +333,11 @@ import Vue from 'vue';
 
 import $ from 'jquery';
 
+import DatePicker from 'vue-hotel-datepicker';
+
 import 'vue-datetime/dist/vue-datetime.css';
+import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css'
+
 import {VuejsDatatableFactory} from 'vuejs-datatable';
 
 Vue.use(VuejsDatatableFactory);
@@ -138,6 +353,7 @@ let datatableValue;
 export default {
   components: {
     'main-header': MainHeader,
+    DatePicker
   },
   data: function () {
     return {
@@ -152,6 +368,10 @@ export default {
           {text: '피자나라치킨공주', value: 3},
           {text: '맛초킹', value: 4}
         ]
+      },
+      dateType: {
+        'check-in': 'start-date',
+        'check-out': 'end-date',
       },
       lineChart: lineChart,
       windRose: windRose,

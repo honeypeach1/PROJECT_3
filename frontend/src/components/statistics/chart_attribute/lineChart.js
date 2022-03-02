@@ -36,13 +36,13 @@ export const lineChart = {
       gridwidth: 1.1
     },
     margin: {
-      l: 30,
-      r: 30,
-      b: 30,
-      t: 30,
+      l: 10,
+      r: 10,
+      b: 10,
+      t: 10,
       pad: 5
     },
-    paper_bgcolor: '#042238'
+    paper_bgcolor: 'transparent',
   },
   options: {
     responsive: true,

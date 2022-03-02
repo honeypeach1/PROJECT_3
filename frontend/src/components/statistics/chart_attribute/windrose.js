@@ -26,9 +26,11 @@ export const windRose = {
   }],
   layout : {
     autosize:true,
-    height:770,
+    height:370,
     width:476,
-    title: "Wind Speed Distribution in Laurel, NE",
+    title: "",
+    paper_bgcolor: 'transparent',
+    showlegend: false,
     font: {size: 16},
     legend: {font: {size: 16}},
     polar: {
