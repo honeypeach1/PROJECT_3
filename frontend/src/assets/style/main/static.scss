@@ -81,18 +81,25 @@
             box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 16%);
           }
 
-          .vhd__datepicker__wrapper {
-            width: 60%;
+          .mdrp-root {
             float: left;
-            height: 30px;
 
-            div {
+            .mdrp__activator {
 
-              .vhd__datepicker__input {
-                line-height: 2em !important;
+              .activator-wrapper {
+
+                .text-field {
+                  margin-top: 2px;
+                  height: 15px;
+                  padding: 5px;
+                }
+
+                span {
+                  display: none;
+                }
+
               }
             }
-
           }
 
           /***********************************/

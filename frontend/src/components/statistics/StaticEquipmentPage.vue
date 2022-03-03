@@ -24,9 +24,7 @@
         <div id="selectDateArea">
           <div class="sort_front_area">
             <label class="dataLabel">기간 설정</label>
-            <DatePicker
-              :i18n="dateType">
-            </DatePicker>
+            <v-md-date-range-picker @change="datepicker"></v-md-date-range-picker>
             <!--
                         <label>
                           <Datetime class="startDateTime" type="datetime" v-model="datetime" id="beginDate"></Datetime>
@@ -323,25 +321,18 @@ import MainHeader from "../layout/header";
 import axios from "axios";
 import Chart from 'chart.js';
 //import Plotly from 'plotly.js-dist';
-
 import lineChart from './chart_attribute/lineChart'
 import windRose from "./chart_attribute/windrose";
 import datatable from './chart_attribute/datatable';
-
-import DateTime from 'vue-datetime';
 import Vue from 'vue';
-
 import $ from 'jquery';
 
-import DatePicker from 'vue-hotel-datepicker';
-
-import 'vue-datetime/dist/vue-datetime.css';
-import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css'
+import VMdDateRangePicker from "v-md-date-range-picker";
 
 import {VuejsDatatableFactory} from 'vuejs-datatable';
 
+Vue.use(VMdDateRangePicker);
 Vue.use(VuejsDatatableFactory);
-Vue.use(DateTime);
 /*API 키*/
 import dotenv from 'dotenv';
 
@@ -353,7 +344,6 @@ let datatableValue;
 export default {
   components: {
     'main-header': MainHeader,
-    DatePicker
   },
   data: function () {
     return {
@@ -369,10 +359,11 @@ export default {
           {text: '맛초킹', value: 4}
         ]
       },
-      dateType: {
-        'check-in': 'start-date',
-        'check-out': 'end-date',
-      },
+      values: [],
+      dataType: '',
+      month: '',
+      day: '',
+      selectDate: [],
       lineChart: lineChart,
       windRose: windRose,
       datatables: datatable,
@@ -419,6 +410,74 @@ export default {
     },
     initRadarChart() {
       Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout);
+    },
+    datepicker(values) {
+      /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/
+
+      //* 수정 필요
+      //1. 기간은 시작 데이터만 선택이 될수도 있고, 마지막 데이터만 선택이 될 수 있음. 배열은 시작과 끝을 구분할 수 없음.
+      //2. 이후에 대한 기간 선택은 블락 처리를 해야함. 미래의 데이터는 없기 때문에 의미가 없음.
+      for (let i in values) {
+        this.month = (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1));
+        this.day = (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date());
+        if (i % 2 == 0) {
+          this.selectDate[i] = values[i].year() + '-' + month + '-' + day + ' 00:00:00';
+        } else {
+          this.selectDate[i] = values[i].year() + '-' + month + '-' + day + ' 59:59:59';
+        }
+      }
+
+      //axios 데이터 셀렉 호출
+      this.getData();
+      this.values = values;
+    },
+
+    /*
+      static 페이지에서 비동기식 데이터 호출 함수
+
+       1. 해당 함수 필요 리턴 데이터
+        1.1 기본 셀렉 리스트 또는 알람 리스트
+        1.2 데이터 로우 - 라인 차트
+        1.3 풍배도 표 빈도수
+        1.4 풍배도 그래프 출력 데이터
+
+       2. 필요 파라미터 - 별도의 영역 설정에 따른 호출로 아래 파라미터는 전역 변수로 가지고 있어야함.
+        2.1 장비 넘버                                           @param -> equipNum
+        2.2 기간 데이터                                          @param -> start_date, end_date
+        2.3 데이터 구분                                          @param -> dataType
+        2.4 알람 정보(클릭 여부에 따라 아니면 기본 데이터 로우 콜)      @param -> isAlarm
+        만약 데이터가 없다면 별도의 예외 처리 진행
+
+        3. 함수 콜 로직
+         3.1 장비 리스트 클릭
+         3.2 기간 설정 클릭
+         3.3 데이터 구분 클릭
+         3.4 알람 조회 클릭
+         3.5 상단 헤더에서의 특정 알람을 클릭
+    */
+    getData() {
+      axios({
+        url: "/static/getData",
+        method: "GET",
+        data: {
+          start_date: this.selectDate[0],
+          end_date: this.selectDate[1],
+          dataType: this.dataType
+        }
+      }).then((res) => {
+        if (res.data.success == true) {
+
+          /*
+            데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
+          */
+        } else {
+          alert(res.data.message);
+        }
+      }).catch((error) => {
+        console.log(error)
+      }).finally((error) => {
+        console.log(error)
+      })
     }
   },
 }
