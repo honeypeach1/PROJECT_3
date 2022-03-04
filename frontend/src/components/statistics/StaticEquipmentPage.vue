@@ -7,7 +7,7 @@
       <!--장비 맵 영역-->
       <div class="staticLeftArea" id="staticMapArea">
         <div id="staticequipSelect">
-          <select class="inlineMapSelectList">
+          <select class="inlineMapSelectList" v-model="equipNum" @change="getData">
             <option value="0" selected disabled>장비를 선택해주세요.</option>
             <optgroup v-for="(group, name) in selectOptions" :label="name">
               <option v-for="option in group" :value="option.value">
@@ -23,39 +23,29 @@
       <div id="staticCenterArea">
         <div id="selectDateArea">
           <div class="sort_front_area">
-            <label class="dataLabel">기간 설정</label>
+            <div class="dataLabel">기간 설정</div>
             <v-md-date-range-picker @change="datepicker"></v-md-date-range-picker>
-            <!--
-                        <label>
-                          <Datetime class="startDateTime" type="datetime" v-model="datetime" id="beginDate"></Datetime>
-                          <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
-                        </label>
-                        <span class="dot">-</span>
-                        <label>
-                          <Datetime class="endDateTime" type="datetime" v-model="datetime" id="endDate"></Datetime>
-                          <img class="calendarLogo" src="../../assets/images/layout/calendar_logo.png"/>
-                        </label>
-            -->
-            <label class="periodType">데이터구분</label>
-            <label class="selectPeriodArea">
-              <select class="selectPeriodData">
+            <div class="periodType">데이터구분</div>
+            <div class="selectPeriodArea">
+              <select class="selectPeriodData" v-model="dataType" @change="getData">
                 <option value="0">1분</option>
                 <option value="1">5분</option>
                 <option value="2">10분</option>
                 <option value="3">1시간</option>
                 <option value="4">1일</option>
               </select>
-            </label>
+            </div>
           </div>
           <div class="sort_back_area">
-            <button class="alarmButton">알람조회</button>
+            <button class="alarmButton" :class="{toggled: isAlarm}" @click="goSelectData">
+              {{isAlarm ? '데이터조회':'알람조회'}}</button>
           </div>
         </div>
 
         <!--데이터 테이블 영역-->
         <div id="showGraphArea">
           <div class="ContentsBodyGraph">
-            <table class="commonTable" style="width:100%;">
+            <table class="commonTable" id="datatable" style="width:100%;">
               <thead>
               <tr>
                 <th class="timeClass title" rowspan="3" style="width: 150px">시간</th>
@@ -79,11 +69,10 @@
                 <th class="badClass subTitle">상태</th>
               </tr>
               </thead>
-              <tbody id="datatable"></tbody>
+              <tbody>
+              </tbody>
             </table>
-            <!--
-                        <datatable :columns="datatable.data.columns" :data="datatable.data.rows"></datatable>
-            -->
+<!--            <datatable :columns="datatable.data.columns" :data="datatable.data.rows"></datatable>-->
           </div>
         </div>
 
@@ -318,29 +307,25 @@
 
 <script>
 import MainHeader from "../layout/header";
-import axios from "axios";
-import Chart from 'chart.js';
-//import Plotly from 'plotly.js-dist';
-import lineChart from './chart_attribute/lineChart'
-import windRose from "./chart_attribute/windrose";
-import datatable from './chart_attribute/datatable';
-import Vue from 'vue';
+import getLineChart from './chart_attribute/lineChart'
+import getWindRose from "./chart_attribute/windrose";
+import getDataTable from './chart_attribute/datatable';
 import $ from 'jquery';
 
-import VMdDateRangePicker from "v-md-date-range-picker";
-
-import {VuejsDatatableFactory} from 'vuejs-datatable';
-
-Vue.use(VMdDateRangePicker);
-Vue.use(VuejsDatatableFactory);
-/*API 키*/
+import Vue from 'vue';
+import axios from "axios";
 import dotenv from 'dotenv';
+import Datatable from "datatables.net";
 
+import VMdDateRangePicker from "v-md-date-range-picker";
+import "v-md-date-range-picker/dist/v-md-date-range-picker.css";
+Vue.use(VMdDateRangePicker);
+
+/*API 키*/
 dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 /**/
 let datatableValue;
-
 export default {
   components: {
     'main-header': MainHeader,
@@ -360,13 +345,14 @@ export default {
         ]
       },
       values: [],
-      dataType: '',
-      month: '',
-      day: '',
-      selectDate: [],
-      lineChart: lineChart,
-      windRose: windRose,
-      datatables: datatable,
+      equipNum: 0,
+      dataType: 0,
+      isAlarm: false,
+      start_date: '',
+      end_date: '',
+      lineChart: getLineChart,
+      windRose: getWindRose,
+      datatable: getDataTable,
     }
   },
   mounted() {
@@ -380,10 +366,7 @@ export default {
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
       document.head.appendChild(script);
     }
-
-    this.initChart();
-    this.initDataTable();
-    this.initRadarChart();
+    this.initPlotlyChart();
   },
   methods: {
     initStaticMap() {
@@ -394,22 +377,16 @@ export default {
       };
       this.map = new kakao.maps.Map(container, options);
     },
-    initChart() {
-      /*const script = document.createElement("script");
-      script.src = "https://cdn.plot.ly/plotly-2.9.0.min.js";
-      document.head.appendChild(script);*/
-      Plotly.newPlot('chartBar', this.lineChart.data, this.lineChart.layout, this.lineChart.options)
-
-    },
     initDataTable() {
       if (datatableValue != undefined) {
         datatableValue.clear();
         datatableValue.destroy();
       }
-      //datatableValue = $('#datatable').DataTable({datatable});
+      datatableValue = $('#datatable').DataTable(this.datatable.data);
     },
-    initRadarChart() {
+    initPlotlyChart() {
       Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout);
+      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.lineChart.options)
     },
     datepicker(values) {
       /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/
@@ -418,20 +395,25 @@ export default {
       //1. 기간은 시작 데이터만 선택이 될수도 있고, 마지막 데이터만 선택이 될 수 있음. 배열은 시작과 끝을 구분할 수 없음.
       //2. 이후에 대한 기간 선택은 블락 처리를 해야함. 미래의 데이터는 없기 때문에 의미가 없음.
       for (let i in values) {
-        this.month = (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1));
-        this.day = (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date());
-        if (i % 2 == 0) {
-          this.selectDate[i] = values[i].year() + '-' + month + '-' + day + ' 00:00:00';
+        if (i == 0) {
+          this.start_date = values[i].year() + '-'
+            + (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1))
+            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 00:00:00';
         } else {
-          this.selectDate[i] = values[i].year() + '-' + month + '-' + day + ' 59:59:59';
+          this.end_date = values[i].year() + '-'
+            + (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1))
+            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 59:59:59';
         }
       }
 
+      this.values = values;
       //axios 데이터 셀렉 호출
       this.getData();
-      this.values = values;
+      },
+    goSelectData() {
+      this.isAlarm = !this.isAlarm
+      this.getData();
     },
-
     /*
       static 페이지에서 비동기식 데이터 호출 함수
 
@@ -443,7 +425,7 @@ export default {
 
        2. 필요 파라미터 - 별도의 영역 설정에 따른 호출로 아래 파라미터는 전역 변수로 가지고 있어야함.
         2.1 장비 넘버                                           @param -> equipNum
-        2.2 기간 데이터                                          @param -> start_date, end_date
+        2.2 기간 데이터                                          @param -> [start_date, end_date]
         2.3 데이터 구분                                          @param -> dataType
         2.4 알람 정보(클릭 여부에 따라 아니면 기본 데이터 로우 콜)      @param -> isAlarm
         만약 데이터가 없다면 별도의 예외 처리 진행
@@ -456,17 +438,20 @@ export default {
          3.5 상단 헤더에서의 특정 알람을 클릭
     */
     getData() {
+      //데이터 테이블 그리기
+      this.initDataTable();
       axios({
         url: "/static/getData",
-        method: "GET",
-        data: {
-          start_date: this.selectDate[0],
-          end_date: this.selectDate[1],
-          dataType: this.dataType
+        method: "get",
+        params: {
+          start_date: this.start_date,
+          end_date: this.end_date,
+          isAlarm: this.isAlarm,
+          dataType: this.dataType,
+          equipNum: this.equipNum
         }
       }).then((res) => {
         if (res.data.success == true) {
-
           /*
             데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
           */
@@ -483,6 +468,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../assets/style/main/static";
 </style>

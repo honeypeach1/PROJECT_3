@@ -84,7 +84,7 @@
           .mdrp-root {
             float: left;
 
-            .mdrp__activator {
+             .mdrp__activator {
 
               .activator-wrapper {
 
@@ -94,7 +94,7 @@
                   padding: 5px;
                 }
 
-                span {
+                label {
                   display: none;
                 }
 
@@ -102,54 +102,27 @@
             }
           }
 
-          /***********************************/
-          label {
-            float: left;
-
-            .vdatetime {
-              float: left !important;
-
-              .vdatetime-input {
-                height: 23px !important;
-                width: 150px !important;
-                border-radius: 5px !important;
-                margin-left: 5px !important;
-              }
-            }
-
-            .calendarLogo {
-              float: left;
-              width: 30px;
-              margin-left: 5px;
-              border-radius: 5px;
-              background: #ffffff;
-            }
-          }
-
-          .dot {
-            float: left;
-            color: #ffffff;
-            font-size: 25px;
-            padding: 4px;
-          }
-
-          /***********************************/
-
           .periodType {
-            color: #FFFFFF;
-            line-height: 1.8;
+            float: left;
             height: 30px;
             width: 100px;
-            margin-left: 5px;
+            color: #FFFFFF;
+            line-height: 1.8;
+            margin-left: 10px;
             text-align: center;
             background-image: url("../../assets/images/layout/button.png");
           }
 
           .selectPeriodArea {
-            margin-left: 5px;
+            float: left;
+            margin-left: 10px;
 
             .selectPeriodData {
-              height: 25px;
+              height: 30px;
+              width: 80px;
+              font-weight: bold;
+              text-align: center;
+              font-family: "NanumSquare", sans-serif;
 
             }
           }
@@ -174,6 +147,10 @@
               background-image: url("../../assets/images/layout/new_Box_Img.png");
 
             }
+          }
+
+          .toggled {
+            background-image: url("../../assets/images/layout/new_Box_Img.png") !important;
           }
         }
       }

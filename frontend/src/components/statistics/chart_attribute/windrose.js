@@ -1,5 +1,5 @@
 export const windRose = {
-  data : [{
+  data: [{
     r: [77.5, 72.5, 70.0, 45.0, 22.5, 42.5, 40.0, 62.5],
     theta: ["North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W"],
     name: "11-14 m/s",
@@ -24,15 +24,31 @@ export const windRose = {
     marker: {color: "rgb(242,240,247)"},
     type: "barpolar"
   }],
-  layout : {
-    autosize:true,
-    height:370,
-    width:476,
-    title: "",
+  layout: {
+    autosize: true,
+    height: 370,
+    width: 476,
     paper_bgcolor: 'transparent',
-    showlegend: false,
-    font: {size: 16},
-    legend: {font: {size: 16}},
+    showlegend: true,
+    font: {
+      color: '#fff',
+      size: 16
+    },
+    title:  {
+      text: "방사형 빈도수 풍배도",
+      font: {
+        size: 16,
+        color: "#fff",
+        family: "NanumSquare",
+      }
+    },
+    legend: {
+      font: {
+        size: 16,
+        color: '#fff',
+        family: "NanumSquare"
+      }
+    },
     polar: {
       barmode: "overlay",
       bargap: 0,

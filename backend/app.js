@@ -10,6 +10,7 @@ var session = require('express-session');
 
 var userRouter = require('./routers/users');
 var authRouter = require('./routers/auth');
+var staticRouter = require('./routers/static');
 
 //소켓 서버 생성
 var socketServer = require('./modules/socketServer')
@@ -59,6 +60,8 @@ app.use(bodyParser.urlencoded({
 app.use('/user', userRouter);
 /*인증 처리 컨트롤러*/
 app.use('/auth',authRouter);
+/*통계 자료 컨트롤러*/
+app.use('/static',staticRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
