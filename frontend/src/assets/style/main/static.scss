@@ -84,7 +84,7 @@
           .mdrp-root {
             float: left;
 
-             .mdrp__activator {
+            .mdrp__activator {
 
               .activator-wrapper {
 
@@ -159,9 +159,21 @@
         height: 60%;
         overflow: auto;
 
-        .ContentsBodyGraph {
+        #datatable_filter {
 
-          .commonTable {
+          label {
+
+            input {
+              background: #fff;
+            }
+          }
+        }
+
+        .ContentsBodyGraph {
+          font-family: "NanumSquare", sans-serif !important;
+
+          #datatable {
+            text-align: center;
 
             thead {
 
@@ -186,7 +198,7 @@
                   color: #ffffff;
                   text-align: center;
                   padding: 3px;
-                  font-size: 20px;
+                  font-size: 18px;
                 }
               }
             }
@@ -195,18 +207,30 @@
               background-image: linear-gradient(to top, #1b2d38 41%, #121413);
               background-attachment: fixed;
               background-repeat: no-repeat;
+              color: #FFFFFF;
+              font-size: 14px;
 
-              tr {
-                .odd {
-                  background: transparent;
-                  font-size: 18px;
-                }
-
-                .even {
-                  background: rgba(255, 255, 255, 0.1) !important;
-                  font-size: 18px;
-                }
+              .odd {
+                background: transparent;
               }
+
+              .even {
+                background: rgba(255, 255, 255, 0.1);
+              }
+            }
+          }
+
+          .dataTables_info {
+            font-size: 15px;
+            color: #FFFFFF;
+          }
+
+          #datatable_paginate {
+            font-size: 15px;
+
+            a {
+              color: #000000 !important;
+
             }
           }
         }

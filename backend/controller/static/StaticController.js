@@ -6,6 +6,10 @@ const dbConnect = mariaDB.createConnection(db.mariaConfig);
 
 const staticCon = {
     getData: (req, res) => {
+        res.json({
+            success: true,
+            message: '테이블 호출'
+        })
         console.log("req: ",req.query)
     }
 }

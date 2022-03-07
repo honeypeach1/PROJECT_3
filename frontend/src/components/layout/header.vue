@@ -44,7 +44,7 @@
         <div class="header_user_control_area" v-if="info_show">
           <div class="common_user_div" id="user_name_area">
             <img class="user_info" src="../../assets/images/svg/User.svg"/>
-            <p>님</p>
+            <p>{{this.user_cookie}}님</p>
           </div>
           <div class="admin_user_div click" @click="isUserView=true" id="user_authority_area">
             <userModalView v-if="isUserView" @close-modal="isUserView=false">
@@ -102,8 +102,12 @@ export default {
       alert_show: false,
       isMapView: false,
       isSettingView: false,
-      isUserView: false
+      isUserView: false,
+      user_cookie: this.user_cookie
     }
+  },
+  mounted() {
+    console.log("쿠키 확인 : ",decodeURIComponent(document.cookie))
   },
   methods: {
     toggle_event: function () {

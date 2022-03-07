@@ -38,7 +38,8 @@
           </div>
           <div class="sort_back_area">
             <button class="alarmButton" :class="{toggled: isAlarm}" @click="goSelectData">
-              {{isAlarm ? '데이터조회':'알람조회'}}</button>
+              {{ isAlarm ? '데이터조회' : '알람조회' }}
+            </button>
           </div>
         </div>
 
@@ -69,10 +70,8 @@
                 <th class="badClass subTitle">상태</th>
               </tr>
               </thead>
-              <tbody>
-              </tbody>
             </table>
-<!--            <datatable :columns="datatable.data.columns" :data="datatable.data.rows"></datatable>-->
+            <!--            <datatable :columns="datatable.data.columns" :data="datatable.data.rows"></datatable>-->
           </div>
         </div>
 
@@ -85,8 +84,8 @@
       <div id="staticRightArea">
         <div id="dataControlArea">
           <div id="dataDown">
-            <img class="excelLogo" src="../../assets/images/layout/excelDown.png"/>
-            <img class="emptyLogo" src="../../assets/images/layout/Down_box.png"/>
+            <img class="excelLogo" @click="excelDown" src="../../assets/images/layout/excelDown.png"/>
+            <img class="emptyLogo" @click="printDown" src="../../assets/images/layout/Down_box.png"/>
             <img class="emptyLogo" src="../../assets/images/layout/Down_box.png"/>
           </div>
         </div>
@@ -316,9 +315,17 @@ import Vue from 'vue';
 import axios from "axios";
 import dotenv from 'dotenv';
 import Datatable from "datatables.net";
+import "datatables.net-dt/js/dataTables.dataTables.min"
+import "datatables.net-dt/css/jquery.dataTables.css"
+import "datatables.net-buttons/js/dataTables.buttons.min"
+import "datatables.net-buttons/js/buttons.colVis.min"
+import "datatables.net-buttons/js/buttons.flash.min"
+import "datatables.net-buttons/js/buttons.html5.min"
+import "datatables.net-buttons/js/buttons.print.min"
+import "jszip/dist/jszip.min"
 
 import VMdDateRangePicker from "v-md-date-range-picker";
-import "v-md-date-range-picker/dist/v-md-date-range-picker.css";
+
 Vue.use(VMdDateRangePicker);
 
 /*API 키*/
@@ -352,7 +359,7 @@ export default {
       end_date: '',
       lineChart: getLineChart,
       windRose: getWindRose,
-      datatable: getDataTable,
+      datatable: getDataTable
     }
   },
   mounted() {
@@ -369,6 +376,12 @@ export default {
     this.initPlotlyChart();
   },
   methods: {
+    excelDown() {
+      $(".buttons-excel").click();
+    },
+    printDown(){
+      $(".buttons-print").click();
+    },
     initStaticMap() {
       const container = document.getElementById("staticMap");
       const options = {
@@ -382,7 +395,46 @@ export default {
         datatableValue.clear();
         datatableValue.destroy();
       }
-      datatableValue = $('#datatable').DataTable(this.datatable.data);
+      datatableValue = $('#datatable').DataTable({
+        dom: 'Bfrtip',
+        pageLength: 10,
+        order: [[1, 'asc']],
+        lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        buttons: [
+          {
+            extend: 'excel'
+            , text: '엑셀출력'
+            // ,filename: '엑셀파일명'
+            // ,title: '엑셀파일 안에 쓰일 제목'
+          },
+          {
+            extend: 'csv'
+            , text: 'csv출력'
+            // ,filename: 'utf-8이라서 ms엑셀로 바로 열면 글자 깨짐'
+          },
+          {
+            extend: 'print'
+            , text: '인쇄'
+            // ,title: '클립보드 복사 내용'
+          },
+        ],
+        data: this.datatable.data.rows,
+        columns: [
+          {data: 'DataDateTime'},
+          {data: 'TOD'},
+          {data: 'todValue'},
+          {data: 'H2S'},
+          {data: 'NH3'},
+          {data: 'VOC'},
+          {data: 'MOS'},
+          {data: 'OWD'},
+          {data: 'OWS'},
+          {data: 'OTT'},
+          {data: 'OTH'},
+          {data: 'ATM'}
+        ]
+      });
+      $(".dt-buttons").hide();
     },
     initPlotlyChart() {
       Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout);
@@ -409,7 +461,7 @@ export default {
       this.values = values;
       //axios 데이터 셀렉 호출
       this.getData();
-      },
+    },
     goSelectData() {
       this.isAlarm = !this.isAlarm
       this.getData();
@@ -438,8 +490,6 @@ export default {
          3.5 상단 헤더에서의 특정 알람을 클릭
     */
     getData() {
-      //데이터 테이블 그리기
-      this.initDataTable();
       axios({
         url: "/static/getData",
         method: "get",
@@ -455,6 +505,8 @@ export default {
           /*
             데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
           */
+          //데이터 테이블 그리기
+          this.initDataTable();
         } else {
           alert(res.data.message);
         }

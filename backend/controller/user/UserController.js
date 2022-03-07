@@ -46,7 +46,7 @@ const userCon = {
                             req.session.user_cookie = data.MEMBER_ID;
                             res.cookie('user_cookie', data, {
                                 expires: expiryDate,
-                                httpOnly: true
+                                // httpOnly: true
                             })
 
                             res.json({
