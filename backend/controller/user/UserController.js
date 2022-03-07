@@ -48,6 +48,7 @@ const userCon = {
                                 expires: expiryDate,
                                 httpOnly: true
                             })
+                            //res.isAuthenticated(data)
 
                             res.json({
                                 success: true,
