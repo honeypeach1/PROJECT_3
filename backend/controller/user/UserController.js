@@ -37,16 +37,16 @@ const userCon = {
                     return 암호값
                 */
                 const decryption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
-                dbConnect.query('SELECT MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
+                dbConnect.query('SELECT MEMBER_SEQ, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
                     [req.body.login_id, decryption.salt], function (err, data) {
                         if (err) throw err;
                         //암호가 일치하는 유저가 있음.
                         if (data.length > 0) {
 
-                            req.session.user_cookie = data.MEMBER_ID;
+                            req.session.user_cookie = data.MEMBER_SEQ;
                             res.cookie('user_cookie', data, {
                                 expires: expiryDate,
-                                // httpOnly: true
+                                httpOnly: true
                             })
 
                             res.json({

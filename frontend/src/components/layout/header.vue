@@ -106,9 +106,6 @@ export default {
       user_cookie: this.user_cookie
     }
   },
-  mounted() {
-    console.log("쿠키 확인 : ",decodeURIComponent(document.cookie))
-  },
   methods: {
     toggle_event: function () {
       this.info_show = !this.info_show
