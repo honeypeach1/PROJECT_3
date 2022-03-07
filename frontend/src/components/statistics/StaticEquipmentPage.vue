@@ -134,43 +134,43 @@
                 <td class="windDirect_2">북북동</td>
                 <td></td>
                 <td></td>
+                <td>3</td>
                 <td></td>
+                <td>2</td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>1</td>
                 <td></td>
               </tr>
               <tr class="odd_row">
                 <td class="windDirect_3">북동</td>
+                <td>5</td>
                 <td></td>
                 <td></td>
+                <td>3</td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>2</td>
                 <td></td>
               </tr>
               <tr class="even_row">
                 <td class="windDirect_4">동북동</td>
                 <td></td>
+                <td>1</td>
                 <td></td>
+                <td>2</td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>3</td>
                 <td></td>
                 <td></td>
               </tr>
               <tr class="odd_row">
                 <td class="windDirect_5">동</td>
+                <td>4</td>
                 <td></td>
                 <td></td>
+                <td>5</td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>15</td>
                 <td></td>
                 <td></td>
               </tr>
@@ -180,9 +180,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>4</td>
+                <td>32</td>
+                <td>2</td>
                 <td></td>
               </tr>
               <tr class="odd_row">
@@ -192,8 +192,8 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
+                <td>3</td>
+                <td>5</td>
                 <td></td>
               </tr>
               <tr class="even_row">
@@ -400,6 +400,9 @@ export default {
         pageLength: 10,
         order: [[1, 'asc']],
         lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        language: {
+          "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Korean.json"
+        },
         buttons: [
           {
             extend: 'excel'

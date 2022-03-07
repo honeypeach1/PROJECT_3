@@ -26,7 +26,7 @@ export const windRose = {
   }],
   layout: {
     autosize: true,
-    height: 370,
+    height: 376,
     width: 476,
     paper_bgcolor: 'transparent',
     showlegend: true,
