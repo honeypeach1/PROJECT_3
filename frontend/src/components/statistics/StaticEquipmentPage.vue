@@ -309,20 +309,21 @@ import MainHeader from "../layout/header";
 import getLineChart from './chart_attribute/lineChart'
 import getWindRose from "./chart_attribute/windrose";
 import getDataTable from './chart_attribute/datatable';
-import $ from 'jquery';
 
 import Vue from 'vue';
 import axios from "axios";
 import dotenv from 'dotenv';
-import Datatable from "datatables.net";
-import "datatables.net-dt/js/dataTables.dataTables.min"
-import "datatables.net-dt/css/jquery.dataTables.css"
-import "datatables.net-buttons/js/dataTables.buttons.min"
-import "datatables.net-buttons/js/buttons.colVis.min"
-import "datatables.net-buttons/js/buttons.flash.min"
-import "datatables.net-buttons/js/buttons.html5.min"
-import "datatables.net-buttons/js/buttons.print.min"
+import Datatable from "datatables.net"
 import "jszip/dist/jszip.min"
+import "jquery/dist/jquery.min"
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-dt/css/jquery.dataTables.css"
+import "datatables.net-buttons/js/dataTables.buttons"
+import "datatables.net-buttons/js/buttons.colVis"
+import "datatables.net-buttons/js/buttons.flash"
+import "datatables.net-buttons/js/buttons.print"
+import "datatables.net-buttons/js/buttons.html5"
+import $ from 'jquery';
 
 import VMdDateRangePicker from "v-md-date-range-picker";
 
@@ -399,7 +400,6 @@ export default {
         dom: 'Bfrtip',
         pageLength: 10,
         order: [[1, 'asc']],
-        lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
         language: {
           "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Korean.json"
         },

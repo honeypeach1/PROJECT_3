@@ -2,6 +2,7 @@
 <div class="modal">
   <div class="overlay" @click="$emit('close-modal')"></div>
   <div class="modal-card">
+    회원 관리
     <slot/>
   </div>
 </div>

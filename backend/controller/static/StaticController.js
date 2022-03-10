@@ -6,15 +6,13 @@ const dbConnect = mariaDB.createConnection(db.mariaConfig);
 
 const staticCon = {
     getData: (req, res) => {
+
         res.json({
             success: true,
-            message: '테이블 호출'
+            message: '일치하는 알람 데이터 조회에 성공하였습니다.'
         })
-        console.log("req: ", req.query)
-
-
         //Select View Alarm Data.
-        if (req.query.isAlarm == true) {
+        /*if (req.query.isAlarm == true) {
             //Get Alarm table into Parameter
             dbConnect.query('', req.query, function (err, data) {
                 if (err) throw err;
@@ -56,7 +54,7 @@ const staticCon = {
                 }
             })
 
-        }
+        }*/
 
     }
 }

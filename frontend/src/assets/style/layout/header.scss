@@ -135,8 +135,12 @@
           cursor: pointer;
         }
 
+        .modal {
+          z-index: 100;
+        }
+
         div {
-          border-bottom: 1px solid #666666;
+          //border-bottom: 1px solid #666666;
           margin-top: 7px;
           height: 28px;
           margin-bottom: 5px;
