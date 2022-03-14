@@ -1,40 +1,42 @@
 <template>
   <div class="modal">
-    <div class="overlay" @click="$emit('close-modal')"></div>
-    <div class="modal-card">
-      맵 설정
-      <slot/>
+    <div class="overlay" @click="$emit('map-close')"></div>
+    <div class="map-modal-card">
+      <div class="map-headerTab">맵 좌표 설정</div>
+      <div class="map-tab-content">
+        <div class="map-tab-panel">
+          <table class="map-modal-table">
+            <thead>
+              <tr>
+                <td>장비명</td>
+                <td>좌표설정</td>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="map-tab-init">
+        <div class="init-left-area">초기 맵 좌표 설정</div>
+        <div class="init-right-area">
+          <input class="init-map-button" type="button" value="좌표설정">
+        </div>
+      </div>
+      <div class="map-tab-bottom">
+        <button class="map-tab-close" @click="$emit('map-close')">닫기</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data: function () {
+    return {}
+  }
+}
 </script>
 
-<style lang="scss" scoped>
-.modal,
-.overlay {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-}
-
-.overlay {
-  opacity: 0.5;
-  background-color: #000000;
-}
-
-.modal-card {
-  opacity: 1;
-  z-index: 30;
-  padding: 20px;
-  max-width: 80%;
-  min-height: 500px;
-  position: relative;
-  margin: 30px auto auto;
-  background-color: #ffffff;
-}
+<style lang="scss">
+@import "../../assets/style/popup/mapModal";
 </style>

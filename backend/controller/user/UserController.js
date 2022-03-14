@@ -42,16 +42,24 @@ const userCon = {
                         if (err) throw err;
                         //암호가 일치하는 유저가 있음.
                         if (data.length > 0) {
+                            var dataList = [];
+                            for (var value of data){
+                                dataList.push(value.MEMBER_NAME);
+                            };
 
-                            req.session.user_cookie = data.MEMBER_SEQ;
+                            //해당 파트 확인 요망
+                            req.session.user_cookie = dataList;
+                            //쿠키 설정
                             res.cookie('user_cookie', data, {
                                 expires: expiryDate,
-                                httpOnly: true
+                                path: '/static',
+                                httpOnly: true, //http 통신
+                                //secure: true //https 통신
                             })
                             //res.isAuthenticated(data)
-
                             res.json({
                                 success: true,
+                                user_name: dataList,
                                 message: '로그인에 성공하였습니다.'
                             })
 

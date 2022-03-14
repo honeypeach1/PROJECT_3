@@ -44,29 +44,29 @@
         <div class="header_user_control_area" v-if="info_show">
           <div class="common_user_div" id="user_name_area">
             <img class="user_info" src="../../assets/images/svg/User.svg"/>
-            <p>{{this.user_cookie}}님</p>
+            <p>{{this.user_name}}님</p>
           </div>
 
+          <userModalView v-if="isUserView" @user-close="isUserView=false">
+            <Content />
+          </userModalView>
           <div class="admin_user_div click" @click="isUserView=true" id="user_authority_area">
-            <userModalView v-if="isUserView" @close-modal="isUserView=false">
-              <Content />
-            </userModalView>
             <img class="user_setting" src="../../assets/images/svg/User_Control.svg"/>
             <p>회원관리</p>
           </div>
 
+          <settingModalView v-if="isSettingView" @setting-close="isSettingView=false">
+            <Content />
+          </settingModalView>
           <div class="admin_user_div click" @click="isSettingView=true" id="equipment_setting_area">
-            <settingModalView v-if="isSettingView" @close-modal="isSettingView=false">
-              <Content />
-            </settingModalView>
             <img class="admin_setting" src="../../assets/images/svg/setting.svg"/>
             <p>설정관리</p>
           </div>
 
+          <mapModalView v-if="isMapView" @map-close="isMapView=false">
+            <Content />
+          </mapModalView>
           <div class="admin_user_div click" @click="isMapView=true" id="map_setting_area">
-            <mapModalView v-if="isMapView" @close-modal="isMapView=false">
-              <Content />
-            </mapModalView>
             <img class="map_setting" src="../../assets/images/svg/Map_Setting.svg"/>
             <p>맵 설 정</p>
           </div>
@@ -94,7 +94,11 @@ import userModalView from '../../components/popup/userModalPopup'
 
 export default {
   name: 'main-header',
-  props: ["currentTab"],
+  props: [
+    "currentTab",
+    "user_name"
+
+],
   components: {
     mapModalView,
     settingModalView,
@@ -109,6 +113,9 @@ export default {
       isUserView: false,
       user_cookie: this.user_cookie
     }
+  },
+  mounted() {
+    console.log('유저 정보 확인 : ',this.user_cookie);
   },
   methods: {
     toggle_event: function () {

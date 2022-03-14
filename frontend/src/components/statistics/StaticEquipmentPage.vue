@@ -342,6 +342,7 @@ export default {
     return {
       map: null,
       currentTab: 1,
+      user_name: this.user_name,
       selectOptions: {
         'AMS-1000': [
           {text: 'BBQ치킨', value: 1},
@@ -365,6 +366,7 @@ export default {
   },
   mounted() {
     this.$emit('currentTab', 1)
+    this.$emit('user_name',this.user_name)
     if (window.kakao && window.kakao.maps) {
       this.initStaticMap();
     } else {
@@ -510,6 +512,7 @@ export default {
           */
           //데이터 테이블 그리기
           this.initDataTable();
+          this.user_name = res.data.user_name;
         } else {
           alert(res.data.message);
         }

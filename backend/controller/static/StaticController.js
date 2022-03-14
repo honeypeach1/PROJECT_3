@@ -7,8 +7,10 @@ const dbConnect = mariaDB.createConnection(db.mariaConfig);
 const staticCon = {
     getData: (req, res) => {
 
+        let user_name = req.session.user_cookie;
         res.json({
             success: true,
+            user_name: user_name,
             message: '일치하는 알람 데이터 조회에 성공하였습니다.'
         })
         //Select View Alarm Data.

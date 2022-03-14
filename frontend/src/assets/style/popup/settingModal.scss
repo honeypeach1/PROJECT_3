@@ -1,0 +1,209 @@
+.modal,
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.overlay {
+  opacity: 0.5;
+  background-color: #000000;
+}
+
+.setting-modal-card {
+  opacity: 1;
+  z-index: 30;
+  width: 730px;
+  height: 620px;
+  padding-top: 10px;
+  padding-left: 50px;
+  position: relative;
+  padding-right: 50px;
+  margin: 30px auto auto;
+  background-color: #ffffff;
+  font-family: "NanumSquare", sans-serif;
+
+  .setting-modal-head {
+    height: 90px;
+
+    div {
+      float: left;
+      height: 50px;
+      width: 360px;
+      color: #444444;
+      cursor: pointer;
+      margin: 10px auto;
+      line-height: 50px;
+      text-align: center;
+      background: #f7f7f7;
+      border: 2px solid #efefef;
+    }
+
+    .select {
+      color: #FFFFFF;
+      font-weight: bold;
+      background: linear-gradient(320deg, #1a4361, #001c30);
+    }
+  }
+
+  .standard-setting-area {
+    height: 460px;
+    overflow-y: auto;
+
+    div {
+      height: 65px;
+
+      .standard-select-name {
+        width: 150px;
+        float: left;
+        height: 100%;
+        line-height: 50px;
+        text-align: center;
+      }
+
+      select {
+        float: left;
+        width: 250px;
+        height: 40px;
+        margin-top: 4px;
+        font-size: 18px;
+        line-height: 50px;
+        border-radius: 5px;
+        font-family: "NanumSquare", sans-serif;
+      }
+
+    }
+
+    .equipment-setting-table-area {
+
+      .equipment-table {
+        width: 100%;
+        text-align: center;
+
+        thead {
+          height: 40px;
+
+          tr {
+            height: 50px;
+
+            td {
+              width: 33%;
+              color: #FFFFFF;
+              background: #032136;
+              border: 1px solid #e3e3e3;
+
+            }
+          }
+        }
+
+        tbody {
+
+          tr {
+
+            td {
+              border: 1px solid #e3e3e3;
+
+              input {
+                width: 100px;
+                height: 35px;
+                font-size: 17px;
+                border-radius: 5px;
+                text-align: center;
+                border-color: #099999;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .equipment-setting-area {
+    height: 460px;
+    overflow-y: auto;
+
+    .equipment-name-table {
+      width: 100%;
+
+      thead {
+        height: 40px;
+
+        tr {
+          color: #FFFFFF;
+          background: #032136;
+          text-align: center;
+
+          td {
+            width: 50%;
+            border: 1px solid #e3e3e3;
+
+          }
+
+        }
+      }
+
+      tbody {
+
+        tr {
+          font-size: 17px;
+          text-align: center;
+
+          td {
+            border: 1px solid #e3e3e3;
+
+            input {
+              width: 200px;
+              height: 35px;
+              font-size: 17px;
+              font-weight: bold;
+              border-radius: 5px;
+              text-align: center;
+              border-color: #099999;
+              font-family: "NanumSquare", sans-serif;
+            }
+
+            button {
+              width: 150px;
+              height: 35px;
+              color: #f7f7f7;
+              font-size: 18px;
+              cursor: pointer;
+              font-weight: bold;
+              margin-left: 10px;
+              border-radius: 5px;
+              background: #187c7c;
+              font-family: "NanumSquare", sans-serif;
+
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .bottom-button-area {
+    height: 50px;
+    text-align: center;
+
+    button {
+      width: 80px;
+      height: 50px;
+      color: #FFFFFF;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 3px;
+      background: #032136;
+      border: 1px solid #c9c9c9;
+
+    }
+
+    .close {
+      color: #000000;
+      background: #f4f4f4;
+    }
+  }
+
+}
