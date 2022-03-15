@@ -32,7 +32,7 @@
       float: left;
       height: 50px;
       width: 360px;
-      color: #444444;
+      color: #666666;
       cursor: pointer;
       margin: 10px auto;
       line-height: 50px;
@@ -123,6 +123,7 @@
   .equipment-setting-area {
     height: 460px;
     overflow-y: auto;
+    margin-bottom: 10px;
 
     .equipment-name-table {
       width: 100%;

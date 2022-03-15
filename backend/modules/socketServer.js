@@ -2,6 +2,14 @@
 var net = require('net')
 let remoteData = "";
 
+/*서버 실행 시간*/
+function timestamp() {
+    var today = new Date();
+    today.setHours(today.getHours() + 9);
+    console.log('서버 실행 시간 : '+today.toISOString().replace('T', ' ').substring(0, 19));
+    return today.toISOString().replace('T', ' ').substring(0, 19);
+}
+
 exports.socketServer = net.createServer(function (socket){
     console.log("socket server created.")
 
@@ -11,9 +19,11 @@ exports.socketServer = net.createServer(function (socket){
     //Check for Client Socket Information.
     console.log("Client IP : " + remoteIp + ", Client Port : " + remotePort)
 
+    timestamp()
 
     /*
         서버 to 장비 tcp/ip 소켓 통신 설명
+
         tcp/ip 서버는 하나의 포트를 가지고 상시 listen상태로 구성한다.
         해당 서버로 통신하기 위한 장비는 연결하기 위한 tcp/ip 서버 아이피와 포트로 연결 요청한다.
         상시 오픈 상태의 tcp/ip서버는 연결받기 위한 장비로 부터 연결이 되고,

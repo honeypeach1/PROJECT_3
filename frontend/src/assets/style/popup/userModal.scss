@@ -16,7 +16,7 @@
   opacity: 1;
   z-index: 30;
   width: 1000px;
-  height: 620px;
+  height: 650px;
   padding-top: 10px;
   padding-left: 50px;
   position: relative;
@@ -27,24 +27,30 @@
 
   .user-top-area {
     padding: 20px;
-    color: #f4f4f4;
+    color: #666666;
     font-size: 25px;
     text-align: center;
-    border: 1px solid #c9c9c9;
-    background: linear-gradient(320deg, #1a4361, #001c30);
-
+    background: #f7f7f7;
+    border: 2px solid #efefef;
   }
 
   .user-center-area {
     height: 500px;
+    margin: 10px;
     overflow-y: auto;
     text-align: center;
 
     .user-table {
+      width: 100%;
+      margin-top: 10px;
 
       thead {
+        color: #FFFFFF;
+        border: 1px solid #c9c9c9;
+        background: linear-gradient(320deg, #1a4361, #001c30);
 
         tr {
+          height: 40px;
 
           td {
 
@@ -55,9 +61,25 @@
       tbody {
 
         tr {
+          border: 2px solid #e3e3e3;
 
           td {
+            height: 30px;
+            border: 2px solid #e3e3e3;
 
+            input {
+              width: 80px;
+            }
+
+            button {
+              color: #f7f7f7;
+              cursor: pointer;
+              font-weight: bold;
+              border-radius: 5px;
+              background: #187c7c;
+              font-family: "NanumSquare", sans-serif;
+
+            }
           }
         }
       }

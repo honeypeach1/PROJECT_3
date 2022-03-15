@@ -10,50 +10,54 @@
       <div class="user-center-area">
         <table class="user-table">
           <thead>
-            <tr>
-              <td>아이디</td>
-              <td>이름</td>
-              <td>비밀번호</td>
-              <td>전화번호</td>
-              <td>장비 할당</td>
-              <td>가입일</td>
-              <td>계정 활성화</td>
-              <td>설정</td>
-            </tr>
+          <tr>
+            <td>아이디</td>
+            <td>이름</td>
+            <td>비밀번호</td>
+            <td>전화번호</td>
+            <td>장비 할당</td>
+            <td>가입일</td>
+            <td>계정 활성화</td>
+            <td>설정</td>
+            <td>삭제</td>
+          </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>admin</td>
-              <td>
-                <input type="text" placeholder="jamey">
-              </td>
-              <td>
-                <input type="text"placeholder="변경하기">
-                <button>초기화</button>
-              </td>
-              <td>
-                <input type="text" placeholder="01026611538">
-              </td>
-              <td>
-                <select>
-                  <option value="0">모든장비</option>
-                  <option value="1">지코바</option>
-                  <option value="2">KFC</option>
-                  <option value="3">피자나라치킨공주</option>
-                  <option value="4">BHC</option>
-                </select>
-              </td>
-              <td>
-                2022.03.05
-              </td>
-              <td>
-                <button>활성화</button>
-              </td>
-              <td>
-                <button>변경</button>
-                <button>초기화</button>
-              </td>
-            </tr>
+          <tr>
+            <td>admin</td>
+            <td>
+              <input type="text" placeholder="jamey">
+            </td>
+            <td>
+              <input type="text" placeholder="변경하기">
+              <button>초기화</button>
+            </td>
+            <td>
+              <input type="text" placeholder="01026611538">
+            </td>
+            <td>
+              <select>
+                <option value="0">모든장비</option>
+                <option value="1">지코바</option>
+                <option value="2">KFC</option>
+                <option value="3">피자나라치킨공주</option>
+                <option value="4">BHC</option>
+              </select>
+            </td>
+            <td>
+              2022.03.05
+            </td>
+            <td>
+              <button>활성화</button>
+            </td>
+            <td>
+              <button>변경</button>
+              <button>초기화</button>
+            </td>
+            <td>
+              <button>삭제</button>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
