@@ -12,12 +12,17 @@ var userRouter = require('./routers/users');
 var authRouter = require('./routers/auth');
 var staticRouter = require('./routers/static');
 
+/*서버 실행 시간*/
+var serverStart = new Date();
+serverStart.setHours(serverStart.getHours() + 9);
+const serverStartTime = serverStart.toISOString().replace('T', ' ').substring(0, 19);
+global.serverStartTime = serverStartTime;
+
 //소켓 서버 생성
-var socketServer = require('./modules/socketServer')
+var socketServer = require('./modules/socketServer');
 socketServer.socketServer.listen(9000);
 
 var app = express();
-
 app.use(require('connect-history-api-fallback')());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

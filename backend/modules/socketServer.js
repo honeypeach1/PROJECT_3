@@ -1,16 +1,20 @@
 //장비, 웹 서버간 통신 소켓 서버 구축
 var net = require('net')
+
+const {Logger, Value} = require("sass");
+const socketDB = require("./socketInsert");
+const {request} = require("express");
 let remoteData = "";
 
 /*서버 실행 시간*/
 function timestamp() {
     var today = new Date();
     today.setHours(today.getHours() + 9);
-    console.log('서버 실행 시간 : '+today.toISOString().replace('T', ' ').substring(0, 19));
+    console.log('소켓 데이터 받은 시간 : ' + today.toISOString().replace('T', ' ').substring(0, 19));
     return today.toISOString().replace('T', ' ').substring(0, 19);
 }
 
-exports.socketServer = net.createServer(function (socket){
+exports.socketServer = net.createServer(function (socket) {
     console.log("socket server created.")
 
     //Received client address information.
@@ -18,9 +22,7 @@ exports.socketServer = net.createServer(function (socket){
     const remotePort = socket.remotePort;
     //Check for Client Socket Information.
     console.log("Client IP : " + remoteIp + ", Client Port : " + remotePort)
-
-    timestamp()
-
+    console.log("Express Server Booting Time : ", serverStartTime)
     /*
         서버 to 장비 tcp/ip 소켓 통신 설명
 
@@ -42,15 +44,15 @@ exports.socketServer = net.createServer(function (socket){
     //받은 원격 명령 할당(로컬화)
     //remoteData = "";
     //소켓 통신전 원격 명령을 받았다면, 전역 변수를 가져와서 null여부를 체크한다.
-    if(remoteData != ""){
+    if (remoteData != "") {
         socket.write(remoteData);
-    }else{
+    } else {
         socket.write(returnData);
     }
 
     let buffer = new Uint8Array([]);
 
-    socket.on('data',async function (chunk){
+    socket.on('data', async function (chunk) {
         buffer = Uint8Array.from([...buffer, ...chunk])
         buffer = new Uint8Array(buffer)
         buffer = Buffer.from(buffer);
@@ -63,20 +65,74 @@ exports.socketServer = net.createServer(function (socket){
             return null;
         }
     })
-    socket.on('end',function (){
+    socket.on('end', function () {
         console.log('Socket Server ended.')
     })
-    socket.on('listening',function (){
+    socket.on('listening', function () {
         console.log("Socket Server is listening.")
     })
-    socket.on('close',function (){
-        console.log("Socket Server closed.\n")
-        //(, 탭) 제거
-        let rawArray = buffer.toString().split((/,|\t/));
-        //null 제거
-        let fullArray = rawArray.filter(Boolean);
+    socket.on('close', function () {
         //로컬 변수 remoteData 초기화
         remoteData = "";
+
+        /*      받은 데이터 가공  영역       */
+        //(, 탭) 제거
+        let removeTabArray = buffer.toString().split((/,|\t/));
+        //null 제거
+        let removeNullArray = removeTabArray.filter(Boolean);
+        /***********************************************************/
+
+        //TCP/IP RECEIVE 스트링 데이터 중 AND 라는 컬럼 까지, 즉 AND 이전까지만 배열화
+        let makeDataArray = removeNullArray.slice(0, removeNullArray.indexOf('AND'));
+
+        //시간 정보가 없어서 받은 시간 정보도 함께 PUSH
+        //makeDataArray.push("time");
+        //makeDataArray.push(timestamp());
+
+        //추가로 장비 타입 번호도 구별 해야함. -> 즉, 1번은 악취, 2번은 채취, 3번은 분석
+        //makeDataArray.push("제품 타입 번호")
+        //makeDataArray.push(타입 변수)
+        //하지만 현재 테스트용으로 AMS제품군으로만 분류로 할것이기 때문에 별도 처리하지 않음.
+
+        //arr[and 이전까지의 총 배열 갯수 나누기 2][2개 -> 물질 명, 물질 데이터](빈 배열 생성) -> 2차원 배열화  [ 'TOD', '1.35' ],[ 'SS1', '1.00' ],[ 'OTT', '19.55' ],,,,
+        // const arr = Array.from(Array((makeDataArray.length) / 2), () => new Array(2));
+        var socketJson = new Object();
+        for (let i = 0; i < makeDataArray.length; i++) {
+            if (i % 2 == 0) {
+                if (makeDataArray[i] == 'TOD') {
+                    socketJson.sensor_signal_data_tod = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'SS1' || makeDataArray[i] == 'SS2') {
+                    socketJson.sensor_signal_data_mos = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'TH1' || makeDataArray[i] == 'TH2' || makeDataArray[i] == 'TH3') {
+                    socketJson.sensor_signal_data_h2s = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'TN1' || makeDataArray[i] == 'TN2' || makeDataArray[i] == 'TN3') {
+                    socketJson.sensor_signal_data_nh3 = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'TV1' || makeDataArray[i] == 'TV2' || makeDataArray[i] == 'TV3') {
+                    socketJson.sensor_signal_data_voc = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'OTT') {
+                    socketJson.sensor_signal_data_ott = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'OTH') {
+                    socketJson.sensor_signal_data_oth = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'OWD') {
+                    socketJson.sensor_signal_data_owd = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'OWS') {
+                    socketJson.sensor_signal_data_ows = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'ITT') {
+                    socketJson.sensor_signal_data_itt = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'BTV') {
+                    socketJson.sensor_signal_data_btv = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'VSD') {
+                    socketJson.sensor_signal_data_vsd = makeDataArray[i + 1];
+                } else if (makeDataArray[i] == 'PSD') {
+                    socketJson.sensor_signal_data_psd = makeDataArray[i + 1];
+                }
+            }
+            JSON.stringify(socketJson);
+        }
+        //TCP/IP Receive 데이터 저장 쿼리 실행
+        socketDB.socketInsert(socketJson);
+
+        console.log("Socket Server closed.\n")
     })
 })
 
