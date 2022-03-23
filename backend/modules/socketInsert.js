@@ -16,9 +16,14 @@ exports.socketInsert = (socketJson) => {
     *
     * 초기 테스트 버전으로 따로 장비 구분없이 AMS 제품군으로만 INSERT DB 처리
     * */
-    dbConnect.query('INSERT INTO sensor_component set ?',
-        socketJson,
-        function (err,res) {
-            if (err) throw err;
-        })
+    try {
+        dbConnect.query('INSERT INTO sensor_component set ?',
+            socketJson,
+            function (err,res) {
+                if (err) throw err;
+            })
+    }catch (err) {
+        console.log("TCP/IP 데이터 스트링 INSERT Error!",err)
+    }
+
 }

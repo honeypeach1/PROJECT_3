@@ -3,7 +3,9 @@ var net = require('net')
 
 const {Logger, Value} = require("sass");
 const socketDB = require("./socketInsert");
+const inputJson = require("./averageJson");
 const {request} = require("express");
+const {Socket} = require("net");
 let remoteData = "";
 
 /*서버 실행 시간*/
@@ -53,17 +55,13 @@ exports.socketServer = net.createServer(function (socket) {
     let buffer = new Uint8Array([]);
 
     socket.on('data', async function (chunk) {
+        //소켓 서버에서 응답 request 전송전 받는 데이터 리스트를 하나의 로우로 만들기 위한 buff 처리
         buffer = Uint8Array.from([...buffer, ...chunk])
         buffer = new Uint8Array(buffer)
         buffer = Buffer.from(buffer);
 
         //console.log('Client received data : ',chunk.toString())
         //chunk.toString();
-
-        //데이터 처리&데이터베이스화 부분
-        const dataRow = () => {
-            return null;
-        }
     })
     socket.on('end', function () {
         console.log('Socket Server ended.')
@@ -72,31 +70,35 @@ exports.socketServer = net.createServer(function (socket) {
         console.log("Socket Server is listening.")
     })
     socket.on('close', function () {
-        //로컬 변수 remoteData 초기화
+        //로컬 변수 remoteData(원격 명령 처리 변수) 초기화
         remoteData = "";
 
-        /*      받은 데이터 가공  영역       */
+        /*      받은 TCP/IP String 데이터 가공  영역       */
         //(, 탭) 제거
         let removeTabArray = buffer.toString().split((/,|\t/));
         //null 제거
         let removeNullArray = removeTabArray.filter(Boolean);
         /***********************************************************/
 
-        //TCP/IP RECEIVE 스트링 데이터 중 AND 라는 컬럼 까지, 즉 AND 이전까지만 배열화
+        //TCP/IP RECEIVE 스트링 데이터 중 AND 라는 컬럼 까지, 즉 AND 이전까지만 배열화 - 필요에 따라 그 이후로 기준을 정해 처리할 것.
         let makeDataArray = removeNullArray.slice(0, removeNullArray.indexOf('AND'));
-
-        //시간 정보가 없어서 받은 시간 정보도 함께 PUSH
-        //makeDataArray.push("time");
-        //makeDataArray.push(timestamp());
-
+        let averageDataJson = removeNullArray.slice(0, removeNullArray.indexOf('AND'));
+        //시간 정보가 없어서 받은 시간 정보 함께 PUSH
+        //평균값을 계산하기 위한 배열 변수
+        averageDataJson.push("time");
+        averageDataJson.push(timestamp());
         //추가로 장비 타입 번호도 구별 해야함. -> 즉, 1번은 악취, 2번은 채취, 3번은 분석
-        //makeDataArray.push("제품 타입 번호")
-        //makeDataArray.push(타입 변수)
+        const rand_2_5 = Math.floor(Math.random() * 4) + 2;
+        averageDataJson.push("absoluteId")
+        averageDataJson.push(rand_2_5)
         //하지만 현재 테스트용으로 AMS제품군으로만 분류로 할것이기 때문에 별도 처리하지 않음.
+        //평균 값 계산
+        inputJson.inputDataJson(averageDataJson);
 
         //arr[and 이전까지의 총 배열 갯수 나누기 2][2개 -> 물질 명, 물질 데이터](빈 배열 생성) -> 2차원 배열화  [ 'TOD', '1.35' ],[ 'SS1', '1.00' ],[ 'OTT', '19.55' ],,,,
-        // const arr = Array.from(Array((makeDataArray.length) / 2), () => new Array(2));
+        //const arr = Array.from(Array((makeDataArray.length) / 2), () => new Array(2));
         var socketJson = new Object();
+        //악취 센서 또는 기상 데이터는 정해져 있기 떄문에 json 하드코딩 조건문 처리
         for (let i = 0; i < makeDataArray.length; i++) {
             if (i % 2 == 0) {
                 if (makeDataArray[i] == 'TOD') {
@@ -131,7 +133,6 @@ exports.socketServer = net.createServer(function (socket) {
         }
         //TCP/IP Receive 데이터 저장 쿼리 실행
         socketDB.socketInsert(socketJson);
-
         console.log("Socket Server closed.\n")
     })
 })
