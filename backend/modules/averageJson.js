@@ -3,7 +3,7 @@ const fs = require('fs');
 
 exports.inputDataJson = (averageDataJson) => {
     /*
-       1. 먼저 데이터를 json 화 해야한다.
+       1. 데이터를 json로 형태 변환.
          1) 가장 최상위 층(layer) json은 장비 구분으로 정의한다.
          2) 두번째 층(layer) json은 시간으로 정의한다.
          3) 그리도 마지막으로 데이터 정의 부분으로 구현을 해서 총 3계층으로 설게 한다.
@@ -63,14 +63,9 @@ exports.inputDataJson = (averageDataJson) => {
     console.log("누적 데이터 : ", arrayList.length)
 
     //로그파일 생성
-    try {
-        fs.writeFile("../backend/log/log_" + data + ".txt", JSON.stringify(arrayList), function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    } catch (err) {
-        console.log("로그 파일 생성 오류 : ", err);
-    }
-
+    fs.writeFile("../backend/log/log_" + data + ".txt", JSON.stringify(arrayList), function (err) {
+        if (err) {
+            console.log("로그 파일 생성 오류 : ", err);
+        }
+    });
 }
