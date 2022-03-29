@@ -66,14 +66,10 @@ dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 /**/
 /*Store helper*/
-const monitorHelper = createNamespacedHelpers('');
 
 export default {
   components: {
     'main-header': MainHeader,
-  },
-  computed: {
-
   },
   data: function () {
     return {

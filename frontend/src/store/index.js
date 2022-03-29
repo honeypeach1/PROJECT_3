@@ -4,13 +4,13 @@ import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex)
 
-import userStore from "./modules/user/userStore";
-import equipmentStore from "./modules/equipment/equipmentStore";
+import {userStore} from "./modules/user/userStore";
+import {equipmentStore} from "./modules/equipment/equipmentStore";
 
 const store = new Vuex.Store({
   modules: {
-    userStore: userStore,
-    equipmentStore: equipmentStore,
+    userStore,
+    equipmentStore,
   },
   /*
    vuex store의 state에 저장된 값을 웹 브라우저의 localStorage에 저장 및 업데이트를 해줌.

@@ -33,8 +33,7 @@
 
 <script>
 import axios from "axios";
-import {createNamespacedHelpers} from 'vuex';
-const userHelper = createNamespacedHelpers()
+import {mapState, mapActions} from 'vuex';
 
 export default {
   data() {
@@ -44,15 +43,33 @@ export default {
       csrf_token: ""
     };
   },
-  computed: {
-
-  },
   methods: {
-    ckCookie: function () {
-      /*쿠키 세션을 활용하여 도메인 monitoring 메인페이지로 이동 기능*/
-      this.$router.push("/");
+    ...mapActions('userStore',['login']),
+    handleSubmit (e) {
+      this.submitted = true;
+      const {login_id, login_pass} = this;
+      if(login_id && login_pass){
+        this.login({login_id,login_pass})
+      }
     },
-    login: function () {
+   /* login: function () {
+      this.$store.
+      dispatch("login",{
+        login_id: this.login_id,
+        login_pass: this.login_pass,
+        csrf_token: "-"
+      }).
+      then(() => {
+
+          this.$router.push({name:"MonitoringPage"});
+
+      }).catch((error) => {
+        console.log(error)
+      }).finally((error) => {
+        console.log(error)
+      })
+    },*/
+   /* login: function () {
         axios({
           url: "/user/loginCheck",
           method: "POST",
@@ -72,7 +89,7 @@ export default {
         }).finally((error) => {
           console.log(error)
         })
-    },
+    },*/
     register: function () {
       this.$router.push("/signup");
     },

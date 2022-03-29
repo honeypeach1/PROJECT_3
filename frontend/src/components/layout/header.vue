@@ -95,8 +95,7 @@ import userModalView from '../../components/popup/userModalPopup'
 export default {
   name: 'main-header',
   props: [
-    "currentTab",
-    "user_info"
+    "currentTab"
   ],
   components: {
     mapModalView,
@@ -112,9 +111,6 @@ export default {
       isUserView: false,
     }
   },
-  mounted() {
-    console.log("유저 인포 : ",this.$route.params)
-    },
   methods: {
     toggle_event: function () {
       this.info_show = !this.info_show
