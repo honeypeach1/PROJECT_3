@@ -44,11 +44,11 @@
         <div class="header_user_control_area" v-if="info_show">
           <div class="common_user_div" id="user_name_area">
             <img class="user_info" src="../../assets/images/svg/User.svg"/>
-            <p>{{this.user_name}}님</p>
+            <p>{{user_info}}님</p>
           </div>
 
           <userModalView v-if="isUserView" @user-close="isUserView=false">
-            <Content />
+            <Content/>
           </userModalView>
           <div class="admin_user_div click" @click="isUserView=true" id="user_authority_area">
             <img class="user_setting" src="../../assets/images/svg/User_Control.svg"/>
@@ -56,7 +56,7 @@
           </div>
 
           <settingModalView v-if="isSettingView" @setting-close="isSettingView=false">
-            <Content />
+            <Content/>
           </settingModalView>
           <div class="admin_user_div click" @click="isSettingView=true" id="equipment_setting_area">
             <img class="admin_setting" src="../../assets/images/svg/setting.svg"/>
@@ -64,7 +64,7 @@
           </div>
 
           <mapModalView v-if="isMapView" @map-close="isMapView=false">
-            <Content />
+            <Content/>
           </mapModalView>
           <div class="admin_user_div click" @click="isMapView=true" id="map_setting_area">
             <img class="map_setting" src="../../assets/images/svg/Map_Setting.svg"/>
@@ -96,9 +96,8 @@ export default {
   name: 'main-header',
   props: [
     "currentTab",
-    "user_name"
-
-],
+    "user_info"
+  ],
   components: {
     mapModalView,
     settingModalView,
@@ -111,29 +110,62 @@ export default {
       isMapView: false,
       isSettingView: false,
       isUserView: false,
-      user_cookie: this.user_cookie
     }
   },
   mounted() {
-    console.log('유저 정보 확인 : ',this.user_cookie);
-  },
+    console.log("유저 인포 : ",this.$route.params)
+    },
   methods: {
     toggle_event: function () {
       this.info_show = !this.info_show
     },
-    toggle_alert_event : function () {
+    toggle_alert_event: function () {
       this.alert_show = !this.alert_show
     },
-    monitoring: () => {
-      router.push('/monitoring').catch(() => {
-        //동일 페이지 접근시 새로고침 처리
-        router.go();
-      });
+    monitoring() {
+      axios({
+        url: "/monitoring/getMonitorData",
+        method: "get",
+      }).then((res) => {
+        if (res.data.success == true) {
+          /*
+            데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
+          */
+          this.user_info = res.data.user_info;
+          //동일 페이지 접근시 catch 처리
+          this.$router.push("/monitoring").catch(() => {
+            router.go();
+          });
+        } else {
+          this.$router.push("/");
+        }
+      }).catch((error) => {
+        console.log(error)
+      }).finally((error) => {
+        console.log(error)
+      })
     },
-    static: () => {
-      router.push('/static').catch(() => {
-        //동일 페이지 접근시 새로고침 처리
-        router.go();
+    static() {
+      axios({
+        url: "/static/goPage",
+        method: "get",
+      }).then((res) => {
+        if (res.data.success == true) {
+          /*
+            데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
+          */
+          this.user_info = res.data.user_info;
+          //동일 페이지 접근시 catch 처리
+          this.$router.push("/static").catch(() => {
+            router.go();
+          });
+        } else {
+          this.$router.push("/");
+        }
+      }).catch((error) => {
+        console.log(error)
+      }).finally((error) => {
+        console.log(error)
       })
     },
     userLogout: () => {

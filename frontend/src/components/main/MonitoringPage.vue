@@ -10,11 +10,11 @@
           <div id="HeaderArea">
             <select>
               <option value="0" selected disabled>장비를 선택해주세요.</option>
-            <optgroup v-for="(group, name) in options" :label="name">
-              <option v-for="option in group" :value="option.value">
-                {{ option.text }}
-              </option>
-            </optgroup>
+              <optgroup v-for="(group, name) in options" :label="name">
+                <option v-for="option in group" :value="option.value">
+                  {{ option.text }}
+                </option>
+              </optgroup>
             </select>
           </div>
           <div id="sensorArea">
@@ -57,32 +57,28 @@
 </template>
 
 <script>
+import {mapState,mapActions,mapMutations,mapGetters} from 'vuex';
 import MainHeader from "../layout/header";
-import axios from "axios";
+import dotenv from 'dotenv';
 
 /*API 키*/
-import dotenv from 'dotenv';
 dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 /**/
-let web_socket = null;
+/*Store helper*/
+const monitorHelper = createNamespacedHelpers('');
 
 export default {
   components: {
     'main-header': MainHeader,
   },
+  computed: {
 
-  /*
-    data() {
-      return {
-        login_id: "",
-        login_pass: "",
-        csrf_token:""
-      };
-    },*/
+  },
   data: function () {
     return {
       currentTab: 0,
+      user_info: this.$route.params.user_info,
       options: {
         'AMS-1000': [
           {text: 'BBQ치킨', value: 1},
@@ -115,6 +111,8 @@ export default {
   },
   mounted() {
     this.connect();
+    console.log("유저 인포111 : ",this.$route.params.user_info)
+
     /*setInterval(this.connect.bind(this),30000)*/
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -132,11 +130,11 @@ export default {
       this.socket = new WebSocket("wss://echo.websocket.org");
       this.socket.onopen = () => {
         this.status = "connected";
-        this.logs.push({ event: "연결 완료: ", data: 'wss://echo.websocket.org'})
+        this.logs.push({event: "연결 완료: ", data: 'wss://echo.websocket.org'})
 
         this.socket.onmessage = ({data}) => {
-          this.logs.push({ event: "메세지 수신", data });
-          alert("data : "+data)
+          this.logs.push({event: "메세지 수신", data});
+          alert("data : " + data)
         };
       };
       await this.disconnect();
@@ -146,13 +144,13 @@ export default {
       this.status = "disconnected";
       this.logs = [];
     },
-/*
-    sendMessage(e) {
-      this.socket.send(this.message);
-      this.logs.push({ event: "메시지 전송", data: this.message });
-      this.message = "";
-    },*/
-   /*웹소켓 파트 끝*/
+    /*
+        sendMessage(e) {
+          this.socket.send(this.message);
+          this.logs.push({ event: "메시지 전송", data: this.message });
+          this.message = "";
+        },*/
+    /*웹소켓 파트 끝*/
     initMap() {
       const container = document.getElementById("map");
       const options = {

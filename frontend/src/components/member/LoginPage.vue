@@ -33,6 +33,8 @@
 
 <script>
 import axios from "axios";
+import {createNamespacedHelpers} from 'vuex';
+const userHelper = createNamespacedHelpers()
 
 export default {
   data() {
@@ -41,6 +43,9 @@ export default {
       login_pass: "",
       csrf_token: ""
     };
+  },
+  computed: {
+
   },
   methods: {
     ckCookie: function () {
@@ -58,7 +63,7 @@ export default {
           }
         }).then((res) => {
           if (res.data.success == true) {
-            this.$router.push("/monitoring");
+            this.$router.push({name:"MonitoringPage",params:{user_info:res.data.user_info}});
           } else {
             alert(res.data.message);
           }

@@ -11,6 +11,7 @@ var session = require('express-session');
 var userRouter = require('./routers/users');
 var authRouter = require('./routers/auth');
 var staticRouter = require('./routers/static');
+var monitorRouter = require('./routers/monitoring')
 var initEquip = require('./controller/init/initController')
 
 /*서버 실행 시간*/
@@ -91,6 +92,8 @@ app.use('/user', userRouter);
 app.use('/auth', authRouter);
 /*통계 자료 컨트롤러*/
 app.use('/static', staticRouter);
+/*메인 악취 컨트롤러*/
+app.use('/monitoring',monitorRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

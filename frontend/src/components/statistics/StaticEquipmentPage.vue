@@ -326,6 +326,7 @@ import "datatables.net-buttons/js/buttons.html5"
 import $ from 'jquery';
 
 import VMdDateRangePicker from "v-md-date-range-picker";
+import router from "../../router";
 
 Vue.use(VMdDateRangePicker);
 
@@ -342,7 +343,6 @@ export default {
     return {
       map: null,
       currentTab: 1,
-      user_name: this.user_name,
       selectOptions: {
         'AMS-1000': [
           {text: 'BBQ치킨', value: 1},
@@ -366,7 +366,7 @@ export default {
   },
   mounted() {
     this.$emit('currentTab', 1)
-    this.$emit('user_name',this.user_name)
+    /*세션 확인*/
     if (window.kakao && window.kakao.maps) {
       this.initStaticMap();
     } else {
@@ -382,7 +382,7 @@ export default {
     excelDown() {
       $(".buttons-excel").click();
     },
-    printDown(){
+    printDown() {
       $(".buttons-print").click();
     },
     initStaticMap() {
@@ -512,9 +512,8 @@ export default {
           */
           //데이터 테이블 그리기
           this.initDataTable();
-          this.user_name = res.data.user_name;
         } else {
-          alert(res.data.message);
+          this.$router.push("/");
         }
       }).catch((error) => {
         console.log(error)

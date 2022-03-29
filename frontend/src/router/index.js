@@ -41,12 +41,14 @@ export default new Router({
     {
       path: '/monitoring',
       name: 'MonitoringPage',
-      component: MonitoringPage
+      component: MonitoringPage,
+      props: true
     },
     {
       path: '/static',
       name: 'StaticEquipmentPage',
-      component: StaticEquipmentPage
+      component: StaticEquipmentPage,
+      props: true
     },
   ]
 })

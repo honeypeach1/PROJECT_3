@@ -7,7 +7,6 @@ const dbConnect = mariaDB.createConnection(db.mariaConfig);
 const crypto = require('crypto');
 const path = require("path");
 const secret = require("../../config/crypto");
-const e = require("express");
 
 //쿠키 보증 기간 설정
 const expiryDate = new Date(Date.now() + 60 * 60 * 1000 * 24 * 3) //24 hour 3일
@@ -40,13 +39,14 @@ const userCon = {
                             return 암호값
                         */
                         const decryption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
-                        dbConnect.query('SELECT MEMBER_SEQ, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
+                        dbConnect.query('SELECT MEMBER_SEQ, MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
                             [req.body.login_id, decryption.salt], function (err, data) {
                                 if (err) throw err;
                                 //암호가 일치하는 유저가 있음.
                                 if (data.length > 0) {
                                     var dataList = [];
                                     for (var value of data) {
+                                        dataList.push(value.MEMBER_ID);
                                         dataList.push(value.MEMBER_NAME);
                                     }
                                     ;
@@ -63,7 +63,7 @@ const userCon = {
                                     //res.isAuthenticated(data)
                                     res.json({
                                         success: true,
-                                        user_name: dataList,
+                                        user_info: dataList[1],
                                         message: '로그인에 성공하였습니다.'
                                     })
 
