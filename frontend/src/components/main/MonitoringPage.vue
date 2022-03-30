@@ -107,8 +107,6 @@ export default {
   },
   mounted() {
     this.connect();
-    console.log("유저 인포111 : ",this.$route.params.user_info)
-
     /*setInterval(this.connect.bind(this),30000)*/
     if (window.kakao && window.kakao.maps) {
       this.initMap();

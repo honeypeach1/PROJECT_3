@@ -6,8 +6,8 @@
     </p>
     <!--로그인 폼 영역-->
     <div class="form_area">
-      <form id="login_form"  @submit.prevent="login">
-  <!--<input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}"/>-->
+      <form id="login_form" @submit.prevent="login">
+        <!--<input id="csrf_token" v-model="csrf_token" type="hidden" name="_csrf" value="{{csrf_token()}}"/>-->
         <div class="inputDiv">
           <input id="login_id" v-model="login_id" ref="login_id" class="login_input" type="text" placeholder="아이디"
                  required oninvalid="this.setCustomValidity('아이디를 입력해주세요.')" oninput="this.setCustomValidity('')"
@@ -15,7 +15,8 @@
         </div>
         <div class="inputDiv">
           <input id="login_pass" v-model="login_pass" ref="login_pass" class="login_input" type="password"
-                 placeholder="비밀번호" required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')" oninput="this.setCustomValidity('')"
+                 placeholder="비밀번호" required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')"
+                 oninput="this.setCustomValidity('')"
                  aria-required="true">
         </div>
         <div class="inputDiv">
@@ -33,63 +34,30 @@
 
 <script>
 import axios from "axios";
-import {mapState, mapActions} from 'vuex';
 
 export default {
   data() {
     return {
       login_id: "",
       login_pass: "",
-      csrf_token: ""
+      csrf_token: "",
+      error: false
     };
   },
   methods: {
-    ...mapActions('userStore',['login']),
-    handleSubmit (e) {
-      this.submitted = true;
-      const {login_id, login_pass} = this;
-      if(login_id && login_pass){
-        this.login({login_id,login_pass})
-      }
-    },
-   /* login: function () {
-      this.$store.
-      dispatch("login",{
+    //dispatch 호출 방식 또는 store에 매핑된 getUser의 mutation 호출 방식
+    login() {
+      this.$store.dispatch("login", {
         login_id: this.login_id,
-        login_pass: this.login_pass,
-        csrf_token: "-"
-      }).
-      then(() => {
-
-          this.$router.push({name:"MonitoringPage"});
-
-      }).catch((error) => {
-        console.log(error)
-      }).finally((error) => {
-        console.log(error)
+        login_pass: this.login_pass
       })
-    },*/
-   /* login: function () {
-        axios({
-          url: "/user/loginCheck",
-          method: "POST",
-          data: {
-            login_id: this.login_id,
-            login_pass: this.login_pass,
-            csrf_token: "-"
-          }
-        }).then((res) => {
-          if (res.data.success == true) {
-            this.$router.push({name:"MonitoringPage",params:{user_info:res.data.user_info}});
-          } else {
-            alert(res.data.message);
-          }
-        }).catch((error) => {
-          console.log(error)
-        }).finally((error) => {
-          console.log(error)
+        .then(success => {
+          this.$router.push({name: "MonitoringPage"});
         })
-    },*/
+        .catch(error => {
+          this.error = true;
+        })
+    },
     register: function () {
       this.$router.push("/signup");
     },

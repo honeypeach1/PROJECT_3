@@ -1,9 +1,10 @@
-/*
- vuex의 흐름도
- 요청 -> dispatch -> Actions(commit) -> Mutations(State) -> State -> Getters -> Vue Components
-*/
-const user = JSON.parse(localStorage.getItem(''))
-/*
+import axios from "axios";
+import VueCookies from "vue-cookies";
+
+export default {
+//유저 모듈
+  user: JSON.parse(localStorage.getItem('')),
+  /*
    mutation(조작)에서 마지막으로 호출되는 userState(저장) 객체
    vuex 구조
    1. userState 객체
@@ -11,16 +12,25 @@ const user = JSON.parse(localStorage.getItem(''))
    프로젝트 모든 곳에서 이름 참조 사용 가능
    모든 컴포넌트들의 공통된 값을 사용 가능
  */
-const state = {};
-/*
-  actions에서 그다음에 호출되는 조작(mutation) 객체
-  userState 변경을 담당한다.
-  반드시 mutation을 통해서만 state를 변경해야 햠.
-  동기 처리
-  commit방식으로 호출
+  state: {
+    token: null
+  },
+
+  /*
+ Vue 컴포넌트에서 Computed로 정의
 */
-const mutations = {};
-/*
+  getters: {
+    getToken(state) {
+      let accTkn = VueCookies.get('accessToken');
+      let refTkn = VueCookies.get('refreshToken');
+      return {
+        access: accTkn,
+        refresh: refTkn
+      }
+    }
+  },
+
+  /*
   vue component에서 처음 호출되는 싱글톤 store 객체
   mutation을 실행시켜주는 역할 담당
   비동기 처리 기준(서버 데이터 호출)
@@ -30,21 +40,37 @@ const mutations = {};
   action에서 첫번째 인자를 context 인자로 받을 수 있으며, userState, commit, dispatch, rootstate 포함
   두번째 인자는 mutation과 동일하게 payload로 받을 수 있음.
 */
-const actions = {};
-/*
- Vue 컴포넌트에서 Computed로 정의
+  actions: {
+    login({commit}, {login_id,login_pass}) {
+      return axios({
+        url: "/user/loginCheck",
+        method: "POST",
+        data: {login_id, login_pass}
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          commit("login", data);
+        }
+      })
+    }
+  },
+
+  /*
+  actions에서 그다음에 호출되는 조작(mutation) 객체
+  userState 변경을 담당한다.
+  반드시 mutation을 통해서만 state를 변경해야 햠.
+  동기 처리
+  commit방식으로 호출
 */
-const getters = {
-  login() {
-
+  mutations: {
+    login(state, {token}) {
+      console.log("확인 : ",token)
+      state.token = token
+    },
+    logout(state) {
+      state.token = null
+    }
   }
-};
-
-export const userStore = {
-  namespaced: true,
-  state,
-  actions,
-  mutations,
-  getters
 }
 

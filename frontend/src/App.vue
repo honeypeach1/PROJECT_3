@@ -7,6 +7,13 @@
 <script>
 export default {
   name: 'App',
+  created() {
+    let token = this.$store.getters.getToken;
+    if(token.access == null && token.refresh == null){
+      this.$router.push("/");
+
+    }
+  }
 }
 </script>
 
