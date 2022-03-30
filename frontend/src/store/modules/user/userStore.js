@@ -3,7 +3,7 @@ import VueCookies from "vue-cookies";
 
 export default {
 //유저 모듈
-  user: JSON.parse(localStorage.getItem('')),
+  //user: JSON.parse(localStorage.getItem('')),
   /*
    mutation(조작)에서 마지막으로 호출되는 userState(저장) 객체
    vuex 구조
@@ -13,22 +13,14 @@ export default {
    모든 컴포넌트들의 공통된 값을 사용 가능
  */
   state: {
-    token: null
+    token: null,
+    user: [],
   },
 
   /*
  Vue 컴포넌트에서 Computed로 정의
 */
-  getters: {
-    getToken(state) {
-      let accTkn = VueCookies.get('accessToken');
-      let refTkn = VueCookies.get('refreshToken');
-      return {
-        access: accTkn,
-        refresh: refTkn
-      }
-    }
-  },
+  getters: {},
 
   /*
   vue component에서 처음 호출되는 싱글톤 store 객체
@@ -50,8 +42,22 @@ export default {
         if (status === 304) {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
-          commit("login", data);
+          if(data.success == true){
+            commit("login", data);
+          } else {
+            alert(data.message);
+            commit("login", null);
+          }
         }
+      })
+    },
+    logout({commit}){
+      axios({
+        url: "/user/logout",
+        method: "POST",
+      }).then((res) => {
+        commit("logout")
+        alert(res.data.message);
       })
     }
   },
@@ -64,12 +70,12 @@ export default {
   commit방식으로 호출
 */
   mutations: {
-    login(state, {token}) {
-      console.log("확인 : ",token)
-      state.token = token
+    //세션 또는 쿠키 정보를 가져오면 됨. 가져와서 state에서 정의한 변수에 대입하여 필요시 가져와서 사용
+    login(state, data) {
+      state.user = data;
     },
     logout(state) {
-      state.token = null
+      state.user = null;
     }
   }
 }

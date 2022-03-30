@@ -33,8 +33,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import router from "../../router";
 export default {
   data() {
     return {
@@ -43,6 +42,15 @@ export default {
       csrf_token: "",
       error: false
     };
+  },
+  mounted() {
+    let token = this.$store.state.user.user;
+    //만약 로그인 발행 토큰이 있다면(로그인 이력이 있음.) 이전 페이지로 돌아가게
+    console.log("token 확인 : ",token)
+    if (!(token == null)) {
+      alert("잘못된 접근입니다. 악취 페이지로 이동합니다.")
+      this.$router.push({name: "MonitoringPage"});
+    }
   },
   methods: {
     //dispatch 호출 방식 또는 store에 매핑된 getUser의 mutation 호출 방식

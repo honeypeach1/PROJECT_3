@@ -39,7 +39,7 @@ const userCon = {
                             return 암호값
                         */
                         const decryption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
-                        dbConnect.query('SELECT MEMBER_SEQ, MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
+                        dbConnect.query('SELECT MEMBER_SEQ, MEMBER_RELES, MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
                             [req.body.login_id, decryption.salt], function (err, data) {
                                 if (err) throw err;
                                 //암호가 일치하는 유저가 있음.
@@ -48,6 +48,7 @@ const userCon = {
                                     for (var value of data) {
                                         dataList.push(value.MEMBER_ID);
                                         dataList.push(value.MEMBER_NAME);
+                                        dataList.push(value.MEMBER_RELES);
                                     }
                                     ;
 
@@ -63,7 +64,7 @@ const userCon = {
                                     //res.isAuthenticated(data)
                                     res.json({
                                         success: true,
-                                        user_info: dataList[1],
+                                        user_info: dataList,
                                         message: '로그인에 성공하였습니다.'
                                     })
 

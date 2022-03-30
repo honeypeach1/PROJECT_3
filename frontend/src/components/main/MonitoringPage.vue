@@ -74,7 +74,6 @@ export default {
   data: function () {
     return {
       currentTab: 0,
-      user_info: this.$route.params.user_info,
       options: {
         'AMS-1000': [
           {text: 'BBQ치킨', value: 1},
@@ -128,7 +127,6 @@ export default {
 
         this.socket.onmessage = ({data}) => {
           this.logs.push({event: "메세지 수신", data});
-          alert("data : " + data)
         };
       };
       await this.disconnect();

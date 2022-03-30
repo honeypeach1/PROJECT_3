@@ -109,6 +109,7 @@ export default {
       isMapView: false,
       isSettingView: false,
       isUserView: false,
+      user_info: this.$store.state.user.user.user_info[1]
     }
   },
   methods: {
@@ -127,7 +128,7 @@ export default {
           /*
             데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
           */
-          this.user_info = res.data.user_info;
+          //this.user_info = res.data.user_info;
           //동일 페이지 접근시 catch 처리
           this.$router.push("/monitoring").catch(() => {
             router.go();
@@ -150,7 +151,7 @@ export default {
           /*
             데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
           */
-          this.user_info = res.data.user_info;
+          //this.user_info = res.data.user_info;
           //동일 페이지 접근시 catch 처리
           this.$router.push("/static").catch(() => {
             router.go();
@@ -164,14 +165,18 @@ export default {
         console.log(error)
       })
     },
-    userLogout: () => {
-      axios({
+    userLogout() {
+      this.$store.dispatch("logout")
+      .then(success => {
+        router.push("/");
+      })
+     /* axios({
         url: "/user/logout",
         method: "POST",
       }).then((res) => {
         alert(res.data.message);
         router.push("/");
-      })
+      })*/
     }
   }
 }

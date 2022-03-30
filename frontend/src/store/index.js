@@ -23,7 +23,7 @@ const store = new Vuex.Store({
    즉 화면이 새로 고침(로딩)이 되어도 없어지지 않음. localStorage에 있는 값을 state에 다시 동기화 실시
   */
   plugins: [createPersistedState({
-    paths: ["userStore"]
+    paths: ["user"]
   })]
 })
 
