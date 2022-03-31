@@ -34,33 +34,35 @@
 
 <script>
 import router from "../../router";
+
 export default {
   data() {
     return {
       login_id: "",
       login_pass: "",
       csrf_token: "",
-      error: false
+      error: false,
     };
   },
-  mounted() {
-    let token = this.$store.state.user.user;
+/*  mounted() {
+    let isLogIn = this.$store.state.user.isLogin;
     //만약 로그인 발행 토큰이 있다면(로그인 이력이 있음.) 이전 페이지로 돌아가게
-    console.log("token 확인 : ",token)
-    if (!(token == null)) {
+    if (isLogIn) {
       alert("잘못된 접근입니다. 악취 페이지로 이동합니다.")
       this.$router.push({name: "MonitoringPage"});
     }
-  },
+  },*/
   methods: {
     //dispatch 호출 방식 또는 store에 매핑된 getUser의 mutation 호출 방식
     login() {
-      this.$store.dispatch("login", {
+      this.$store.dispatch("LOGIN", {
         login_id: this.login_id,
         login_pass: this.login_pass
       })
         .then(success => {
-          this.$router.push({name: "MonitoringPage"});
+          if (this.$store.state.user.token != null) {
+            this.$router.push({name: "MonitoringPage"});
+          }
         })
         .catch(error => {
           this.error = true;

@@ -7,6 +7,8 @@ const dbConnect = mariaDB.createConnection(db.mariaConfig);
 const crypto = require('crypto');
 const path = require("path");
 const secret = require("../../config/crypto");
+const jwt = require('../../modules/jwt');
+const {token} = require("morgan");
 
 //쿠키 보증 기간 설정
 const expiryDate = new Date(Date.now() + 60 * 60 * 1000 * 24 * 3) //24 hour 3일
@@ -28,7 +30,7 @@ const userCon = {
                             dataList.push(data.MEMBER_ID);
                             dataList.push(data.SALT);
                         }
-                        ;
+
                         /*
                         단방향 입력 패스워드 암호화 처리 후 로그인한 계정 비교
                         로그인으로 입력한 패스워드와 입력한 아이디가 존재할때 해당 아이디의 salt값을 가져와서 서로
@@ -40,7 +42,7 @@ const userCon = {
                         */
                         const decryption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
                         dbConnect.query('SELECT MEMBER_SEQ, MEMBER_RELES, MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
-                            [req.body.login_id, decryption.salt], function (err, data) {
+                            [req.body.login_id, decryption.salt], async function (err, data) {
                                 if (err) throw err;
                                 //암호가 일치하는 유저가 있음.
                                 if (data.length > 0) {
@@ -50,24 +52,35 @@ const userCon = {
                                         dataList.push(value.MEMBER_NAME);
                                         dataList.push(value.MEMBER_RELES);
                                     }
-                                    ;
 
                                     //해당 파트 확인 요망
                                     req.session.user_cookie = dataList;
+
+                                    //res.isAuthenticated(data)
+                                    const jwtToken = await jwt.sign(dataList);
+
                                     //쿠키 설정
-                                    res.cookie('user_cookie', data, {
+                                    /*
+                                        cookie 생성시 받는 파라미터는 로그인시 받는 발급 토큰과 refresh 토큰으로
+                                        보안상의 3가지 토큰 저장 방법이 있음.
+                                        1. 세션 - 세션 쿠키로 세션 종료시 삭제(5 ~ 10MB)
+                                        2. 쿠키 - HttpOnly 설정으로 javascript 접근 차단(XSS) but CSRF 공격 노출 우려
+                                        3. 로컬 - 로컬스토리지로 서버 접근은 안되지만 반 영구적인 저장 가능, Persistent cookies와 비슷(5 ~ 10MB)
+                                        XSS 공격 방어가 가능한 만큼 쿠키를 이용한 방법이 좀더 좋음
+                                     */
+                                    res.cookie('x-auth', jwtToken, {
                                         expires: expiryDate,
                                         path: '/static',
                                         httpOnly: true, //http 통신
                                         //secure: true //https 통신
                                     })
-                                    //res.isAuthenticated(data)
+
                                     res.json({
                                         success: true,
-                                        user_info: dataList,
+                                        token: jwtToken.token,
+                                        user_info: dataList[1],
                                         message: '로그인에 성공하였습니다.'
                                     })
-
                                     return res;
                                 } else {
                                     res.json({

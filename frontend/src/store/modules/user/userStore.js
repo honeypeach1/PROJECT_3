@@ -14,13 +14,19 @@ export default {
  */
   state: {
     token: null,
-    user: [],
+    user_info: null,
+    isLogin: false,
   },
 
   /*
  Vue 컴포넌트에서 Computed로 정의
 */
-  getters: {},
+  getters: {
+    //로그인 확인 로직
+    loggedIn(state) {
+      return !!state.isLogin;
+    }
+  },
 
   /*
   vue component에서 처음 호출되는 싱글톤 store 객체
@@ -33,7 +39,7 @@ export default {
   두번째 인자는 mutation과 동일하게 payload로 받을 수 있음.
 */
   actions: {
-    login({commit}, {login_id,login_pass}) {
+    LOGIN({commit}, {login_id, login_pass}) {
       return axios({
         url: "/user/loginCheck",
         method: "POST",
@@ -42,7 +48,7 @@ export default {
         if (status === 304) {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
-          if(data.success == true){
+          if (data.success) {
             commit("login", data);
           } else {
             alert(data.message);
@@ -51,13 +57,31 @@ export default {
         }
       })
     },
-    logout({commit}){
+    REGISTER({commit}, {register_id, register_pwd, register_name, register_tel, register_role}) {
+      axios({
+        url: "/user/registerUser",
+        method: "POST",
+        data: {register_id, register_pwd, register_name, register_tel, register_role}
+      }).then(({data, status}) => {
+          if (status === 304) {
+            alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+          } else {
+            if (data.success) {
+              alert(data.message);
+            } else {
+              alert(data.message);
+            }
+          }
+      })
+    },
+    /*세션 초기화를 위해서 백엔드 접근이 필요함.*/
+    LOGOUT({commit}) {
       axios({
         url: "/user/logout",
         method: "POST",
       }).then((res) => {
-        commit("logout")
         alert(res.data.message);
+        commit("logout")
       })
     }
   },
@@ -72,10 +96,19 @@ export default {
   mutations: {
     //세션 또는 쿠키 정보를 가져오면 됨. 가져와서 state에서 정의한 변수에 대입하여 필요시 가져와서 사용
     login(state, data) {
-      state.user = data;
+      state.token = data.token;
+      state.user_info = data.user_info;
+      state.isLogin = true;
     },
     logout(state) {
-      state.user = null;
+      localStorage.removeItem('vuex');
+      //reload() -> vuex store, axios header 클리어
+      location.reload();
+      axios.defaults.headers.common['Authorization'] = null;
+
+      state.token = null;
+      state.user_info = null;
+      state.isLogin = false;
     }
   }
 }

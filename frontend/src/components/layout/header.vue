@@ -109,7 +109,7 @@ export default {
       isMapView: false,
       isSettingView: false,
       isUserView: false,
-      user_info: this.$store.state.user.user.user_info[1]
+      user_info: this.$store.state.user.user_info
     }
   },
   methods: {
@@ -166,9 +166,9 @@ export default {
       })
     },
     userLogout() {
-      this.$store.dispatch("logout")
+      this.$store.dispatch("LOGOUT")
       .then(success => {
-        router.push("/");
+          this.$router.push("/");
       })
      /* axios({
         url: "/user/logout",

@@ -1,7 +1,7 @@
 <template>
   <div id="signup">
     <div class="register_box">
-<!--      <form method="post" v-on:submit.prevent="registUser">-->
+      <form id="submit_form" @submit.prevent="registUser">
         <!--회원가입 폼 작성 영역-->
         <div class="signMenu">
           <div class="title">회원가입</div>
@@ -186,7 +186,7 @@
           <button class="signupButton" type="button" v-on:click="registUser">회원가입</button>
           <button class="cancelButton" type="button" v-on:click="cancelBtn">취소</button>
         </div>
-<!--      </form>-->
+      </form>
     </div>
   </div>
 </template>
@@ -244,28 +244,16 @@ export default {
     registUser: function() {
       this.validationCk();
       if (this.errors.length == 0) {
-        axios({
-          url: "/user/registerUser",
-          method: "POST",
-          data: {
-            register_id: this.register_id,
-            register_pwd: this.register_pwd,
-            register_name: this.register_name,
-            register_tel: this.register_tel,
-            register_role: this.register_role
-          }
-        }).then((res) => {
-          if (res.data.success) {
-            alert(res.data.message)
+        this.$store.dispatch('REGISTER',{
+          register_id: this.register_id,
+          register_pwd: this.register_pwd,
+          register_name: this.register_name,
+          register_tel: this.register_tel,
+          register_role: this.register_role
+          })
+          .then(success => {
             this.$router.push("/");
-          } else {
-            alert(res.data.message);
-          }
-        }).catch((error) => {
-          console.log(error)
-        }).finally((error) => {
-          console.log(error)
-        })
+          })
       } else {
         for(let i in this.errors) alert(this.errors[i])
       }
