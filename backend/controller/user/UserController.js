@@ -24,7 +24,7 @@ const userCon = {
                 function (err, val) {
                     if (err) throw err;
                     //로그인한 아이디가 존재하며 존재하는 salt값을 가져옴.
-                    if (val != null) {
+                    if (val != '') {
                         var dataList = [];
                         for (var data of val) {
                             dataList.push(data.MEMBER_ID);

@@ -24,12 +24,11 @@ export const lineChart = {
     },
   ],
   layout: {
+    autosize: true,
+    height: 300,
     plot_bgcolor: 'transparent',
     paper_bgcolor: 'transparent',
     showlegend : true,
-    autosize: true,
-    height: 290,
-    width: 960,
     title: {
       text :'대기 환경 지수(ppb)',
       font: {
@@ -82,22 +81,10 @@ export const lineChart = {
     legend: {
       "orientation": "h"
     },
-    margin: {
-      l: 50,
-      r: 50,
-      b: 60,
-      t: 60,
-    },
-    padding: {
-      left: 10,
-      right: 0,
-      top: 0,
-      bottom: 20
-    }
   },
-  options: {
+  config: {
     responsive: true,
-  }
+  },
 };
 
 export default lineChart;

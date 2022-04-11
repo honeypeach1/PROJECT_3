@@ -1,37 +1,40 @@
 #header_area {
+  z-index: 2;
   background-image: url("../../assets/images/layout/background.png");
-  background-size: cover;
+  width: 100%;
   height: 60px;
+  user-select: none;
+  position: sticky;
+  top: 0;
 
   .row {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    height: 100%;
+    height: 60px;
 
     .header_Logo_area {
-      width: 20%;
-      height: 100%;
-      float: left;
-
+      padding-left: 5px;
       #header_page_reload {
+        display: flex;
+        align-items: center;
         height: 100%;
-        padding: 11px 0 0 15px;
 
         #header_img {
+          cursor: pointer;
+          padding: 5px;
           width: 100px;
         }
       }
     }
 
     .header_list_area {
-      width: 60%;
       height: 100%;
-      float: left;
-      margin: 0 auto;
 
       .menu_ul {
-        margin: 0 auto;
-        display: table;
+        margin: 0;
         height: 100%;
+        padding: 0;
 
         .divider {
           width: 2px;
@@ -66,28 +69,30 @@
     }
 
     .header_right_area {
-      width: 20%;
+      display: flex;
       height: 100%;
-      float: right;
 
       .box_button_area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin: 9px;
-        width: 60px;
+        width: 55px;
         height: 40px;
         float: right;
-        cursor: pointer;
         background: #efeded;
         border: 1px solid #0086e5;
 
         .button_svg {
-          margin: 8px 0px 0px 19px;
+          padding: 3px;
+          cursor: pointer;
           fill: rgb(40, 44, 45);
         }
 
         .alert_dot {
           fill: rgb(212, 76, 76);
           position: absolute;
-          right: 95px;
+          right: 90px;
           top: 26px;
         }
       }
@@ -100,7 +105,7 @@
         overflow-x: hidden;
         position: absolute;
         top: 50px;
-        right: 90px;
+        right: 5px;
         z-index: 10;
 
         .alert_list {
@@ -129,16 +134,15 @@
         border: 1px solid #666666;
         padding: 5px 15px 5px 15px;
         font-family: "NanumSquare", sans-serif;
-        z-index: 10;
+        z-index: 11;
+
 
         .click {
           cursor: pointer;
         }
-
         .modal {
           z-index: 100;
         }
-
         div {
           //border-bottom: 1px solid #666666;
           margin-top: 7px;
@@ -152,12 +156,106 @@
             float: left;
             width: 24px;
             height: 24px;
-
           }
-
           p {
             text-align: center;
             margin: 0 auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+//반응형 헤더 1024px
+@media all and (max-width:1024px){
+  #header_area{
+    .row {
+      .header_Logo_area {
+      }
+      .header_list_area {
+        .menu_ul {
+          li {
+          }
+        }
+      }
+      .header_right_area {
+        .box_button_area {
+          #alert_dot {
+          }
+        }
+
+        .header_user_control_area {
+          .click {
+          }
+        }
+      }
+    }
+  }
+}
+
+//반응형 헤더 768px
+@media all and (max-width: 768px) {
+  #header_area{
+    .row {
+      .header_Logo_area {
+        display: none;
+      }
+      .header_list_area {
+        width: 60%;
+
+        .menu_ul {
+          display: flex;
+          width: 100%;
+
+          li {
+            width: 30%;
+            min-width: 90px;
+          }
+        }
+      }
+      .header_right_area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .box_button_area {
+          width: 45px;
+          margin: 5px;
+
+          #alert_dot {
+            right: 64px;
+          }
+        }
+
+        .header_user_control_area {
+        }
+      }
+    }
+  }
+}
+
+@media all and (hover: none) and (pointer: coarse) {
+  #header_area{
+    .row {
+      .header_Logo_area {
+      }
+      .header_list_area {
+        .menu_ul {
+          li {
+          }
+        }
+      }
+      .header_right_area {
+        .box_button_area {
+          #alert_dot {
+          }
+        }
+        .header_user_control_area {
+          height: 75px;
+
+          .click {
+            display: none;
           }
         }
       }

@@ -1,34 +1,39 @@
 #body-wrapper {
-  background: #114365;
   height: 100%;
-  min-height: 100%;
+  background: #114365;
+  overflow: auto;
 
   #staticPage {
-    width: 100%;
-    height: 89%;
-    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 10px);
+    height: calc(100% - 60px - 10px);
+    min-height: 868px;
+    margin: 5px;
 
     .staticLeftArea {
+      z-index: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 20%;
       height: 100%;
-      background: #5c6f7e;
-      padding: 10px;
-      float: left;
-      margin: 5px;
+      min-width: 200px;
 
       #staticequipSelect {
         z-index: 3;
-        float: left;
+        margin: 6px;
+        padding: 4px;
         position: absolute;
-        top: 100px;
-        left: 40px;
-        width: 17%;
+        width: 60%;
+        cursor: pointer;
 
         .inlineMapSelectList {
           width: 100%;
-          height: 40px;
+          min-height: 40px;
           position: relative;
-          font-size: 100%;
+          font-size: 1rem;
           text-align: center;
           border-radius: 15px;
           font-family: "NanumSquare", sans-serif;
@@ -38,7 +43,10 @@
           }
 
           optgroup {
-
+            option {
+              text-align: left;
+              cursor: pointer;
+            }
           }
         }
       }
@@ -46,52 +54,60 @@
       #staticMap {
         width: 100%;
         height: 100%;
-        border: 1px solid #021f33;
+        background-color: purple;
       }
     }
 
     #staticCenterArea {
-      width: 50%;
-      height: 100%;
+      display: flex;
+      flex-direction: column;
+      width: 735px;
       background: #5c6f7e;
-      padding: 10px;
-      float: left;
-      margin: 5px;
+      padding: 0px 3px 0px 3px;
+      flex: 1;
 
       #selectDateArea {
-        height: 5%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 35px;
         width: 100%;
         font-family: 'NanumSquare', sans-serif;
 
         .sort_front_area {
-          float: left;
-          height: 100%;
-          width: 80%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
 
           .dataLabel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             float: left;
-            width: 110px;
+            min-width: 100px;
             height: 30px;
-            color: #ffffff;
-            paddint-top: 5px;
-            line-height: 1.8;
-            text-align: center;
             margin-right: 10px;
+            color: #ffffff;
             background-image: url("../../assets/images/layout/button.png");
             box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 16%);
+            user-select: none;
           }
 
           .mdrp-root {
-            float: left;
-
             .mdrp__activator {
 
               .activator-wrapper {
+                padding: 0px;
+                .bar {
+                  width: 306px;
+                }
 
                 .text-field {
-                  margin-top: 2px;
-                  height: 15px;
-                  padding: 5px;
+                  border: inset;
+                  text-align: center;
+                  padding: 0px;
+                  height: 20px;
+                  cursor: pointer;
                 }
 
                 label {
@@ -103,35 +119,32 @@
           }
 
           .periodType {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             float: left;
             height: 30px;
-            width: 100px;
+            margin: 0px 10px;
+            min-width: 100px;
             color: #FFFFFF;
-            line-height: 1.8;
-            margin-left: 10px;
             text-align: center;
             background-image: url("../../assets/images/layout/button.png");
+            user-select: none;
           }
 
-          .selectPeriodArea {
-            float: left;
-            margin-left: 10px;
-
-            .selectPeriodData {
-              height: 30px;
-              width: 80px;
-              font-weight: bold;
-              text-align: center;
-              font-family: "NanumSquare", sans-serif;
-
-            }
+          .selectPeriodData {
+            flex: 1;
+            padding: 0px 10px;
+            height: 30px;
+            font-weight: bold;
+            text-align: center;
+            font-family: "NanumSquare", sans-serif;
+            cursor: pointer;
+            border-radius: 5px;
           }
         }
 
         .sort_back_area {
-          width: 20%;
-          height: 100%;
-          float: right;
 
           .alarmButton {
             float: right;
@@ -156,8 +169,7 @@
       }
 
       #showGraphArea {
-        height: 60%;
-        overflow: auto;
+        width: 100%;
 
         #datatable_filter {
 
@@ -171,6 +183,45 @@
 
         .ContentsBodyGraph {
           font-family: "NanumSquare", sans-serif !important;
+          margin-bottom: 31px;
+
+          #datatable_wrapper {
+            .dt-buttons {
+              float: left;
+            }
+
+            .dataTables_scroll {
+              .dataTables_scrollHead {
+                .dataTables_scrollHeadInner {
+                  .commonTable.dataTable.no-footer {
+                    thead {
+                      tr {
+                        .title {
+                          border: 1px solid #000000;
+                          background-image: linear-gradient(to top, rgba(59, 97, 116, 0.65) 27%, rgba(82, 121, 138, 0.65) 84%, rgba(134, 175, 193, 0.65));
+                          border-left-color: rgba(216, 216, 216, 0.18);
+                        }
+                        .subTitle {
+                          border: 1px solid #000000;
+                          box-shadow: inset 0px 6px 0px 1px rgb(28, 45, 57, 70%);
+                          background-image: linear-gradient(to top, rgba(47, 83, 108, 1), rgba(39, 70, 92, 1));
+                          border-left-color: rgba(216, 216, 216, 0.18);
+                        }
+                        th {
+                          border: 1px solid #000000;
+                          font-weight: bold;
+                          color: #ffffff;
+                          text-align: center;
+                          padding: 3px;
+                          font-size: 18px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
 
           #datatable {
             text-align: center;
@@ -228,7 +279,9 @@
               background-repeat: no-repeat;
               color: #FFFFFF;
               font-size: 13px;
-
+              td {
+                padding: 10px 10px;
+              }
               .odd {
                 background: transparent;
               }
@@ -274,15 +327,16 @@
         }
       }
 
-      #showChartArea {
-        height: 35%;
+      .showChartArea {
+        width: 100%;
         background-image: linear-gradient(320deg, #1a4361, #001c30);
-        border: 1px solid #001c30;
-        overflow: hidden;
 
         #chartBar {
-          width: 100% !important;
-          height: 100% !important;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
         }
       }
 
@@ -290,15 +344,12 @@
     }
 
     #staticRightArea {
-      width: 25%;
+      width: 360px;
       height: 100%;
       background: #5c6f7e;
-      padding: 10px;
-      float: left;
-      margin: 5px;
 
       #dataControlArea {
-        height: 6%;
+        height: 7%;
         margin-top: 10px;
 
         #dataDown {
@@ -320,22 +371,32 @@
       }
 
       #showWindRoseArea {
-        height: 93%;
+        display: flex;
+        flex-flow: column;
+        height: calc(100% - 7% - 10px);
         background: linear-gradient(320deg, #1a4361, #001c30);
 
         #windRose {
+          height: 45%;
+
+          .plot-container plotly {
+            .user-select-none svg-container {
+            }
+          }
         }
 
         #windCountGraph {
-          height: 400px;
+          flex: 1;
+          min-height: 400px;
           width: 100%;
           background: transparent;
+          margin-top: 40px;
 
           table {
             width: 100%;
             height: 100%;
             color: #FFFFFF;
-            font-size: 90%;
+            font-size: 0.8rem;
             font-family: "NanumSquare", sans-serif;
 
             thead {
@@ -406,6 +467,103 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 1385px) {
+  #body-wrapper {
+
+    #staticPage {
+      flex-flow: wrap;
+      height: auto;
+
+      .staticLeftArea {
+        width: 25%;
+        height: auto;
+      }
+      #staticCenterArea {
+        width: 50%;
+        #showGraphArea {
+          overflow: auto;
+        }
+      }
+      #staticRightArea {
+        width: 100%;
+        #dataControlArea {
+          display: flex;
+          align-items: center;
+          margin-top: 0;
+          padding: 10px 0px;
+          height: 10%;
+        }
+
+        #showWindRoseArea {
+          flex-flow: row;
+          height: auto;
+          margin-bottom: 5px;
+
+          #windRose {
+            height: auto;
+          }
+          #windCountGraph {
+            height: auto;
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 1024px) {
+  #body-wrapper {
+    #staticPage {
+      .staticLeftArea {
+      }
+      #staticCenterArea {
+        #selectDateArea {
+          align-items: center;
+          height: 70px;
+
+          .sort_front_area {
+            flex-flow: column;
+            align-items: flex-start;
+
+            .front_area_periodType {
+              .periodType {
+                margin-left: 0;
+              }
+            }
+          }
+        }
+      }
+      #staticRightArea {
+        #dataControlArea {
+        }
+        #showWindRoseArea {
+
+          #windCountGraph {
+            min-width: 400px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 768px) {
+  #body-wrapper {
+    #staticPage {
+      flex-flow: column;
+
+      .staticLeftArea{
+        width: 100%;
+        height: 450px;
+      }
+      #staticCenterArea{
+        width: 100%;
       }
     }
   }
