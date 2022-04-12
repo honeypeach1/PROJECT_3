@@ -116,6 +116,11 @@ export default {
     settingModalView,
     userModalView
   },
+  mounted() {
+    const loggedIn = localStorage.getItem('vuex');
+    console.log("헤더 vuex 확인 : ",loggedIn)
+
+  },
   data: function () {
     return {
       info_show: false,
@@ -153,8 +158,6 @@ export default {
         }
       }).catch((error) => {
         console.log(error)
-      }).finally((error) => {
-        console.log(error)
       })
     },
     static() {
@@ -175,8 +178,6 @@ export default {
           this.$router.push("/");
         }
       }).catch((error) => {
-        console.log(error)
-      }).finally((error) => {
         console.log(error)
       })
     },

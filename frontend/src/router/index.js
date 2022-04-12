@@ -21,7 +21,7 @@ const router = new Router({
       path: '/',
       redirect: '/login',
       component: LoginPage,
-      meta: {requiresAuth: false},
+      //meta: {requiresAuth: false},
       children: [{
         path: '/login',
         name: 'LoginPage',
@@ -37,31 +37,31 @@ const router = new Router({
       path: '/signup',
       name: 'SignupPage',
       component: SignupPage,
-      meta: {requiresAuth: false}
+      //meta: {requiresAuth: false}
     },
     /************************/
     {
       path: '/monitoring',
       name: 'MonitoringPage',
       component: MonitoringPage,
-      meta: {requiresAuth: true}
+      //meta: {requiresAuth: true}
     },
     {
       path: '/static',
       name: 'StaticEquipmentPage',
       component: StaticEquipmentPage,
-      meta: {requiresAuth: true}
+      //meta: {requiresAuth: true}
     },
   ]
 })
 
 /*네비게이션 가드 설정, 전역 설정으로 항상 동작 함.*/
-router.beforeEach((to, from, next) => {
-    const loggedIn = localStorage.getItem('vuex');
+//router.beforeEach((to, from, next) => {
+    //const loggedIn = localStorage.getItem('vuex');
 
     //토큰이 있으면 로그인이 된거임. 즉 로그인 페이지로 이동을 못함.
     //로그인됨.
-    if (loggedIn != null) {
+    /*if (loggedIn != null) {
       if (JSON.parse(loggedIn).user.isLogin) {
         if (to.matched.some(record => record.meta.requiresAuth)) {
           next();
@@ -72,10 +72,8 @@ router.beforeEach((to, from, next) => {
       } else {
         next();
       }
-    } else {
-      next();
-    }
-  }
-)
+    }*/
+ // }
+//)
 
 export default router;

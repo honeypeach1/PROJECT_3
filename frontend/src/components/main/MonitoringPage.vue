@@ -18,10 +18,41 @@
             </select>
           </div>
           <div id="sensorArea">
-            <div class="sensorData" id="sensor_1"></div>
-            <div class="sensorData" id="sensor_2"></div>
-            <div class="sensorData" id="sensor_3"></div>
-            <div class="sensorData" id="sensor_4"></div>
+            <div class="sensorData" id="sensor_1">
+              <div class="sensorHead" id="sensor_name_1">
+                TOD
+              </div>
+              <div class="sensorName" id="sensor_data_1">
+                15.5
+              </div>
+            </div>
+            <div class="sensorData" id="sensor_2">
+              <div class="sensorHead" id="sensor_name_2">
+                H<sup>2</sup>S
+              </div>
+              <div class="sensorName" id="sensor_data_2">
+                55
+                <div class="sensor_title">(ppb)</div>
+              </div>
+            </div>
+            <div class="sensorData" id="sensor_3">
+              <div class="sensorHead" id="sensor_name_3">
+                NH<sup>3</sup>
+              </div>
+              <div class="sensorName" id="sensor_data_3">
+                22.2
+                <div class="sensor_title">(ppb)</div>
+              </div>
+            </div>
+            <div class="sensorData" id="sensor_4">
+              <div class="sensorHead" id="sensor_name_4">
+                MOS
+              </div>
+              <div class="sensorName" id="sensor_data_4">
+                12
+                <div class="sensor_title">(OU)</div>
+              </div>
+            </div>
           </div>
           <div id="windArea">
             <div class="wind_head_area">
