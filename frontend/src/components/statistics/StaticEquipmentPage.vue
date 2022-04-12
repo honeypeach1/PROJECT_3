@@ -49,25 +49,25 @@
             <table class="commonTable" id="datatable" style="width:100%;">
               <thead>
               <tr>
-                <th class="timeClass title" rowspan="3" style="width: 150px">시간</th>
+                <th class="timeClass title" rowspan="3" style="min-width: 150px">시간</th>
                 <th class="badClass title" colspan="6">대기환경</th>
                 <th class="badClass title" colspan="5">기상정보</th>
               </tr>
               <tr>
-                <th class="badClass title" colspan="2">복합악취</th>
+                <th class="badClass title" colspan="2" style="min-width: 110px; max-width: 200px">복합악취</th>
                 <th class="badClass subTitle" rowspan="2">H<sub>2</sub>S<br/>(ppb)</th>
                 <th class="badClass subTitle" rowspan="2">NH<sub>3</sub><br/>(ppb)</th>
                 <th class="badClass subTitle" rowspan="2">VOC<br/>(ppb)</th>
                 <th class="badClass subTitle" rowspan="2">MOS<br/>(OU)</th>
-                <th class="weatherClass subTitle" rowspan="2" style="width: 75px">풍향<br/></th>
+                <th class="weatherClass subTitle" rowspan="2" style="min-width: 60px">풍향<br/></th>
                 <th class="weatherClass subTitle" rowspan="2">풍속<br/>(m/s)</th>
                 <th class="weatherClass subTitle" rowspan="2">온도<br/>(℃)</th>
                 <th class="weatherClass subTitle" rowspan="2">습도<br/>(%)</th>
                 <th class="weatherClass subTitle" rowspan="2">대기압<br/>(mb)</th>
               </tr>
               <tr>
-                <th class="badClass subTitle">배수</th>
-                <th class="badClass subTitle">상태</th>
+                <th class="badClass subTitle" style="min-width: 60px; max-width: 100px">배수</th>
+                <th class="badClass subTitle" style="min-width: 50px; max-width: 100px">상태</th>
               </tr>
               </thead>
             </table>
@@ -76,7 +76,8 @@
         </div>
 
         <!--데이터 차트 영역-->
-        <div id="showChartArea">
+        <!--데이터 차트 영역-->
+        <div class="showChartArea">
           <div id="chartBar"></div>
         </div>
       </div>
@@ -97,14 +98,14 @@
               <thead>
               <tr class="head_title">
                 <th>m/s</th>
-                <th>0.5~1.0</th>
-                <th>1.0~1.5</th>
-                <th>1.5~2.0</th>
-                <th>2.0~2.5</th>
-                <th>2.5~3.0</th>
-                <th>3.0~3.5</th>
+                <th>0.5~</th>
+                <th>1.0~</th>
+                <th>1.5~</th>
+                <th>2.0~</th>
+                <th>2.5~</th>
+                <th>3.0~</th>
                 <th>3.5~</th>
-                <th>계</th>
+                <th>합계</th>
               </tr>
               <tr class="head_subTitle">
                 <th></th>
@@ -120,7 +121,7 @@
               </thead>
               <tbody>
               <tr class="odd_row">
-                <td class="windDirect_1">북</td>
+                <td class="windDirect_1">N</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -131,7 +132,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_2">북북동</td>
+                <td class="windDirect_2">NNE</td>
                 <td></td>
                 <td></td>
                 <td>3</td>
@@ -142,7 +143,7 @@
                 <td></td>
               </tr>
               <tr class="odd_row">
-                <td class="windDirect_3">북동</td>
+                <td class="windDirect_3">NE</td>
                 <td>5</td>
                 <td></td>
                 <td></td>
@@ -153,7 +154,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_4">동북동</td>
+                <td class="windDirect_4">ENE</td>
                 <td></td>
                 <td>1</td>
                 <td></td>
@@ -164,7 +165,7 @@
                 <td></td>
               </tr>
               <tr class="odd_row">
-                <td class="windDirect_5">동</td>
+                <td class="windDirect_5">E</td>
                 <td>4</td>
                 <td></td>
                 <td></td>
@@ -175,7 +176,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_6">동남동</td>
+                <td class="windDirect_6">ESE</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -186,7 +187,7 @@
                 <td></td>
               </tr>
               <tr class="odd_row">
-                <td class="windDirect_7">남동</td>
+                <td class="windDirect_7">SE</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -197,7 +198,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_8">남남동</td>
+                <td class="windDirect_8">SSE</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -208,7 +209,7 @@
                 <td></td>
               </tr>
               <tr class="odd_row">
-                <td class="windDirect_9">남</td>
+                <td class="windDirect_9">S</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -219,7 +220,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_10">남남서</td>
+                <td class="windDirect_10">SSW</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -230,7 +231,7 @@
                 <td></td>
               </tr>
               <tr class="odd_row">
-                <td class="windDirect_11">남서</td>
+                <td class="windDirect_11">SW</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -241,7 +242,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_12">서남서</td>
+                <td class="windDirect_12">WSW</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -252,7 +253,7 @@
                 <td></td>
               </tr>
               <tr class="odd_row">
-                <td class="windDirect_13">서</td>
+                <td class="windDirect_13">W</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -263,7 +264,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_14">서북서</td>
+                <td class="windDirect_14">WNW</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -274,7 +275,7 @@
                 <td></td>
               </tr>
               <tr class="odd_row">
-                <td class="windDirect_15">북서</td>
+                <td class="windDirect_15">NW</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -285,7 +286,7 @@
                 <td></td>
               </tr>
               <tr class="even_row">
-                <td class="windDirect_16">북북서</td>
+                <td class="windDirect_16">NNW</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -361,7 +362,8 @@ export default {
       end_date: '',
       lineChart: getLineChart,
       windRose: getWindRose,
-      datatable: getDataTable
+      datatable: getDataTable,
+      responsive: true,
     }
   },
   mounted() {
@@ -402,6 +404,10 @@ export default {
         dom: 'Bfrtip',
         pageLength: 10,
         order: [[1, 'asc']],
+        scrollX: true,
+        // autoWidth: false,
+        // autoHeight: false,
+        /*수정중*/
         language: {
           "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Korean.json"
         },
@@ -442,8 +448,8 @@ export default {
       $(".dt-buttons").hide();
     },
     initPlotlyChart() {
-      Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout);
-      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.lineChart.options)
+      Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.config);
+      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.config);
     },
     datepicker(values) {
       /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/
@@ -523,6 +529,14 @@ export default {
     }
   },
 }
+
+window.onresize = function() {
+  Plotly.relayout('chartBar', {
+    'xaxis.autorange': true,
+    'yaxis.autorange': true,
+  });
+};
+
 </script>
 
 <style lang="scss">
