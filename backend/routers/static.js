@@ -14,5 +14,6 @@ router.get('/getData',authUtil,StaticController.getData);
 
 router.get('/goPage',StaticController.getPage);
 router.get('/getData',StaticController.getData);
+router.post('/registequip',StaticController.getRegister)
 
 module.exports = router;

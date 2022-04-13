@@ -8,7 +8,7 @@ const staticCon = {
     getPage: (req, res) => {
         let user_info = req.session.user_cookie;
         /*세션을 확인함. 세션이 끊기면 로그인 페이지로*/
-        if(user_info != null){
+        if (user_info != null) {
             res.json({
                 success: true,
                 user_info: user_info[1],
@@ -24,7 +24,7 @@ const staticCon = {
     getData: (req, res) => {
         let user_info = req.session.user_cookie;
         /*세션을 확인함. 세션이 끊기면 로그인 페이지로*/
-        if(user_info != null){
+        if (user_info != null) {
             res.json({
                 success: true,
                 user_info: user_info[1],
@@ -82,6 +82,9 @@ const staticCon = {
 
         }*/
 
+    },
+    getRegister: (req, res) => {
+        console.log("req : ",req.body)
     }
 }
 

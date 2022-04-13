@@ -12,8 +12,18 @@ import equipmentStore from "./modules/equipment/equipmentStore";
  요청 -> dispatch -> Actions(commit) -> Mutations(State) -> State -> Getters -> Vue Components
 */
 
+const state = {
+  logined: false,
+}
+
 //store를 기능/페이지별로 분리, index 파일에서 여러개의 모듈을 import
 const store = new Vuex.Store({
+  state,
+  mutations: {
+    'UPDATE_LOGIN_STATUS': (state, payload) => {
+      state.logined = true
+    }
+  },
   modules: {
     user: userStore,
     equipment: equipmentStore,

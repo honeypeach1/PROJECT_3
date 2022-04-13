@@ -5,25 +5,18 @@
       <div class="equipment-headerTab">장비 등록</div>
       <form id="register_equipment_form" @submit.prevent="registerEquipment">
         <table class="equipment-modal-table">
-          <!--
-                    <thead>
-                    <tr class="table_equipment_thead_tr">
-                      <td colspan="2">장비등록 헤더</td>
-                    </tr>
-                    </thead>
-          -->
-
           <tbody>
           <tr class="table_equipment_tbody_tr">
             <td class="table_equipment_tbody_td_head">장비명</td>
-            <td class="table_equipment_tbody_td_data"><input class="input-data-long" type="text" placeholder="장비명을 입력하세요.">
+            <td class="table_equipment_tbody_td_data">
+              <input class="input-data-long" type="text" v-model="equipment_name" placeholder="장비명을 입력하세요." required>
             </td>
           </tr>
           <tr class="table_equipment_tbody_tr">
             <td class="table_equipment_tbody_td_head">타입</td>
             <td class="table_equipment_tbody_td_data">
-              <select class="input-data-short">
-                <option value="null" selected disabled>타입을 선택하세요</option>
+              <select class="input-data-short" v-model="equipment_type" required>
+                <option value="" disabled selected>타입을 선택하세요</option>
                 <option value="1">센서측정장비</option>
                 <option value="2">채취측정장비</option>
                 <option value="3">분석장비</option>
@@ -34,24 +27,39 @@
             <td class="table_equipment_tbody_td_head">장비위치</td>
             <td class="table_equipment_tbody_td_data">
               <div id="registerMap"></div>
-              <div id="registerLatLng"></div>
+              <div id="registerLat">
+                위도 :
+                <input type="number" id="equipment_lat" v-model="equipment_lat" step="0.000000000001" readonly>
+              </div>
+              <div id="registerLng">
+                경도 :
+                <input type="number" id="equipment_lng" v-model="equipment_lng" step="0.000000000001" readonly>
+              </div>
             </td>
           </tr>
           <tr class="table_equipment_tbody_tr">
             <td class="table_equipment_tbody_td_head">주소</td>
             <td class="table_equipment_tbody_td_data">
-              <input class="input-data-long" type="text" placeholder="장비 설치 주소를 입력합니다." @click="callAddress"
-                     id="registerAddress" readonly>
+              <input class="input-data-long" type="text" placeholder="장비 설치 주소를 입력합니다."
+                     @click="callAddress"
+                     id="registerFakeAddress" readonly>
+              <input type="hidden" v-model="equipment_address" id="registerRealAddress" required>
             </td>
           </tr>
           <tr class="table_equipment_tbody_tr">
-            <td class="table_equipment_tbody_td_head">설치사</td>
-            <td class="table_equipment_tbody_td_data"><input class="input-data-long" type="text"
-                                                             placeholder="장비 설치사를 입력하세요."></td>
+            <td class="table_equipment_tbody_td_head">설치회사</td>
+            <td class="table_equipment_tbody_td_data">
+              <input class="input-data-long" type="text" placeholder="장비 설치 회사를 입력하세요."
+                     v-model="equipment_company" required>
+            </td>
           </tr>
           <tr class="table_equipment_tbody_tr">
             <td class="table_equipment_tbody_td_head">포트설정</td>
-            <td class="table_equipment_tbody_td_data"><input class="input-data-short" type="number" min="1000" max="65536" placeholder="장비 연동 포트 설정"></td>
+            <td class="table_equipment_tbody_td_data">
+              <input class="input-data-short" type="number" min="1000" max="65536" placeholder="장비 연동 포트 설정"
+                     oninput="this.value = (this.value > 65536 ? 65536 : this.value)"
+                     v-model="equipment_port" required>
+            </td>
           </tr>
           <tr class="table_equipment_tbody_end">
             <td colspan="2">
@@ -73,10 +81,17 @@
 
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 export default {
-  data: function () {
+  data() {
     return {
-      registMap: null,
-    }
+      registMap: "",
+      equipment_name: "",
+      equipment_type: "",
+      equipment_lat: "",
+      equipment_lng: "",
+      equipment_address: "",
+      equipment_company: "",
+      equipment_port: "",
+    };
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -102,9 +117,9 @@ export default {
       ////////////////////
 
       let imageSrc = require('../../assets/images/svg/marker_image.svg'),
-          imageSize = new kakao.maps.Size(35,45),
-          imageOption = {offset : new kakao.maps.Point(15, 40)};
-      let markerImage = new kakao.maps.MarkerImage(imageSrc,imageSize,imageOption);
+        imageSize = new kakao.maps.Size(35, 45),
+        imageOption = {offset: new kakao.maps.Point(15, 40)};
+      let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
       const marker = new kakao.maps.Marker({
         map: this.registMap,
         image: markerImage,
@@ -113,12 +128,13 @@ export default {
 
       kakao.maps.event.addListener(this.registMap, 'click', function (mouseEvent) {
         let latlng = mouseEvent.latLng;
+        this.equipment_lat = latlng.getLat();
+        this.equipment_lng = latlng.getLng();
         //console.log("위경도 : "+latlng)
         //마커 생성
         marker.setPosition(latlng)
-        let message = '위도 : ' + latlng.getLat() + ', 경도 : ' + latlng.getLng()
-        let resultDiv = document.getElementById('registerLatLng');
-        resultDiv.innerHTML = message;
+        document.getElementById('equipment_lat').value = latlng.getLat();
+        document.getElementById('equipment_lng').value = latlng.getLng();
       })
     },
     callAddress() {
@@ -145,12 +161,27 @@ export default {
             extraRoadAddr = ' (' + extraRoadAddr + ')';
           }
 
-          document.getElementById("registerAddress").value = roadAddr;
+          document.getElementById("registerFakeAddress").value = roadAddr;
+          document.getElementById("registerRealAddress").value = roadAddr;
         }
       }).open();
     },
     registerEquipment() {
-
+      this.$store.dispatch("REGISTEQUIPMENT", {
+        equipment_name: this.equipment_name,
+        equipment_type: this.equipment_type,
+        equipment_lat: this.equipment_lat,
+        equipment_lng: this.equipment_lng,
+        equipment_address: this.equipment_address,
+        equipment_company: this.equipment_company,
+        equipment_port: this.equipment_port,
+      })
+        .then(success => {
+          this.$router.go();
+        })
+        .catch(error => {
+          this.error = true;
+        })
     }
   }
 }

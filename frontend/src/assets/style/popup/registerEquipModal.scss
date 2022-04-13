@@ -84,8 +84,16 @@
               border: 1px solid #5c6f7e;
             }
 
-            #registerLatLng {
-              width: 100%;
+            #registerLat {
+              width: 40%;
+              float: left;
+              height: 20px;
+              text-align: center;
+            }
+
+            #registerLng {
+              width: 40%;
+              float: left;
               height: 20px;
               text-align: center;
             }
