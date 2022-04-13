@@ -63,6 +63,14 @@
             <p>설정관리</p>
           </div>
 
+          <registerEquipModalView v-if="isEquipView" @equip-close="isEquipView=false">
+            <Content />
+          </registerEquipModalView>
+          <div class="admin_user_div click" @click="isEquipView=true" id="register_equipment_area">
+            <img class="equip_setting" src="../../assets/images/svg/Register_Equipment.svg"/>
+            <p>장비등록</p>
+          </div>
+
           <mapModalView v-if="isMapView" @map-close="isMapView=false">
             <Content />
           </mapModalView>
@@ -105,6 +113,7 @@ import router from '../../router'
 import mapModalView from '../../components/popup/mapModalPopup'
 import settingModalView from '../../components/popup/settingModalPopup'
 import userModalView from '../../components/popup/userModalPopup'
+import registerEquipModalView from '../../components/popup/registerEquipPopup'
 
 export default {
   name: 'main-header',
@@ -114,7 +123,8 @@ export default {
   components: {
     mapModalView,
     settingModalView,
-    userModalView
+    userModalView,
+    registerEquipModalView
   },
   mounted() {
     const loggedIn = localStorage.getItem('vuex');
@@ -128,6 +138,7 @@ export default {
       isMapView: false,
       isSettingView: false,
       isUserView: false,
+      isEquipView: false,
       user_info: this.$store.state.user.user_info,
       mobile: false
     }

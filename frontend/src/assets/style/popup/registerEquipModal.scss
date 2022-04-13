@@ -1,0 +1,134 @@
+.modal,
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.overlay {
+  opacity: 0.5;
+  background-color: #000000;
+}
+
+.equipment-modal-card {
+  opacity: 1;
+  z-index: 30;
+  width: 730px;
+  height: 620px;
+  padding-top: 10px;
+  padding-left: 50px;
+  position: relative;
+  padding-right: 50px;
+  margin: 30px auto auto;
+  background-color: #ffffff;
+
+  .equipment-headerTab {
+    //width: 100%;
+    color: #666666;
+    display: block;
+    font-size: 22px;
+    margin-top: 20px;
+    position: relative;
+    text-align: center;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    background: #f7f7f7;
+    border: 2px solid #efefef;
+  }
+
+  #register_equipment_form {
+
+    .equipment-modal-table {
+      width: 100%;
+      height: 470px;
+
+      thead {
+
+        .table_equipment_thead_tr {
+          text-align: center;
+        }
+      }
+
+      tbody {
+
+        .table_equipment_tbody_tr {
+
+          .table_equipment_tbody_td_head {
+            width: 20%;
+            color: #FFFFFF;
+            font-size: 1rem;
+            text-align: center;
+            background: #032136;
+            border: 1px solid #e3e3e3;
+          }
+
+          .table_equipment_tbody_td_data {
+            width: 80%;
+            border: 1px solid #e3e3e3;
+
+            .input-data-long {
+              width: 70%;
+            }
+
+            .input-data-short {
+              width: 40%;
+            }
+
+            #registerMap {
+              width: 100%;
+              height: 290px;
+              font-size: 1rem;
+              margin-bottom: 5px;
+              border: 1px solid #5c6f7e;
+            }
+
+            #registerLatLng {
+              width: 100%;
+              height: 20px;
+              text-align: center;
+            }
+          }
+        }
+
+        .table_equipment_tbody_end {
+
+          td {
+            text-align: center;
+
+            .input_button {
+              width: 85px;
+              height: 30px;
+              color: #FFFFFF;
+              cursor: pointer;
+              font-size: 1.1rem;
+              font-weight: bold;
+              border-radius: 5px;
+              background: linear-gradient(320deg, #507591, #1c4c6e);
+              font-family: "NanumSquare", sans-serif;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.equipment-tab-bottom {
+  height: 50px;
+
+  .equipment-tab-close {
+    width: 70px;
+    height: 35px;
+    float: right;
+    color: #000000;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    background: #f4f4f4;
+    font-family: "NanumSquare", sans-serif;
+  }
+}
