@@ -9,14 +9,15 @@
           <tr class="table_equipment_tbody_tr">
             <td class="table_equipment_tbody_td_head">장비명</td>
             <td class="table_equipment_tbody_td_data">
-              <input class="input-data-long" type="text" v-model="equipment_name" placeholder="장비명을 입력하세요." required>
+              <input class="input-data-long" type="text" v-model="equipment_name" placeholder="장비명을 입력하세요."
+                     required>
             </td>
           </tr>
           <tr class="table_equipment_tbody_tr">
             <td class="table_equipment_tbody_td_head">타입</td>
             <td class="table_equipment_tbody_td_data">
               <select class="input-data-short" v-model="equipment_type" required>
-                <option value="" disabled selected>타입을 선택하세요</option>
+                <option value="null" disabled selected>타입을 선택하세요</option>
                 <option value="1">센서측정장비</option>
                 <option value="2">채취측정장비</option>
                 <option value="3">분석장비</option>
@@ -29,11 +30,13 @@
               <div id="registerMap"></div>
               <div id="registerLat">
                 위도 :
-                <input type="number" id="equipment_lat" v-model="equipment_lat" step="0.000000000001" readonly>
+                <input type="number" id="equipment_lat" v-model="equipment_lat" step="0.000000000001"
+                       readonly>
               </div>
               <div id="registerLng">
                 경도 :
-                <input type="number" id="equipment_lng" v-model="equipment_lng" step="0.000000000001" readonly>
+                <input type="number" id="equipment_lng" v-model="equipment_lng" step="0.000000000001"
+                       readonly>
               </div>
             </td>
           </tr>
@@ -41,9 +44,8 @@
             <td class="table_equipment_tbody_td_head">주소</td>
             <td class="table_equipment_tbody_td_data">
               <input class="input-data-long" type="text" placeholder="장비 설치 주소를 입력합니다."
-                     @click="callAddress"
-                     id="registerFakeAddress" readonly>
-              <input type="hidden" v-model="equipment_address" id="registerRealAddress" required>
+                     @click="callAddress" v-model="equipment_address"
+                     id="registerAddress" readonly required>
             </td>
           </tr>
           <tr class="table_equipment_tbody_tr">
@@ -80,18 +82,18 @@
 <script>
 
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
+let latlng;
+
 export default {
-  data() {
-    return {
+  data: {
       registMap: "",
-      equipment_name: "",
-      equipment_type: "",
-      equipment_lat: "",
-      equipment_lng: "",
-      equipment_address: "",
-      equipment_company: "",
-      equipment_port: "",
-    };
+      equipment_name: null,
+      equipment_type: null,
+      equipment_lat: null,
+      equipment_lng: null,
+      equipment_address: null,
+      equipment_company: null,
+      equipment_port: null
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -127,10 +129,9 @@ export default {
       })
 
       kakao.maps.event.addListener(this.registMap, 'click', function (mouseEvent) {
-        let latlng = mouseEvent.latLng;
+        latlng = mouseEvent.latLng;
         this.equipment_lat = latlng.getLat();
         this.equipment_lng = latlng.getLng();
-        //console.log("위경도 : "+latlng)
         //마커 생성
         marker.setPosition(latlng)
         document.getElementById('equipment_lat').value = latlng.getLat();
@@ -161,8 +162,7 @@ export default {
             extraRoadAddr = ' (' + extraRoadAddr + ')';
           }
 
-          document.getElementById("registerFakeAddress").value = roadAddr;
-          document.getElementById("registerRealAddress").value = roadAddr;
+          document.getElementById("registerAddress").value = roadAddr;
         }
       }).open();
     },
@@ -170,14 +170,16 @@ export default {
       this.$store.dispatch("REGISTEQUIPMENT", {
         equipment_name: this.equipment_name,
         equipment_type: this.equipment_type,
-        equipment_lat: this.equipment_lat,
-        equipment_lng: this.equipment_lng,
-        equipment_address: this.equipment_address,
+        equipment_lat: latlng.getLat(),
+        equipment_lng: latlng.getLng(),
+        equipment_address: document.getElementById("registerAddress").value,
         equipment_company: this.equipment_company,
         equipment_port: this.equipment_port,
       })
         .then(success => {
-          this.$router.go();
+          if(this.$store.state.equipment.isRegist){
+            document.getElementById('register_equipment_form').reset();
+          }
         })
         .catch(error => {
           this.error = true;

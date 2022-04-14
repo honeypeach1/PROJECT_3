@@ -84,7 +84,29 @@ const staticCon = {
 
     },
     getRegister: (req, res) => {
-        console.log("req : ",req.body)
+        console.log("req : ", req.body)
+        dbConnect.query('SELECT * FROM EQUIPMENT_INFO WHERE EQUIPMENT_TCP_PORT = ?', req.body.equipment_port,
+            function (err, val) {
+                if (err) throw err;
+                //포트 넘버는 중복되면 안됨. 포트 넘버 확인하는 로직
+                if (val.length == 0) {
+                    //일치하는 포트 넘버가 없으면 정상적으로 INSERT 수행
+                    dbConnect.query('INSERT INTO EQUIPMENT_INFO (EQUIPMENT_TYPE_SEQ, EQUIPMENT_LAT, EQUIPMENT_LNG, EQUIPMENT_NAME, EQUIPMENT_INSTALL_PLACE ,EQUIPMENT_INSTALL_COMPANY, EQUIPMENT_TCP_PORT) VALUES (?,?,?,?,?,?,?);',
+                        [req.body.equipment_type, req.body.equipment_lat, req.body.equipment_lng, req.body.equipment_name, req.body.equipment_address, req.body.equipment_company, req.body.equipment_port],
+                        function (err) {
+                            if (err) throw err;
+                            res.json({
+                                success: true,
+                                message: '성공적으로 장비 등록을 하였습니다.'
+                            })
+                        })
+                } else {
+                    res.json({
+                        success: false,
+                        message: '존재하는 포트 번호 입니다. 다른 번호를 입력해주세요.'
+                    })
+                }
+            })
     }
 }
 
