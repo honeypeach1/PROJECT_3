@@ -50,7 +50,7 @@
           <userModalView v-if="isUserView " @user-close="isUserView=false">
             <Content />
           </userModalView>
-          <div class="admin_user_div click" @click="isUserView=true" id="user_authority_area">
+          <div class="admin_user_div click" @click="isUserView=true;" id="user_authority_area">
             <img class="user_setting" src="../../assets/images/svg/User_Control.svg"/>
             <p>회원관리</p>
           </div>
@@ -60,7 +60,7 @@
           </settingModalView>
           <div class="admin_user_div click" @click="isSettingView=true" id="equipment_setting_area">
             <img class="admin_setting" src="../../assets/images/svg/setting.svg"/>
-            <p>설정관리</p>
+            <p>장비관리</p>
           </div>
 
           <registerEquipModalView v-if="isEquipView" @equip-close="isEquipView=false">

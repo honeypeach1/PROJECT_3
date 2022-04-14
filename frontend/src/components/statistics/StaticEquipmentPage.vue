@@ -404,7 +404,6 @@ export default {
         dom: 'Bfrtip',
         pageLength: 10,
         order: [[1, 'asc']],
-        scrollX: true,
         // autoWidth: false,
         // autoHeight: false,
         /*수정중*/

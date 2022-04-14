@@ -100,8 +100,8 @@ const userCon = {
                         })
                     }
                 });
-        }catch (err){
-            console.log("DB Connection Error!",err)
+        } catch (err) {
+            console.log("DB Connection Error!", err)
         }
     },
 
@@ -114,14 +114,14 @@ const userCon = {
         NULL로 들어감. 그래서 비동기식 async로 암호화 await 호출
     */
     registerUser: async (req, res) => {
-         //salt 단방향 암호화(암호화 가능, 복호화 불가)
+        //salt 단방향 암호화(암호화 가능, 복호화 불가)
         //randomBytes로 64바이트 길이의 salt를 생성해줌. buf 버퍼 형식으로 base64 문자열로 salt 변경, pbkdf2 단뱡향 암호화
         const hash = await secret.CRYPTO(req.body.register_pwd);
         const pwd = hash.pwd, salt = hash.salt;
 
         //model의 DTO 처리 user 클래스 변수 처리
         if (req.body.register_id != null) {
-            try{
+            try {
                 dbConnect.query('SELECT MEMBER_ID FROM MEMBER WHERE MEMBER_ID = ?',
                     req.body.register_id, function (err, rows) {
                         //일치하는 아이디가 없음.
@@ -149,13 +149,36 @@ const userCon = {
                             })
                         }
                     })
-            }catch (err){
+            } catch (err) {
                 res.json({
                     success: false,
                     message: '회원가입 오류가 발생하였습니다. 잠시후 다시 시도하세요.'
                 })
             }
         }
+    },
+
+    //유저 정보 가져오기
+    getUserInfor: (req, res) => {
+        dbConnect.query('SELECT MEMBER_SEQ, MAP_TYPE_SEQ, MEMBER_ID, MEMBER_NAME, MEMBER_TEL, MEMBER_CK, MEMBER_RELES,' +
+            'MEMBER_MAP_LAT, MEMBER_MAP_LNG, MEMBER_MAP_ZOOM_SIZE, DATE_FORMAT(MEMBER_REG_DATE,"%y-%m-%d") AS MEMBER_REG_DATE FROM MEMBER',
+            function (err, data) {
+                if (err) throw err;
+                let userInfor = data;
+                if (data.length == 0) {
+                    res.json({
+                        success: false,
+                        message: '유저 정보가 없습니다.'
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        userInfor: userInfor,
+                        message: '유저 목록을 조회하였습니다.'
+
+                    })
+                }
+            })
     },
 
     //로그아웃

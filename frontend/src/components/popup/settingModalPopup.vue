@@ -60,8 +60,9 @@
                 <input placeholder="지코바">
               </td>
               <td>
-                <button>변경하기</button>
-                <button>초기화</button>
+                <button class="change_Equip">변경하기</button>
+                <button class="reset_Equip">초기화</button>
+                <button class="delete_Equip">삭제</button>
               </td>
             </tr>
           </tbody>

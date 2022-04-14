@@ -24,17 +24,17 @@ export default {
         } else {
           if(data.success){
             alert(data.message);
-            commit("REGPROCESS",true);
+            commit("REG_PROCESS",true);
           }else{
             alert(data.message);
-            commit("REGPROCESS",false);
+            commit("REG_PROCESS",false);
           }
         }
       })
     }
   },
   mutations: {
-    REGPROCESS(state, data) {
+    REG_PROCESS(state, data) {
       state.isRegist = data;
     }
   }

@@ -49,10 +49,10 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           if (data.success) {
-            commit("login", data);
+            commit("LOGIN_PROCESS", data);
           } else {
             alert(data.message);
-            commit("login", null);
+            commit("LOGIN_PROCESS", null);
           }
         }
       })
@@ -63,17 +63,30 @@ export default {
         method: "POST",
         data: {register_id, register_pwd, register_name, register_tel, register_role}
       }).then(({data, status}) => {
-          if (status === 304) {
-            alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          if (data.success) {
+            alert(data.message);
           } else {
-            if (data.success) {
-              alert(data.message);
-            } else {
-              alert(data.message);
-            }
+            alert(data.message);
           }
+        }
       })
     },
+    /*유저 정보 가져오기*/
+    /*GETUSERINFOR({commit}) {
+      axios({
+        url: "/user/getUserInfor",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          commit("USER_INFOR_PROCESS", data.userInfor)
+        }
+      })
+    },*/
     /*세션 초기화를 위해서 백엔드 접근이 필요함.*/
     LOGOUT({commit}) {
       axios({
@@ -81,7 +94,7 @@ export default {
         method: "POST",
       }).then((res) => {
         alert(res.data.message);
-        commit("logout")
+        commit("LOGOUT_PROCESS")
       })
     }
   },
@@ -95,12 +108,15 @@ export default {
 */
   mutations: {
     //세션 또는 쿠키 정보를 가져오면 됨. 가져와서 state에서 정의한 변수에 대입하여 필요시 가져와서 사용
-    login(state, data) {
+    LOGIN_PROCESS(state, data) {
       state.token = data.token;
       state.user_info = data.user_info;
       state.isLogin = true;
     },
-    logout(state) {
+    /*USER_INFOR_PROCESS(state, res) {
+      state.getUserInfor = res;
+    },*/
+    LOGOUT_PROCESS(state) {
       localStorage.removeItem('vuex');
       //reload() -> vuex store, axios header 클리어
       location.reload();
