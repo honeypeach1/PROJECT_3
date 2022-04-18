@@ -17,6 +17,7 @@
             <td>전화번호</td>
             <td>장비 할당</td>
             <td>가입일</td>
+            <td>권한</td>
             <td>계정 활성화</td>
             <td>설정</td>
             <td>삭제</td>
@@ -45,6 +46,7 @@ export default {
   data: function () {
     return {
       userDatatable: [],
+      userNum: '',
     }
   },
   mounted() {
@@ -52,10 +54,6 @@ export default {
   },
   methods: {
     getUserInfor() {
-      /*this.$store.dispatch("GETUSERINFOR", {})
-        .then(success => {
-          this.drawUserTable();
-      })*/
       axios({
         url: "/user/getUserInfor",
         method: "GET",
@@ -84,84 +82,60 @@ export default {
           },
           data: data,
           columns: [
+            {data: 'MEMBER_ID'},
             {
-              render: function (data, type, row) {
-                return '<input type="text" name="input_field" placeholder="' + row['MEMBER_ID'] + '">';
-              }
-            },
-            {
-              render: function (data, type, row) {
-                return '<input type="text" name="input_field" placeholder="' + row['MEMBER_NAME'] + '">';
+              render: (data, type, row) => {
+                return '<input type="text" id="changeUserName" name="input_field" placeholder="' + row['MEMBER_NAME'] + '">';
               }
             },
             {
               render: (data, type, row) => {
-                return this.passwordSetting(row['MEMBER_SEQ']);
-              },
-            },
-            {
-              render: function (data, type, row) {
-                return '<input type="text" name="input_field" placeholder="' + row['MEMBER_TEL'] + '">';
+                return '<input type="password" id="changeUserPass" placeholder="비밀번호"><button class="changePassButton" id="' + row['MEMBER_SEQ'] + '">초기화</button>';
               }
             },
             {
-              render: (data, type, row) => {
-                return this.selectEquip(row['MEMBER_ID']);
-              },
+              render: function (data, type, row) {
+                return '<input type="text" id="changeUserTel" name="input_field" placeholder="' + row['MEMBER_TEL'] + '">';
+              }
+            },
+            {
+              render: function (data, type, row) {
+                return '<select id="changeUserEquip"><option value="0">모든장비</option><option value="1">지코바</option><option value="2">KFC</option><option value="3">피자나라치킨공주</option><option value="4">BHC</option></select>';
+              }
             },
             {data: 'MEMBER_REG_DATE'},
             {
+              render: function (data, type, row) {
+                return '<select id="changeUserReles"><option value="0">관리자</option><option value="1">일반유저</option>';
+              }
+            },
+            {
               render: (data, type, row) => {
-                return this.memberCk(row['MEMBER_CK']);
+                if (row['MEMBER_CK'] == 1) {
+                  return '<button id="changeUserUnActive" class="Active">활성화</button>';
+                } else {
+                  return '<button id="changeUserActive" class="nonActive">비활성화</button>';
+                }
               },
             },
             {
               render: (data, type, row) => {
-                return this.settingArea();
-              },
+                return '<button id="changeUserInfor">변경</button><button id="changeUserReset">초기화</button>';
+              }
             },
             {
               render: (data, type, row) => {
-                return this.deleteArea();
-              },
+                return '<button id="deleteUserInfor">삭제</button>';
+              }
             },
           ]
+        });
+        $('#userTable tbody').on('click','.changePassButton', () => {
+          let data = datatableUserList.row($(this)).data();
+          console.log('확인 : ',this.userDatatable);
         })
       }
     },
-    passwordSetting(passSetting) {
-      let passArea = '<input type="password" placeholder="비밀번호">';
-      passArea += '<td><button>초기화</button></td>';
-      return passArea;
-    },
-    selectEquip(equipNum) {
-      let selectArea = '<select>\n' +
-        '<option value="0">모든장비</option>\n' +
-        '<option value="1">지코바</option>\n' +
-        '<option value="2">KFC</option>\n' +
-        '<option value="3">피자나라치킨공주</option>\n' +
-        '<option value="4">BHC</option>\n' +
-        '</select>'
-      return selectArea;
-    },
-    settingArea() {
-      let settingButton = '<button>변경</button>' +
-        '<button>초기화</button>'
-      return settingButton;
-    },
-    deleteArea() {
-      let deleteArea = '<button>삭제</button>'
-      return deleteArea;
-    },
-    memberCk(ckValue) {
-      let ckButton = '';
-      if (ckValue == 1) {
-        ckButton += '<button class="Active">활성화</button>'
-      } else {
-        ckButton += '<button class="nonActive">비활성화</button>'
-      }
-      return ckButton;
-    }
   }
 }
 </script>

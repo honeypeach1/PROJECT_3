@@ -25,36 +25,30 @@ export const windRose = {
     type: "barpolar"
   }],
   layout: {
-    autosize: true,
-    width: 360,
-    height: 375,
+    plot_bgcolor: 'transparent',
     paper_bgcolor: 'transparent',
-    showlegend: true,
+    height: 300,
+    margin: {
+      t: 40,
+      b: 40,
+      l: 50,
+      r: 50,
+    },
     font: {
-      color: '#fff',
-      size: 16
-    },
-    title:  {
-      text: "방사형 빈도수 풍배도",
-      font: {
-        size: 16,
-        color: "#fff",
-        family: "NanumSquare",
-      }
-    },
-    legend: {
-      font: {
-        size: 16,
-        color: '#fff',
-        family: "NanumSquare"
-      }
+      size: 16,
+      color: "#000",
+      weight: "bold",
     },
     polar: {
       barmode: "overlay",
       bargap: 0,
       radialaxis: {ticksuffix: "%", angle: 45, dtick: 20},
-      angularaxis: {direction: "clockwise"}
-    }
+      angularaxis: {
+        direction: "clockwise",
+        color: "#fff",
+      },
+    },
+    showlegend: false,
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div id="body-wrapper">
-    <div id="header" style="height: 8%">
+    <div id="header">
       <main-header v-bind:currentTab="currentTab"/>
     </div>
 
@@ -17,55 +17,68 @@
               </optgroup>
             </select>
           </div>
-          <div id="sensorArea">
-            <div class="sensorData" id="sensor_1">
-              <div class="sensorHead" id="sensor_name_1">
-                TOD
-              </div>
-              <div class="sensorName" id="sensor_data_1">
-                15.5
-              </div>
+          <div id="selectEquipment" class="selectEquipment">
+            <div class="selectTitle">
+              <span>채취상태</span>
+              <a class="collectarea" onclick="collectorControllView()">
+                <div>
+                  <span class="rightSpan">동작</span>
+                  <img id="collectorBtn" src="../../assets/images/layout/btn_down.png" alt="temp"/>
+                </div>
+              </a>
             </div>
-            <div class="sensorData" id="sensor_2">
-              <div class="sensorHead" id="sensor_name_2">
-                H<sup>2</sup>S
-              </div>
-              <div class="sensorName" id="sensor_data_2">
-                55
-                <div class="sensor_title">(ppb)</div>
-              </div>
-            </div>
-            <div class="sensorData" id="sensor_3">
-              <div class="sensorHead" id="sensor_name_3">
-                NH<sup>3</sup>
-              </div>
-              <div class="sensorName" id="sensor_data_3">
-                22.2
-                <div class="sensor_title">(ppb)</div>
-              </div>
-            </div>
-            <div class="sensorData" id="sensor_4">
-              <div class="sensorHead" id="sensor_name_4">
-                MOS
-              </div>
-              <div class="sensorName" id="sensor_data_4">
-                12
-                <div class="sensor_title">(OU)</div>
+            <div class="selectBody">
+              <div class="selectBodyContent">
+                <div class = "totalbox box1">
+                  <div class="box_title">구분</div>
+                  <div class="box_value">채취장비</div>
+                </div>
+                <div class = "totalbox box2">
+                  <div class="box_title">모드</div>
+                  <div class="box_value">수동</div>
+                </div>
+                <div class = "totalbox box3">
+                  <div class="box_title">채집백</div>
+                  <div class="box_value">교환필요</div>
+                </div>
+                <div class = "totalbox box4">
+                  <div class="box_title">상태</div>
+                  <div class="box_value">채취대기</div>
+                </div>
+                <div class = "totalbox box5">
+                  <div class="box_title">채취시간</div>
+                  <div class="box_value">
+                    <div class="box_value1">04.13 11:22</div>
+                    <div class="box_value2">04.13 11:24</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div id="windArea">
-            <div class="wind_head_area">
-              <div class="wind_head_name_area">
-                풍향(wind direction)
+          <div id="showChartArea">
+            <span>악취정보</span>
+            <div id="chartBar"></div>
+          </div>
+          <div id="showWindRoseArea">
+            <span>풍배도</span>
+            <div id="windRose"></div>
+            <input class="showWindCount" type="button" value="상세보기">
+            <div class="windLegend">
+              <div class="windLevel windLevel_1">
+                <div class="color"></div>
+                <div class="text">< 5 m/s</div>
               </div>
-            </div>
-            <div class="wind_data_area">
-              <img class="wind_image" src="../../assets/images/svg/Windrose.svg"/>
-            </div>
-            <div class="wind_name_area">
-              <div class="wind_name_data_area">
-                북서(NW)
+              <div class="windLevel windLevel_2">
+                <div class="color"></div>
+                <div class="text">5-8 m/s</div>
+              </div>
+              <div class="windLevel windLevel_3">
+                <div class="color"></div>
+                <div class="text">8-11 m/s</div>
+              </div>
+              <div class="windLevel windLevel_4">
+                <div class="color"></div>
+                <div class="text">> 11 m/s</div>
               </div>
             </div>
           </div>
@@ -91,6 +104,8 @@
 import {mapState,mapActions,mapMutations,mapGetters} from 'vuex';
 import MainHeader from "../layout/header";
 import dotenv from 'dotenv';
+import getWindRose from "../statistics/chart_attribute/windrose.js";
+import getLineChart from '../statistics/chart_attribute/lineChart2.js'
 
 /*API 키*/
 dotenv.config();
@@ -133,6 +148,9 @@ export default {
 
       markers: [],
       infowindow: null,
+      windRose: getWindRose,
+      lineChart: getLineChart,
+      responsive: true,
     };
   },
   mounted() {
@@ -146,6 +164,7 @@ export default {
       script.onload = () => kakao.maps.load(this.initMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
       document.head.appendChild(script);
+      this.initPlotlyChart();
     }
   },
   methods: {
@@ -166,6 +185,10 @@ export default {
       this.socket.close();
       this.status = "disconnected";
       this.logs = [];
+    },
+    initPlotlyChart() {
+      Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.config);
+      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.config);
     },
     /*
         sendMessage(e) {
@@ -236,6 +259,13 @@ export default {
     },
   },
 }
+window.onresize = function() {
+  Plotly.relayout('chartBar', {
+    'xaxis.autorange': true,
+    'yaxis.autorange': true,
+  });
+  Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.config);
+};
 
 </script>
 

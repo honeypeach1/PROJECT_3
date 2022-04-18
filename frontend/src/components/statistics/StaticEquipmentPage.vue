@@ -91,8 +91,7 @@
           </div>
         </div>
         <div id="showWindRoseArea">
-          <div id="windRose">
-          </div>
+          <div id="windRose"></div>
           <div id="windCountGraph">
             <table>
               <thead>

@@ -10,12 +10,13 @@
     justify-content: space-between;
     width: 100%;
     height: calc(100% - 60px - 10px);
-    min-height: 600px;
+    min-height: 917px;
     margin: 5px 0px;
     align-items: center;
 
     #leftArea {
       width: 20%;
+      min-width: 370px;
       height: 100%;
       margin: 5px;
       background: #5c6f7e;
@@ -33,11 +34,11 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 100%;
+          width: calc(100% - 2px);
           height: 7%;
           min-height: 45px;
           font-size: 25px;
-          background: #668b99;
+          background: linear-gradient(to top, rgba(42, 77, 93, 0.65) 27%, rgba(65, 97, 113, 0.65) 85%, rgba(119, 147, 159, 0.65));
           border: 1px solid #021f33;
 
           select {
@@ -64,102 +65,174 @@
           }
         }
 
-        #sensorArea {
+        #selectEquipment {
           display: flex;
           flex-flow: wrap;
-          flex-direction: column;
-          width: 100%;
-          height: 43%;
-          background: #668b99;
+          justify-content: center;
+          width: calc(100% - 2px);
+          border: 1px solid;
           margin: 5px 0px;
-          border: 1px solid #021f33;
+          background: #242b32;
+          font-family: 'NanumGothic', sans-serif;
+          font-weight: 500;
+          font-size: 1em;
 
-          .sensorData {
+          .selectTitle {
             display: flex;
-            background: #726e6e;
-            flex-direction: column;
+            width: 95%;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0px;
+            font-family: 'NanumGothic', sans-serif;
+            font-weight: 500;
+            font-size: 1em;
+            color: white;
+          }
+          .selectBody {
+            display: flex;
             justify-content: center;
-            border: 2px solid #3b3b3b;
-            flex-basis: calc(50% - 6px);
+            width: 100%;
+            border: 2px solid #111e31;
+            color: white;
+            font-weight: bold;
+            box-shadow: 1px 1px 4px #5ac0d9, -1px -1px 4px #5ac0d9;
+            border-radius: 5px;
+            margin: 5px;
 
-            .sensorHead {
-              width: 100%;
-              height: 20%;
+            .selectBodyContent {
               display: flex;
-              color: #ffffff;
-              flex-flow: wrap;
-              font-size: 1.5em;
-              font-weight: bold;
-              align-items: center;
-              justify-content: center;
-              border: 1px solid rgba(16,30,38,0.3);
-              box-shadow: inset 0px 1px 1px 0px rgb(255,255,255, 0.8);
-              background-image: linear-gradient(to top, rgba(56, 100, 122, 0.65), rgba(88, 130, 151, 0.65), rgba(153, 199, 219, 0.65));
-            }
-
-            .sensorName {
               width: 100%;
-              height: 80%;
-              display: flex;
-              color: #ffffff;
-              flex-flow: wrap;
-              font-size: 2.2em;
-              font-weight: bold;
-              align-items: center;
-              justify-content: center;
-              background: linear-gradient(to top, #2f4a5a 29%, #1c2e37 93%);
 
-              .sensor_title {
-                color: #e7e7e7;
-                font-size: 0.5em;
+              .totalbox {
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+                flex: 1;
+                border-right: 1px solid rgba(216, 216, 216, 0.5);
+
+                .box_title {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                  height: 30px;
+                  background-color: #517285;
+                }
+                .box_value {
+                  display: flex;
+                  flex-flow: column;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                  height: 45px;
+                  background: linear-gradient(#1b3e55, #3e7192 50%, #1f354a);
+                  font-family: 'NanumGothicB', sans-serif;
+                  font-weight: 500;
+                  font-size: 0.8em;
+                }
+              }
+              .totalbox.box5 {
+                border-right: 0px;
+                .box_title {
+                  min-width: 130px;
+                }
               }
             }
           }
         }
+        #showChartArea {
+          border: 1px solid;
 
-        #windArea {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          width: 100%;
-          height: calc(56% - 40px);
-          background: #668b99;
-          flex: 1;
-          border: 1px solid #021f33;
-
-          .wind_head_area,
-          .wind_name_area {
+          span {
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 1.3em;
+            color: white;
             width: 100%;
-            margin: 5px 0px;
+            height: 40px;
+            background: linear-gradient(to top, rgba(42, 77, 93, 0.65) 27%, rgba(65, 97, 113, 0.65) 85%, rgba(119, 147, 159, 0.65));
+            border-bottom: 1px solid black;
+          }
 
-            .wind_head_name_area,
-            .wind_name_data_area {
+          #chartBar {
+            background: linear-gradient(0deg,#2f4a5a 29%,#1c2e37 93%);
+          }
+        }
+
+        #showWindRoseArea {
+          border: 1px solid;
+          margin-top: 5px;
+
+          span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3em;
+            color: white;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, rgba(42, 77, 93, 0.65) 27%, rgba(65, 97, 113, 0.65) 85%, rgba(119, 147, 159, 0.65));
+            border-bottom: 1px solid black;
+          }
+
+          #windRose {
+            background: linear-gradient(0deg,#2f4a5a 29%,#1c2e37 93%);
+          }
+          .showWindCount {
+            position: absolute;
+            right: 0px;
+            bottom: 20px;
+            width: 100px;
+            height: 30px;
+            cursor: pointer;
+            border: 1px solid;
+          }
+          .windLegend {
+            display: flex;
+            justify-content: space-around;
+            .windLevel {
               display: flex;
               justify-content: center;
               align-items: center;
-              width: 50%;
-              padding: 4px;
-              border-radius: 10px;
-              border: 2px solid #5c6f7e;
-              font-size: 0.9rem;
-              background: #f4f4f4;
+
+              .text {
+                font-size: 15px;
+                font-weight: bold;
+                font-family: "NanumSquare", sans-serif;
+              }
             }
-          }
-
-          .wind_data_area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            text-align: center;
-
-            .wind_image {
-              width: 80%;
-              height: 100%;
-              background: beige;
+            .windLevel.windLevel_1 {
+              .color {
+                height: 10px;
+                width: 10px;
+                background-color: rgb(242,240,247);
+                margin-right: 3px;
+              }
+            }
+            .windLevel.windLevel_2 {
+              .color {
+                height: 10px;
+                width: 10px;
+                background-color: rgb(203,201,226);
+                margin-right: 3px;
+              }
+            }
+            .windLevel.windLevel_3 {
+              .color {
+                height: 10px;
+                width: 10px;
+                background-color: rgb(158,154,200);
+                margin-right: 3px;
+              }
+            }
+            .windLevel.windLevel_4 {
+              .color {
+                height: 10px;
+                width: 10px;
+                background-color: rgb(106,81,163);
+                margin-right: 3px;
+              }
             }
           }
         }
@@ -219,7 +292,7 @@
           #HeaderArea {
             display: flex;
             top: 0px;
-            width: 100%;
+            width: calc(100% - 2px);
             min-width: 32px;
             height: 11%;
             min-height: 35px;
@@ -228,11 +301,6 @@
             select {
               min-height: 26px;
             }
-          }
-          #sensorArea {
-            width: 50%;
-            min-width: 50%;
-            height: 85%;
           }
           #windArea {
             width: 50%;
