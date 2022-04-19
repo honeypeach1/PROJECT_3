@@ -84,7 +84,6 @@ const staticCon = {
 
     },
     getRegister: (req, res) => {
-        console.log("req : ", req.body)
         dbConnect.query('SELECT * FROM EQUIPMENT_INFO WHERE EQUIPMENT_TCP_PORT = ?', req.body.equipment_port,
             function (err, val) {
                 if (err) throw err;
