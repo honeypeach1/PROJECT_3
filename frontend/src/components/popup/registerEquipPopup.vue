@@ -21,6 +21,7 @@
                 <option value="1">센서측정장비</option>
                 <option value="2">채취측정장비</option>
                 <option value="3">분석장비</option>
+                <option value="4">휴대장비</option>
               </select>
             </td>
           </tr>
