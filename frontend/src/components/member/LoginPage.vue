@@ -61,6 +61,9 @@ export default {
       })
         .then(success => {
           if (this.$store.state.user.token != null) {
+            //로그인 로그 처리 추가
+
+
             this.$router.push({name: "MonitoringPage"});
           }
         })

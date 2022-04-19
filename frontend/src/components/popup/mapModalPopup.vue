@@ -33,6 +33,12 @@
 export default {
   data: function () {
     return {}
+  },
+  mounted() {
+
+  },
+  methods: {
+
   }
 }
 </script>

@@ -9,6 +9,9 @@ const path = require("path");
 const secret = require("../../config/crypto");
 const jwt = require('../../modules/jwt');
 const {token} = require("morgan");
+const useragent = require('express-useragent');
+const {log} = require("debug");
+const {raw} = require("body-parser");
 
 //쿠키 보증 기간 설정
 const expiryDate = new Date(Date.now() + 60 * 60 * 1000 * 24 * 3) //24 hour 3일
@@ -18,15 +21,21 @@ const userCon = {
         1. 로그인 체크 메소드
     */
     loginCheck: (req, res) => {
+        let login_check = null;
+        let login_ip = req.connection.remoteAddress.replace(/^.*:/, '');
+        let login_Agent = req.headers['user-agent'];
+        let member_seq = 0;
         try {
-            //먼저 로그인한 계정이 있는지 확인하고 있으면 salt값을 가져옴.
-            dbConnect.query('SELECT MEMBER_ID, SALT FROM MEMBER WHERE MEMBER_ID = ?', req.body.login_id,
-                function (err, val) {
+            //먼저 로그인할 계정이 있는지 확인하고 있으면 salt값을 가져옴.
+            dbConnect.query('SELECT MEMBER_SEQ, MEMBER_ID, SALT FROM MEMBER WHERE MEMBER_ID = ?', req.body.login_id,
+                async function (err, val) {
                     if (err) throw err;
                     //로그인한 아이디가 존재하며 존재하는 salt값을 가져옴.
                     if (val != '') {
                         var dataList = [];
-                        for (var data of val) {
+                        for (let data of val) {
+                            member_seq = data.MEMBER_SEQ;
+
                             dataList.push(data.MEMBER_ID);
                             dataList.push(data.SALT);
                         }
@@ -46,6 +55,7 @@ const userCon = {
                                 if (err) throw err;
                                 //암호가 일치하는 유저가 있음.
                                 if (data.length > 0) {
+                                    login_check = await login_log('0');
                                     var dataList = [];
                                     for (var value of data) {
                                         dataList.push(value.MEMBER_ID);
@@ -58,7 +68,6 @@ const userCon = {
 
                                     //res.isAuthenticated(data)
                                     const jwtToken = await jwt.sign(dataList);
-
                                     //쿠키 설정
                                     /*
                                         cookie 생성시 받는 파라미터는 로그인시 받는 발급 토큰과 refresh 토큰으로
@@ -83,6 +92,8 @@ const userCon = {
                                     })
                                     return res;
                                 } else {
+                                    login_check = await login_log('1');
+
                                     res.json({
                                         success: false,
                                         message: '일치하는 회원 정보가 없습니다. 아이디와 패스워드를 다시 입력해주세요.'
@@ -94,17 +105,33 @@ const userCon = {
                             message: '통신 성공',
                         })*/
                     } else {
+                        login_check = await login_log('2');
+
                         return res.json({
                             success: false,
                             message: '로그인 정보를 가져올 수 없습니다. 아이디와 패스워드를 다시 입력해주세요.'
                         })
                     }
                 });
+
+            let login_log = async (success) => {
+                await dbConnect.query('INSERT INTO LOGIN_LOG (MEMBER_SEQ, LOGIN_LOG_IP, LOGIN_LOG_AGENT, LOGIN_LOG_SUCCESS) ' +
+                    'VALUES (?,?,?,?);',
+                    [
+                        member_seq,
+                        login_ip,
+                        login_Agent,
+                        success,
+                    ],
+                    function (err) {
+                        if (err) throw err;
+                    })
+            }
+
         } catch (err) {
             console.log("DB Connection Error!", err)
         }
     },
-
     /*
         2.회원가입 처리 메소드
         salt 암호화 처리시 처리 횟수가 100000으로 지정됨.(대략 1초대)
@@ -126,14 +153,17 @@ const userCon = {
                     req.body.register_id, function (err, rows) {
                         //일치하는 아이디가 없음.
                         if (rows.length == 0) {
-                            dbConnect.query('INSERT INTO MEMBER (MEMBER_ID, MEMBER_PASS, SALT, MEMBER_NAME, MEMBER_TEL, MEMBER_RELES) ' +
-                                'VALUES (?,?,?,?,?,?);',
+                            dbConnect.query('INSERT INTO MEMBER (MEMBER_ID, MEMBER_PASS, SALT, MEMBER_NAME, MEMBER_TEL, MEMBER_RELES, MEMBER_MAP_LAT, MEMBER_MAP_LNG) ' +
+                                'VALUES (?,?,?,?,?,?,?,?);',
                                 [req.body.register_id,
                                     pwd,
                                     salt,
                                     req.body.register_name,
                                     req.body.register_tel,
-                                    req.body.register_role],
+                                    req.body.register_role,
+                                    '126.000',
+                                    '126.000'
+                                ],
                                 function (err, rows) {
                                     if (err) throw err;
                                     res.json({
@@ -178,6 +208,26 @@ const userCon = {
 
                     })
                 }
+            })
+    },
+
+    //유저 패스워드 변경
+    setUserPass: async (req, res) => {
+
+        //salt 단방향 암호화(암호화 가능, 복호화 불가)
+        //randomBytes로 64바이트 길이의 salt를 생성해줌. buf 버퍼 형식으로 base64 문자열로 salt 변경, pbkdf2 단뱡향 암호화
+        const hash = await secret.CRYPTO(req.body.update_pass);
+        const pwd = hash.pwd, salt = hash.salt;
+
+        dbConnect.query('UPDATE MEMBER SET MEMBER_PASS = ?, salt = ? WHERE MEMBER_SEQ = ?',
+            [
+                pwd,
+                salt,
+                req.body.member_seq
+            ],
+            function (err, data) {
+                if (err) throw err;
+                console.log("data : ", data);
             })
     },
 

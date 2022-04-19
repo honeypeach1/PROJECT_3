@@ -411,7 +411,7 @@ export default {
         },
         buttons: [
           {
-            extend: 'excel'
+            extend: 'excelHtml5'
             , text: '엑셀출력'
             // ,filename: '엑셀파일명'
             // ,title: '엑셀파일 안에 쓰일 제목'
@@ -510,7 +510,7 @@ export default {
           equipNum: this.equipNum
         }
       }).then((res) => {
-        if (res.data.success == true) {
+        if (res.data.success) {
           /*
             데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
           */
@@ -520,9 +520,7 @@ export default {
           this.$router.push("/");
         }
       }).catch((error) => {
-        console.log(error)
-      }).finally((error) => {
-        console.log(error)
+        console.log('getData 호출 에러 : ',error)
       })
     }
   },
