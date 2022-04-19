@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data: function () {
     return {
@@ -97,7 +99,24 @@ export default {
       },
     }
   },
+  mounted() {
+    this.getEquipmentThreshold();
+  },
   methods: {
+    getEquipmentThreshold() {
+      axios({
+        url: "/equipment/getThreshold",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          /*if(data.equipmentList.length == 0){
+          }*/
+          data.equipmentList
+        }
+      })
+    },
     getSettingData() {
 
     },

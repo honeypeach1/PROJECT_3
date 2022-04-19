@@ -205,7 +205,6 @@ const userCon = {
                         success: true,
                         userInfor: userInfor,
                         message: '유저 목록을 조회하였습니다.'
-
                     })
                 }
             })
