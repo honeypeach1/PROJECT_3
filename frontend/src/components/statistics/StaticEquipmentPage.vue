@@ -309,9 +309,10 @@ import MainHeader from "../layout/header";
 import getLineChart from './chart_attribute/lineChart'
 import getWindRose from "./chart_attribute/windrose";
 import getDataTable from './chart_attribute/datatable';
+import axios from "axios";
+import $ from 'jquery';
 
 import Vue from 'vue';
-import axios from "axios";
 import dotenv from 'dotenv';
 import Datatable from "datatables.net"
 import "jszip/dist/jszip.min"
@@ -323,7 +324,6 @@ import "datatables.net-buttons/js/buttons.colVis"
 import "datatables.net-buttons/js/buttons.flash"
 import "datatables.net-buttons/js/buttons.print"
 import "datatables.net-buttons/js/buttons.html5"
-import $ from 'jquery';
 
 import VMdDateRangePicker from "v-md-date-range-picker";
 import router from "../../router";
@@ -343,16 +343,7 @@ export default {
     return {
       map: null,
       currentTab: 1,
-      selectOptions: {
-        'AMS-1000': [
-          {text: 'BBQ치킨', value: 1},
-          {text: '지코바', value: 2}
-        ],
-        'AMS-2000': [
-          {text: '피자나라치킨공주', value: 3},
-          {text: '맛초킹', value: 4}
-        ]
-      },
+      selectOptions: [],
       values: [],
       equipNum: 0,
       dataType: 0,
@@ -368,6 +359,7 @@ export default {
   mounted() {
     this.$emit('currentTab', 1)
     /*세션 확인*/
+    this.getEquipmentList();
     if (window.kakao && window.kakao.maps) {
       this.initStaticMap();
     } else {
@@ -385,6 +377,18 @@ export default {
     },
     printDown() {
       $(".buttons-print").click();
+    },
+    getEquipmentList() {
+      axios({
+        url: "/equipment/getThreshold",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.selectOptions = data.equipmentList;
+        }
+      })
     },
     initStaticMap() {
       const container = document.getElementById("staticMap");

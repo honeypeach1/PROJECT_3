@@ -10,7 +10,7 @@
           <div id="HeaderArea">
             <select>
               <option value="0" selected disabled>장비를 선택해주세요.</option>
-              <optgroup v-for="(group, name) in options" :label="name">
+              <optgroup v-for="(group, name) in selectOptions" :label="name">
                 <option v-for="option in group" :value="option.value">
                   {{ option.text }}
                 </option>
@@ -105,7 +105,9 @@ import {mapState,mapActions,mapMutations,mapGetters} from 'vuex';
 import MainHeader from "../layout/header";
 import dotenv from 'dotenv';
 import getWindRose from "../statistics/chart_attribute/windrose.js";
-import getLineChart from '../statistics/chart_attribute/lineChart2.js'
+import getLineChart from '../statistics/chart_attribute/lineChart2.js';
+import axios from "axios";
+import $ from 'jquery';
 
 /*API 키*/
 dotenv.config();
@@ -120,16 +122,7 @@ export default {
   data: function () {
     return {
       currentTab: 0,
-      options: {
-        'AMS-1000': [
-          {text: 'BBQ치킨', value: 1},
-          {text: '지코바', value: 2}
-        ],
-        'AMS-2000': [
-          {text: '피자나라치킨공주', value: 3},
-          {text: '맛초킹', value: 4}
-        ]
-      },
+      selectOptions: [],
       map: null,
       markerPositions1: [
         [33.452278, 126.567803],
@@ -154,6 +147,7 @@ export default {
     };
   },
   mounted() {
+    this.getEquipmentList();
     this.connect();
     /*setInterval(this.connect.bind(this),30000)*/
     if (window.kakao && window.kakao.maps) {
@@ -185,6 +179,18 @@ export default {
       this.socket.close();
       this.status = "disconnected";
       this.logs = [];
+    },
+    getEquipmentList() {
+      axios({
+        url: "/equipment/getThreshold",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.selectOptions = data.equipmentList;
+        }
+      })
     },
     initPlotlyChart() {
       Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.config);

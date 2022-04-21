@@ -14,11 +14,28 @@
         <div class="standard-select-name">장비선택</div>
         <select class="settingMapSelectList" v-model="equipSettingNum" @change="getSettingData">
           <option value="0" selected disabled>장비를 선택해주세요.</option>
+<!--          <optgroup v-for="(group, name) in selectSettingOptions" :label="name">
+            <option v-for="option in group" :value="option.value">
+              {{ option.text }}
+            </option>
+          </optgroup>-->
           <optgroup v-for="(group, name) in selectSettingOptions" :label="name">
             <option v-for="option in group" :value="option.value">
               {{ option.text }}
             </option>
           </optgroup>
+<!--          <optgroup label="측정">
+            <option v-if="option.data == 1" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
+          </optgroup>
+          <optgroup label="채취">
+            <option v-if="option.data == 2" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
+          </optgroup>
+          <optgroup label="분석">
+            <option v-if="option.data == 3" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
+          </optgroup>
+          <optgroup label="휴대">
+            <option v-if="option.data == 4" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
+          </optgroup>-->
         </select>
         </div>
         <!--equipment threshold setting area-->
@@ -81,22 +98,14 @@
 
 <script>
 import axios from "axios";
+import $ from 'jquery';
 
 export default {
   data: function () {
     return {
       show_toggle: true,
       equipSettingNum: 0,
-      selectSettingOptions: {
-        'AMS-1000': [
-          {text: 'BBQ치킨', value: 1},
-          {text: '지코바', value: 2}
-        ],
-        'AMS-2000': [
-          {text: '피자나라치킨공주', value: 3},
-          {text: '맛초킹', value: 4}
-        ]
-      },
+      selectSettingOptions: []
     }
   },
   mounted() {
@@ -111,9 +120,7 @@ export default {
         if (status === 304) {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
-          /*if(data.equipmentList.length == 0){
-          }*/
-          data.equipmentList
+          this.selectSettingOptions = data.equipmentList;
         }
       })
     },
