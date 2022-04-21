@@ -14,28 +14,11 @@
         <div class="standard-select-name">장비선택</div>
         <select class="settingMapSelectList" v-model="equipSettingNum" @change="getSettingData">
           <option value="0" selected disabled>장비를 선택해주세요.</option>
-<!--          <optgroup v-for="(group, name) in selectSettingOptions" :label="name">
-            <option v-for="option in group" :value="option.value">
-              {{ option.text }}
-            </option>
-          </optgroup>-->
           <optgroup v-for="(group, name) in selectSettingOptions" :label="name">
             <option v-for="option in group" :value="option.value">
               {{ option.text }}
             </option>
           </optgroup>
-<!--          <optgroup label="측정">
-            <option v-if="option.data == 1" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
-          </optgroup>
-          <optgroup label="채취">
-            <option v-if="option.data == 2" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
-          </optgroup>
-          <optgroup label="분석">
-            <option v-if="option.data == 3" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
-          </optgroup>
-          <optgroup label="휴대">
-            <option v-if="option.data == 4" v-for="option in selectSettingOptions" :value="option.value">{{ option.text }}</option>
-          </optgroup>-->
         </select>
         </div>
         <!--equipment threshold setting area-->
