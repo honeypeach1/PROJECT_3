@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="map-tab-init">
-        <div class="init-left-area">초기 맵 표 설정</div>
+        <div class="init-left-area">초기 맵 좌표 설정</div>
         <div class="init-right-area">
           <input class="init-map-button" type="button" value="좌표설정">
         </div>

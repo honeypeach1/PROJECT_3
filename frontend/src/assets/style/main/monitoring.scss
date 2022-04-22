@@ -173,8 +173,8 @@
         #showWindRoseArea {
           display: flex;
           flex-flow: column;
+          width: 100%;
           border: 1px solid;
-          height: 40%;
           margin-top: 5px;
 
           span {
@@ -207,7 +207,7 @@
 
               .windChartGraph {
                 position: absolute;
-                width: 500px;
+                width: 390px;
                 height: 300px;
                 background: black;
                 bottom: -20px;
@@ -296,6 +296,7 @@
             display: flex;
             flex: 1;
             justify-content: space-around;
+            background: linear-gradient(0deg,rgba(42,77,93,.65) 27%,rgba(65,97,113,.65) 85%,rgba(119,147,159,.65));
             .windLevel {
               display: flex;
               justify-content: center;
@@ -391,8 +392,7 @@
         margin: 5px 5px 0px 5px;
 
         #equipmentListArea {
-          flex-direction: row;
-          flex-flow: wrap;
+          flex-flow: column;
 
           #HeaderArea {
             display: flex;
@@ -407,15 +407,31 @@
               min-height: 26px;
             }
           }
-          #windArea {
-            width: 50%;
-            height: 85%;
-            justify-content: space-around;
-            margin: 5px 0px;
-            padding: 0px;
 
-            .wind_data_area {
-              height: 70%;
+          #selectEquipment {
+            height: 25%;
+          }
+          #showChartArea {
+
+            span {
+              height: auto;
+            }
+            #chartBar {
+              height: calc(90% - 11px);
+            }
+          }
+
+          #showWindRoseArea {
+            #windRose {
+              .showWindCount {
+                .windChartGraph {
+                  width: 350px;
+                  height: 270px;
+                  left: -248%;
+                  bottom: 100%;
+                  opacity: 0.8;
+                }
+              }
             }
           }
         }

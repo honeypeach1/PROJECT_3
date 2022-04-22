@@ -159,7 +159,21 @@ export default {
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
       document.head.appendChild(script);
       this.initPlotlyChart();
-    }
+      window.onload = function() {
+        Plotly.relayout('chartBar', {
+          'xaxis.autorange': true,
+          'yaxis.autorange': true,
+          'layout.autosize': true,
+        });
+        window.onresize = function() {
+          Plotly.relayout('chartBar', {
+            'xaxis.autorange': true,
+            'yaxis.autorange': true,
+            'layout.autosize': true,
+          });
+        };
+      }
+    };
   },
   methods: {
     /*웹소켓 파트 시작*/
@@ -193,8 +207,8 @@ export default {
       })
     },
     initPlotlyChart() {
-      Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.config);
-      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.config);
+      Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.options);
+      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.options);
     },
     /*
         sendMessage(e) {
@@ -265,13 +279,6 @@ export default {
     },
   },
 }
-window.onresize = function() {
-  Plotly.relayout('chartBar', {
-    'xaxis.autorange': true,
-    'yaxis.autorange': true,
-  });
-  Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.config);
-};
 
 </script>
 

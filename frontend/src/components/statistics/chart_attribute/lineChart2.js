@@ -17,8 +17,7 @@ export const lineChart = {
     plot_bgcolor: 'transparent',
     paper_bgcolor: 'transparent',
     autosize: true,
-    height: 300,
-    resizeHeight: true,
+    maxHeight: 300,
     margin: {
       t: 20,
       b: 20,
@@ -51,9 +50,10 @@ export const lineChart = {
       fixedrange: true
     },
   },
-  config: {
+  options: {
     responsive: true,
     maintainAspectRatio: false,
+    aspectRatio: 1,
   },
 };
 
