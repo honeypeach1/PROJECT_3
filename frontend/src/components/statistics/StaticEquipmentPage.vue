@@ -505,7 +505,7 @@ export default {
     getData() {
       axios({
         url: "/static/getData",
-        method: "get",
+        method: "GET",
         params: {
           start_date: this.start_date,
           end_date: this.end_date,

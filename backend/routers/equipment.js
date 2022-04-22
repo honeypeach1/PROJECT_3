@@ -6,7 +6,7 @@ const router = express.Router();
 const equipmentController = require('../controller/equipment/equipmentController')
 const authUtil = require('../middlewares/auth').checkToken;
 
-
 router.get('/getThreshold',equipmentController.getEquipmentThreshold);
+router.get('/getThresholdValue',equipmentController.getEquipmentThresholdValue);
 
 module.exports = router;

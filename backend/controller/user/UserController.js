@@ -188,7 +188,7 @@ const userCon = {
         }
     },
 
-    //유저 정보 가져오기
+    //3. 유저 정보 가져오기
     getUserInfor: (req, res) => {
         dbConnect.query('SELECT MEMBER_SEQ, MAP_TYPE_SEQ, MEMBER_ID, MEMBER_NAME, MEMBER_TEL, MEMBER_CK, MEMBER_RELES,' +
             'MEMBER_MAP_LAT, MEMBER_MAP_LNG, MEMBER_MAP_ZOOM_SIZE, DATE_FORMAT(MEMBER_REG_DATE,"%y-%m-%d") AS MEMBER_REG_DATE FROM MEMBER',
@@ -210,7 +210,7 @@ const userCon = {
             })
     },
 
-    //유저 패스워드 변경
+    //4. 유저 패스워드 변경
     setUserPass: async (req, res) => {
 
         //salt 단방향 암호화(암호화 가능, 복호화 불가)
@@ -230,7 +230,7 @@ const userCon = {
             })
     },
 
-    //로그아웃
+    //5. 로그아웃
     userLogout: (req, res) => {
         req.session.destroy();
         res.clearCookie('user_cookie');

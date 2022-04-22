@@ -153,7 +153,7 @@ export default {
     monitoring() {
       axios({
         url: "/monitoring/getMonitorData",
-        method: "get",
+        method: "GET",
       }).then((res) => {
         if (res.data.success == true) {
           /*
@@ -174,7 +174,7 @@ export default {
     static() {
       axios({
         url: "/static/goPage",
-        method: "get",
+        method: "GET",
       }).then((res) => {
         if (res.data.success == true) {
           /*

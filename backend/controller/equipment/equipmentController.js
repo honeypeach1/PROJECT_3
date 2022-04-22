@@ -4,7 +4,20 @@ const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
 
+//그룹화 설정 전연 함수
+const groupBy = function (data, key) {
+    return data.reduce(function (carry, el) {
+        var group = el[key];
+        if (carry[group] === undefined) {
+            carry[group] = []
+        }
+        carry[group].push(el)
+        return carry
+    }, {})
+}
+
 const EquipmentCon = {
+    //장비 셀렉트 리스트 가져오기(GET)
     getEquipmentThreshold: (req, res) => {
         try {
             /*
@@ -24,22 +37,46 @@ const EquipmentCon = {
                     if (err) throw err;
                     // const result = Object.values(JSON.parse(JSON.stringify(equpiment)));
                     for (let list of equpiment) {
-                        equipList = {num: list.EQUIPMENT_TYPE_NAME, text: list.EQUIPMENT_NAME, value: list.EQUIPMENT_SEQ}
+                        equipList = {
+                            num: list.EQUIPMENT_TYPE_NAME,
+                            text: list.EQUIPMENT_NAME,
+                            value: list.EQUIPMENT_SEQ
+                        }
                         lastList.push(equipList);
                     }
-                    const groupBy = function (data, key) {
-                        return data.reduce(function (carry, el) {
-                            var group = el[key];
-                            if (carry[group] === undefined) {
-                                carry[group] = []
-                            }
-                            carry[group].push(el)
-                            return carry
-                        }, {})
-                    }
+
                     res.json({
                         success: true,
                         equipmentList: groupBy(lastList, 'num'),
+                    })
+                }
+            )
+        } catch (err) {
+            console.log("DB Connection Error!", reject(err))
+        }
+    },
+    //장비 주의 경고 값 가져오기(GET)
+    getEquipmentThresholdValue: (req, res) => {
+        try {
+            dbConnect.query('SELECT c.equipment_name equipment_name, d.* ' +
+                'FROM equipment_info c JOIN ' +
+                '(SELECT ' +
+                'a.threshold_over_event_values_seq threshold_over_event_values_seq, ' +
+                'a.equipment_seq equipment_seq, ' +
+                'a.threshold_over_event_type_seq threshold_over_event_type_seq, ' +
+                'a.threshold_over_event_sensor threshold_over_event_sensor, ' +
+                'a.threshold_over_event_values threshold_over_event_values, ' +
+                'b.threshold_over_event_name threshold_over_event_name ' +
+                'FROM threshold_over_event_values a JOIN threshold_over_event_type b ' +
+                'ON a.threshold_over_event_type_seq = b.threshold_over_event_type_seq) d ' +
+                'ON c.equipment_seq = d.equipment_seq ' +
+                'WHERE d.equipment_seq = ?',
+                req.query.equipSettingNum,
+                (err, thresholdValue) => {
+                    if (err) throw err;
+                    res.json({
+                        success: true,
+                        thresholdValue: thresholdValue,
                     })
                 }
             )
