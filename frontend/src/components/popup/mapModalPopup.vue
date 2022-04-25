@@ -19,7 +19,7 @@
       <div class="map-tab-init">
         <div class="init-left-area">초기 맵 좌표 설정</div>
         <div class="init-right-area">
-          <input class="init-map-button" type="button" value="좌표설정">
+          <input class="init-map-button" type="button" @click="accountCoord" value="좌표설정">
         </div>
       </div>
       <div class="map-tab-bottom">
@@ -30,15 +30,23 @@
 </template>
 
 <script>
+let Point;
 export default {
   data: function () {
-    return {}
+    return {
+      Point: null
+    }
   },
   mounted() {
 
   },
   methods: {
+    accountCoord(){
+      this.$emit('map-close');
+      Point = new kakao.maps.Marker({
 
+      })
+    }
   }
 }
 </script>

@@ -4,10 +4,10 @@
     <div class="setting-modal-card">
       <!--토글 헤더 탭-->
       <div class="setting-modal-head">
-        <div class="setting-modal-left" :class="{select: (show_toggle==true)}" @click="show_setting_toggle(true)">기준치
+        <div class="setting-modal-left" :class="{select: (show_toggle==true)}" @click="show_setting_toggle(true,1)">기준치
           설정
         </div>
-        <div class="setting-modal-right" :class="{select: (show_toggle==false)}" @click="show_setting_toggle(false)">장비명
+        <div class="setting-modal-right" :class="{select: (show_toggle==false)}" @click="show_setting_toggle(false,2)">장비명
           설정
         </div>
       </div>
@@ -61,24 +61,36 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
+<!--                  <tr>
                     <td>
                       <input class="equipment_name" placeholder="지코바">
                     </td>
                     <td>
                       <button class="change_Equip">변경하기</button>
-                      <button class="reset_Equip">초기화</button>
+                      <button class="reset_Equip" @click="resetRow">초기화</button>
                       <button class="delete_Equip">삭제</button>
                     </td>
-                  </tr>
+                  </tr>-->
+                  <template v-for="dataList in equipList">
+                    <tr>
+                      <td>
+                        <input class="equipment_name" :placeholder="dataList.EQUIPMENT_NAME">
+                      </td>
+                      <td>
+                        <button class="change_Equip">변경하기</button>
+                        <button class="reset_Equip" @click="resetRow">초기화</button>
+                        <button class="delete_Equip">삭제</button>
+                      </td>
+                    </tr>
+                  </template>
                   </tbody>
                 </table>
         </div>
 
         <!--하단 버튼 클릭 영역-->
         <div class="bottom-button-area">
-          <button class="bottom-button save" @click="saveThreshValue">저장</button>
-          <button class="bottom-button enable" @click="enableThreshValue">적용</button>
+          <button class="bottom-button save" v-if="this.show_button = show_button" @click="saveThreshValue">저장</button>
+          <button class="bottom-button enable" v-if="this.show_button = show_button" @click="enableThreshValue">적용</button>
           <button class="bottom-button close" @click="$emit('setting-close')">닫기</button>
         </div>
       </div>
@@ -99,6 +111,9 @@ export default {
       threshWarningValue: null,
       equipSettingNum: 0,
       equipmentName: '',
+      equipNum: 1,
+      equipList: [],
+      show_button: true,
       selectSettingOptions: []
     }
   },
@@ -119,6 +134,8 @@ export default {
       }
     },
     getEquipmentThreshold() {
+      //해당 메소드가 실행될때 다시 한번 초기화 진행
+      this.selectSettingOptions = [];
       axios({
         url: "/equipment/getThreshold",
         method: "GET",
@@ -127,6 +144,18 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           this.selectSettingOptions = data.equipmentList;
+        }
+      })
+    },
+    getEquipmentList() {
+      axios({
+        url: "/equipment/getEquipmentList",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.equipList = data.equipmentList;
         }
       })
     },
@@ -175,8 +204,28 @@ export default {
         alert(this.equipmentName + ' 장비 설정이 적용 되었습니다.');
       }
     },
-    show_setting_toggle(bool) {
+    resetRow(){
+      console.log($(this).closest('td').find('.equipment_name'))
+      console.log($(this).closest('tr').find('.equipment_name'))
+      return $(this).closest('td').find('.equipment_name').val(null);
+    },
+    show_setting_toggle(bool,num) {
       (bool == true ? (this.show_toggle = true) : (this.show_toggle = false));
+      //기준치 설정
+      //equipNum -> 처음 해당 팝업 페이지를 호출할때, 기준치 설정을 불러옴. 즉, 똑같은 페이지 접근시 막기 처리
+      if(num === 1 && this.equipNum != 1){
+        this.equipNum = 1;
+        this.show_button = true;
+        //새로 불러오기
+        this.getEquipmentThreshold();
+      //장비명 설정
+      //장비명 설정에서는 저장, 적용 버튼이 필요가 없어서 버튼을 동적으로 생성하지 않음.(show_button = false)
+      }else if(num === 2 && this.equipNum != 2){
+        this.equipNum = 2;
+        this.show_button = false;
+        //장비 명 가져오기
+        this.getEquipmentList();
+      }
     }
   }
 }

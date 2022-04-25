@@ -24,7 +24,7 @@ exports.socketServer = net.createServer(function (socket) {
     const remotePort = socket.remotePort;
     //Check for Client Socket Information.
     console.log("Client IP : " + remoteIp + ", Client Port : " + remotePort)
-    console.log("Express Server Booting Time : ", serverStartTime)
+    console.log("Express Server Boot time : ", serverStartTime)
     /*
         서버 to 장비 tcp/ip 소켓 통신 설명
 

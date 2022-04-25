@@ -90,7 +90,7 @@ export default {
             },
             {
               render: (data, type, row) => {
-                return '<input type="password" class="changeUserPass" placeholder="비밀번호"><button class="changePassButton" value="' + row['MEMBER_SEQ'] + '">변경</button>';
+                return '<input type="password" autocomplete="on" class="changeUserPass" placeholder="비밀번호"><button class="changePassButton" value="' + row['MEMBER_SEQ'] + '">변경</button>';
               }
             },
             {

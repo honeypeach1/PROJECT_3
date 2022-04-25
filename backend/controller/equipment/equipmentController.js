@@ -52,7 +52,7 @@ const EquipmentCon = {
                 }
             )
         } catch (err) {
-            console.log("DB Connection Error!", reject(err))
+            console.log("DB Connection Error!", err)
         }
     },
     //장비 주의 경고 값 가져오기(GET)
@@ -81,7 +81,22 @@ const EquipmentCon = {
                 }
             )
         } catch (err) {
-            console.log("DB Connection Error!", reject(err))
+            console.log("DB Connection Error!", err)
+        }
+    },
+    //장비 리스트 가져오기
+    getEquipmentList: (req, res) => {
+        try {
+            dbConnect.query('SELECT EQUIPMENT_SEQ, EQUIPMENT_NAME FROM EQUIPMENT_INFO',
+                (err, data) => {
+                    if (err) throw err;
+                    res.json({
+                        success: true,
+                        equipmentList: data
+                    })
+                })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
         }
     }
 }

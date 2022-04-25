@@ -2,7 +2,7 @@
   <div class="modal">
     <div class="overlay" @click="$emit('equip-close')"></div>
     <div class="equipment-modal-card">
-      <div class="equipment-headerTab">장비 등록</div>
+      <div class="equipment-headerTab">신규 장비 등록</div>
       <form id="register_equipment_form" @submit.prevent="registerEquipment">
         <table class="equipment-modal-table">
           <tbody>

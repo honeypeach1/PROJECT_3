@@ -16,7 +16,7 @@
         <div class="inputDiv">
           <input id="login_pass" v-model="login_pass" ref="login_pass" class="login_input" type="password"
                  placeholder="비밀번호" required oninvalid="this.setCustomValidity('비밀번호를 입력해주세요.')"
-                 oninput="this.setCustomValidity('')"
+                 oninput="this.setCustomValidity('')" autocomplete="on"
                  aria-required="true">
         </div>
         <div class="inputDiv">

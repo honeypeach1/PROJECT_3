@@ -8,5 +8,5 @@ const authUtil = require('../middlewares/auth').checkToken;
 
 router.get('/getThreshold',equipmentController.getEquipmentThreshold);
 router.get('/getThresholdValue',equipmentController.getEquipmentThresholdValue);
-
+router.get('/getEquipmentList',equipmentController.getEquipmentList);
 module.exports = router;

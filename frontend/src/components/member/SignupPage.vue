@@ -13,13 +13,13 @@
           <div class="form-group row">
             <label for="register_pwd">비밀번호<span class="required" aria-required="true"></span></label>
             <div><input id="register_pwd" ref="register_pwd" v-model="register_pwd" class="login_input" type="password"
-                        placeholder="등록하실 비밀 번호를 입력해주세요.">
+                        autocomplete="on" placeholder="등록하실 비밀 번호를 입력해주세요.">
             </div>
           </div>
           <div class="form-group row">
             <label for="register_pwd_ck">비밀번호 확인<span class="required" aria-required="true"></span></label>
             <div><input id="register_pwd_ck" ref="register_pwd_ck" v-model="register_pwd_ck" class="login_input" type="password"
-                        placeholder="입력하신 비밀 번호와 동일한 값을 입력하세요."></div>
+                        autocomplete="on" placeholder="입력하신 비밀 번호와 동일한 값을 입력하세요."></div>
           </div>
           <div class="form-group row">
             <label for="register_name">이름<span class="required" aria-required="true"></span></label>

@@ -50,7 +50,6 @@
 
   .standard-setting-area {
     height: 460px;
-    overflow-y: auto;
 
     div {
       height: 65px;
@@ -122,7 +121,7 @@
 
   .equipment-setting-area {
     height: 460px;
-    overflow-y: auto;
+    //overflow-y: auto;
     margin-bottom: 10px;
 
     .equipment-name-table {
@@ -146,6 +145,7 @@
       }
 
       tbody {
+        overflow-y: auto;
 
         tr {
           font-size: 17px;
