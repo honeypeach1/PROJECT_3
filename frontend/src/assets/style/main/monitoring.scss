@@ -7,6 +7,7 @@
   /**/
   #body-content {
     display: flex;
+    position: relative;
     justify-content: space-between;
     width: 100%;
     height: calc(100% - 60px - 10px);
@@ -24,7 +25,6 @@
       user-select: none;
 
       #equipmentListArea {
-        position: relative;
         display: flex;
         flex-direction: column;
         height: calc(100% - 10px);
@@ -75,7 +75,7 @@
           border: 1px solid;
           margin: 5px 0px;
           background: #242b32;
-          font-family: 'NanumGothic', sans-serif;
+          font-family: 'NanumSquare', sans-serif;
           font-weight: 500;
           font-size: 1em;
 
@@ -85,7 +85,7 @@
             justify-content: space-between;
             align-items: center;
             margin: 0px 5px;
-            font-family: 'NanumGothic', sans-serif;
+            font-family: 'NanumSquare', sans-serif;
             font-weight: 500;
             font-size: 1em;
             color: white;
@@ -149,39 +149,14 @@
           }
         }
         #showChartArea {
-          height: 40%;
+          height: 39%;
           border: 1px solid;
 
           span {
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.3em;
-            color: white;
-            width: 100%;
-            height: 10%;
-            background: linear-gradient(to top, rgba(42, 77, 93, 0.65) 27%, rgba(65, 97, 113, 0.65) 85%, rgba(119, 147, 159, 0.65));
-            border-bottom: 1px solid black;
-          }
-
-          #chartBar {
-            height: calc(90% - 1px);
-            background: linear-gradient(0deg,#2f4a5a 29%,#1c2e37 93%);
-          }
-        }
-
-        #showWindRoseArea {
-          display: flex;
-          flex-flow: column;
-          width: 100%;
-          border: 1px solid;
-          margin-top: 5px;
-
-          span {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.3em;
+            font-size: 1.2em;
             color: white;
             width: 100%;
             height: 40px;
@@ -189,104 +164,117 @@
             border-bottom: 1px solid black;
           }
 
+          #chartBar {
+            height: calc(100% - 41px);
+            background: linear-gradient(0deg,#2f4a5a 29%,#1c2e37 93%);
+          }
+        }
+
+        #showWindRoseArea {
+          display: flex;
+          flex-flow: column;
+          width: calc(100% - 2px);
+          border: 1px solid;
+          margin-top: 5px;
+
+          span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            color: white;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, rgba(42, 77, 93, 0.65) 27%, rgba(65, 97, 113, 0.65) 85%, rgba(119, 147, 159, 0.65));
+            border-bottom: 1px solid black;
+          }
           #windRose {
             background: linear-gradient(0deg,#2f4a5a 29%,#1c2e37 93%);
+            display: flex;
+            justify-content: center;
+          }
+          .showWindCount {
+            display: flex;
+            background: #d8efff;
+            justify-content: center;
+            font-family: "NanumSquare", sans-serif;
+            border-top: 1px solid;
+            border-bottom: 1px solid;
+            cursor: pointer;
+          }
+          #windCountGraph {
+            position: absolute;
+            width: 500px;
+            height: 450px;
+            background: black;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
 
-            .showWindCount {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              background-color: white;
-              position: absolute;
-              right: 0px;
-              margin-top: -32px;
-              width: 100px;
-              height: 30px;
-              cursor: pointer;
-              border: 1px solid;
+            z-index: 10;
 
-              .windChartGraph {
-                position: absolute;
-                width: 390px;
-                height: 300px;
-                background: black;
-                bottom: -20px;
-                left: 105px;
-                z-index: 10;
+            table {
+              width: 100%;
+              height: 100%;
+              color: #FFFFFF;
+              font-size: 0.8rem;
+              font-family: "NanumSquare", sans-serif;
 
-                table {
-                  width: 100%;
-                  height: 100%;
-                  color: #FFFFFF;
-                  font-size: 0.8rem;
-                  font-family: "NanumSquare", sans-serif;
+              thead {
 
-                  thead {
+                .head_title {
+                  border: 1px solid #000000;
+                  background-image: linear-gradient(to top, rgba(59, 97, 116, 0.65) 27%, rgba(82, 121, 138, 0.65) 84%, rgba(134, 175, 193, 0.65));
+                  border-left-color: rgba(216, 216, 216, 0.18);
+                }
+                .head_subTitle {
+                  border: 1px solid #000000;
+                  box-shadow: inset 0px 6px 0px 1px rgb(28, 45, 57, 70%);
+                  background-image: linear-gradient(to top, rgba(47, 83, 108, 1), rgba(39, 70, 92, 1));
+                  border-left-color: rgba(216, 216, 216, 0.18);
 
-                    .head_title {
-                      border: 1px solid #000000;
-                      background-image: linear-gradient(to top, rgba(59, 97, 116, 0.65) 27%, rgba(82, 121, 138, 0.65) 84%, rgba(134, 175, 193, 0.65));
-                      border-left-color: rgba(216, 216, 216, 0.18);
-                    }
-
-                    .head_subTitle {
-                      border: 1px solid #000000;
-                      box-shadow: inset 0px 6px 0px 1px rgb(28, 45, 57, 70%);
-                      background-image: linear-gradient(to top, rgba(47, 83, 108, 1), rgba(39, 70, 92, 1));
-                      border-left-color: rgba(216, 216, 216, 0.18);
-
-                      .legend_1 {
-                        background: #0000FF;
-                      }
-
-                      .legend_2 {
-                        background: #00CED1;
-                      }
-
-                      .legend_3 {
-                        background: #00CD00;
-                      }
-
-                      .legend_4 {
-                        background: #00FF00;
-                      }
-
-                      .legend_5 {
-                        background: #FFAB00;
-                      }
-
-                      .legend_6 {
-                        background: #FF4747;
-                      }
-
-                      .legend_7 {
-                        background: #FF0000;
-                      }
-                    }
+                  .legend_1 {
+                    background: #0000FF;
                   }
-
-                  tbody {
-                    font-size: 80%;
-                    text-align: center;
-
-                    tr {
-                      td:first-child {
-                        background: #4b6b7c;
-                      }
-
-                      td {
-                        color: #d1d0db;
-                      }
-                    }
-
-                    .odd_row {
-                      background: #18252B;
-                    }
-
-                    .even_row {
-                      background: #303d44;
-                    }
+                  .legend_2 {
+                    background: #00CED1;
                   }
+                  .legend_3 {
+                    background: #00CD00;
+                  }
+                  .legend_4 {
+                    background: #00FF00;
+                  }
+                  .legend_5 {
+                    background: #FFAB00;
+                  }
+                  .legend_6 {
+                    background: #FF4747;
+                  }
+                  .legend_7 {
+                    background: #FF0000;
+                  }
+                }
+              }
+              tbody {
+                font-size: 80%;
+                text-align: center;
+
+                tr {
+                  td:first-child {
+                    background: #4b6b7c;
+                  }
+                  td {
+                    color: #d1d0db;
+                  }
+                }
+                .odd_row {
+                  background: #18252B;
+                }
+                .even_row {
+                  background: #303d44;
                 }
               }
             }
@@ -385,10 +373,10 @@
   #body-wrapper {
     #body-content {
       flex-flow: column-reverse;
+      height: auto;
 
       #leftArea {
         width: 99%;
-        height: 50%;
         margin: 5px 5px 0px 5px;
 
         #equipmentListArea {
@@ -412,33 +400,30 @@
             height: 25%;
           }
           #showChartArea {
-
             span {
-              height: auto;
+              height: 25px;
             }
             #chartBar {
-              height: calc(90% - 11px);
+              height: calc(100% - 26px);
             }
           }
 
           #showWindRoseArea {
+            span {
+              height: 25px;
+            }
+
             #windRose {
-              .showWindCount {
-                .windChartGraph {
-                  width: 350px;
-                  height: 270px;
-                  left: -248%;
-                  bottom: 100%;
-                  opacity: 0.8;
-                }
-              }
+              height: calc(100% - 26px);
+            }
+
+            .showWindCount {
             }
           }
         }
       }
       #rightArea {
         width: 99%;
-        height: 50%;
         margin-left: 5px;
       }
     }

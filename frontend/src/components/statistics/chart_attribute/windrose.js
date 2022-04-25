@@ -35,10 +35,10 @@ export const windRose = {
     width: 350,
     height: 300,
     margin: {
-      t: 40,
+      t: 50,
       b: 40,
       l: 50,
-      r: 30,
+      r: 45,
     },
     font: {
       size: 16,

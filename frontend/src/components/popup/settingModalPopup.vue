@@ -61,23 +61,13 @@
                   </tr>
                   </thead>
                   <tbody>
-<!--                  <tr>
-                    <td>
-                      <input class="equipment_name" placeholder="지코바">
-                    </td>
-                    <td>
-                      <button class="change_Equip">변경하기</button>
-                      <button class="reset_Equip" @click="resetRow">초기화</button>
-                      <button class="delete_Equip">삭제</button>
-                    </td>
-                  </tr>-->
                   <template v-for="dataList in equipList">
                     <tr>
                       <td>
                         <input class="equipment_name" :placeholder="dataList.EQUIPMENT_NAME">
                       </td>
                       <td>
-                        <button class="change_Equip">변경하기</button>
+                        <button class="change_Equip" @click>변경하기</button>
                         <button class="reset_Equip" @click="resetRow">초기화</button>
                         <button class="delete_Equip">삭제</button>
                       </td>
