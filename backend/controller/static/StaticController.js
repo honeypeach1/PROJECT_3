@@ -96,7 +96,7 @@ const staticCon = {
                             if (err) throw err;
                             res.json({
                                 success: true,
-                                message: '성공적으로 장비 등록을 하였습니다.'
+                                message: '장비 등록이 완료되었습니다.'
                             })
                         })
                 } else {

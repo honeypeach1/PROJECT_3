@@ -98,6 +98,146 @@ const EquipmentCon = {
         } catch (err) {
             console.log("DB Connection Error!", err)
         }
+    },
+    //장비 명칭 바꾸기
+    setChangeEquipName: (req, res) => {
+        try {
+            dbConnect.query('UPDATE EQUIPMENT_INFO SET EQUIPMENT_NAME = ? WHERE EQUIPMENT_SEQ = ?',
+                [req.query.equipment_data,req.query.num],
+                (err, data) => {
+                    if (err) throw err;
+                    res.json({
+                        success: true,
+                        message: '장비 이름이 수정 되었습니다.'
+                    })
+                })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
+    },
+    //장비 삭제하기
+    deleteEquipment: (req, res) => {
+        try {
+            dbConnect.query('DELETE FROM EQUIPMENT_INFO WHERE EQUIPMENT_SEQ = ?',
+                req.query.num,
+                (err, data) => {
+                    if (err) throw err;
+                    res.json({
+                        success: true,
+                        message: '해당 장비가 삭제 되었습니다.'
+                    })
+                })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
+    },
+    //장비 악취 주의, 경고 값 설정하기
+    setThresholdData: (req, res) => {
+        /*
+            악취 주의, 경고 값 설정 프로세스
+            1. 전달된 장비 넘버를 이용해서 악취, 주의 설정 값이 있는지 확인
+            2. 만약 주의 또는 경고 컬럼이 있다면 update 쿼리 진행
+            3. 만약 주의 또는 경고 컬럼이 없다면 insert 쿼리 진행
+        */
+        try {
+            if(req.query.todCaution != ''){
+                dbConnect.query('SELECT a.threshold_over_event_values_seq threshold_over_event_values_seq ' +
+                    'FROM THRESHOLD_OVER_EVENT_VALUES a JOIN THRESHOLD_OVER_EVENT_TYPE b ' +
+                    'ON a.threshold_over_event_type_seq = b.threshold_over_event_type_seq ' +
+                    'WHERE a.equipment_seq = ? AND b.threshold_over_event_name = "악취주의"',
+                    req.query.saveEquipNum,
+                    (err, cautionData) => {
+                        if (err) throw err;
+                        //주의 값이 있음.
+                        if (cautionData.length > 0) {
+                            let cautionDataSeq;
+                            for (let data of cautionData){
+                                cautionDataSeq = data.threshold_over_event_values_seq;
+                            };
+                            dbConnect.query('UPDATE THRESHOLD_OVER_EVENT_VALUES SET THRESHOLD_OVER_EVENT_VALUES = ? WHERE THRESHOLD_OVER_EVENT_SENSOR = "TOD" AND threshold_over_event_values_seq = ?',
+                                [
+                                    req.query.todCaution,
+                                    cautionDataSeq
+                                ],
+                                (err ,cautionUpdate) => {
+                                    if (err) throw err;
+                                    console.log(cautionUpdate,'악취 주의 값 설정이 UPDATE 되었습니다.')
+                                    /*res.json({
+                                        success: true,
+                                        message: '악취 주의 값 설정이 UPDATE 되었습니다.'
+                                    })*/
+                                })
+                        } else {
+                            dbConnect.query('INSERT INTO THRESHOLD_OVER_EVENT_VALUES (EQUIPMENT_SEQ, THRESHOLD_OVER_EVENT_TYPE_SEQ, THRESHOLD_OVER_EVENT_SENSOR, THRESHOLD_OVER_EVENT_VALUES) ' +
+                                'VALUES (?,?,?,?)',
+                                [
+                                    req.query.saveEquipNum,
+                                    1,
+                                    'TOD',
+                                    req.query.todCaution
+                                ],
+                                (err ,cautionInsert) => {
+                                    if (err) throw err;
+                                    console.log(cautionInsert,'악취 주의 값 설정이 INSERT 되었습니다.')
+                                    /*res.json({
+                                        success: true,
+                                        message: '악취 주의 값 설정이 INSERT 되었습니다.'
+                                    })*/
+                                })
+                        }
+                    })
+            }
+            if(req.query.todWarning != ''){
+                dbConnect.query('SELECT a.threshold_over_event_values_seq threshold_over_event_values_seq ' +
+                    'FROM THRESHOLD_OVER_EVENT_VALUES a JOIN THRESHOLD_OVER_EVENT_TYPE b ' +
+                    'ON a.threshold_over_event_type_seq = b.threshold_over_event_type_seq ' +
+                    'WHERE a.equipment_seq = ? AND b.threshold_over_event_name = "악취경고"',
+                    req.query.saveEquipNum,
+                    (err, warningData) => {
+                        if (err) throw err;
+                        //경고 값이 있음.
+                        if (warningData.length > 0) {
+                            let warningDataSeq;
+                            for (let data of warningData){
+                                warningDataSeq = data.threshold_over_event_values_seq;
+                            };
+                            dbConnect.query('UPDATE THRESHOLD_OVER_EVENT_VALUES SET THRESHOLD_OVER_EVENT_VALUES = ? WHERE THRESHOLD_OVER_EVENT_SENSOR = "TOD" AND threshold_over_event_values_seq = ?',
+                                [
+                                    req.query.todWarning,
+                                    warningDataSeq
+                                ],
+                                (err ,WarningUpdate) => {
+                                    if (err) throw err;
+                                    console.log(WarningUpdate,'악취 경고 값 설정이 UPDATE 되었습니다.')
+
+                                })
+                        } else {
+                            dbConnect.query('INSERT INTO THRESHOLD_OVER_EVENT_VALUES (EQUIPMENT_SEQ, THRESHOLD_OVER_EVENT_TYPE_SEQ, THRESHOLD_OVER_EVENT_SENSOR, THRESHOLD_OVER_EVENT_VALUES) ' +
+                                'VALUES (?,?,?,?)',
+                                [
+                                    req.query.saveEquipNum,
+                                    2,
+                                    'TOD',
+                                    req.query.todWarning
+                                ],
+                                (err ,WarningInsert) => {
+                                    if (err) throw err;
+                                    console.log(WarningInsert,'악취 경고 값 설정이 INSERT 되었습니다.')
+                                    /*res.json({
+                                        success: true,
+                                        message: '악취 경고 값 설정이 INSERT 되었습니다.'
+                                    })*/
+                                })
+                        }
+                    })
+            }
+            res.json({
+                success: true,
+                message: '장비의 악취 주의, 경고 값을 재설정 하였습니다.'
+            })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
     }
 }
 

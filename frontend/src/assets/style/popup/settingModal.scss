@@ -71,6 +71,18 @@
         line-height: 50px;
         border-radius: 5px;
         font-family: "NanumSquare", sans-serif;
+
+        optgroup {
+          color: #b0b0b0;
+          font-size: 1.1rem;
+          text-align: center;
+
+          option {
+            color: #000000;
+            text-align: left;
+            font-size: 1.2rem;
+          }
+        }
       }
 
     }
@@ -111,6 +123,7 @@
                 border-radius: 5px;
                 text-align: center;
                 border-color: #099999;
+                font-family: "NanumSquare", sans-serif;
               }
             }
           }

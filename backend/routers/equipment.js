@@ -9,4 +9,8 @@ const authUtil = require('../middlewares/auth').checkToken;
 router.get('/getThreshold',equipmentController.getEquipmentThreshold);
 router.get('/getThresholdValue',equipmentController.getEquipmentThresholdValue);
 router.get('/getEquipmentList',equipmentController.getEquipmentList);
+router.get('/setChangeEquipName',equipmentController.setChangeEquipName);
+router.get('/deleteEquipment',equipmentController.deleteEquipment);
+router.get('/setThresholdData',equipmentController.setThresholdData);
+
 module.exports = router;
