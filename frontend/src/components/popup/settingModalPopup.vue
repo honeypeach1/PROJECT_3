@@ -79,8 +79,8 @@
 
         <!--하단 버튼 클릭 영역-->
         <div class="bottom-button-area">
-          <button class="bottom-button save" v-if="this.show_button = show_button" @click="saveThreshValue">저장</button>
-          <button class="bottom-button enable" v-if="this.show_button = show_button" @click="enableThreshValue">적용</button>
+          <button class="bottom-button save" v-if="this.show_button = show_button" @click="saveThreshValue(1)">저장</button>
+          <button class="bottom-button enable" v-if="this.show_button = show_button" @click="saveThreshValue(2)">적용</button>
           <button class="bottom-button close" @click="$emit('setting-close')">닫기</button>
         </div>
       </div>
@@ -175,7 +175,7 @@ export default {
         }
       })
     },
-    saveThreshValue() {
+    saveThreshValue(num) {
       let saveEquipNum = this.equipSettingNum;
       let todCaution = $('#TODCaution').val();
       let todWarning = $('#TODWarning').val();
@@ -208,13 +208,13 @@ export default {
               return;
             } else {
               //값 성공 입력 처리 axios 호출
-              this.setThresholdData(saveEquipNum,todCaution,todWarning);
+              this.setThresholdData(saveEquipNum,todCaution,todWarning,num);
             }
           //경고값은 입력이 되지 않았을때
           } else {
             if (this.threshWarningValue == '사용 안함') {
               //값 성공 입력 처리 axios 호출
-              this.setThresholdData(saveEquipNum,todCaution,todWarning);
+              this.setThresholdData(saveEquipNum,todCaution,todWarning,num);
             //입력한 주의값이 기존 경고값보다 클때
             }else if(parseInt(todCaution) >= parseInt(this.threshWarningValue)){
               alert('악취 주의 설정 값은 기존 경고 값보다 작아야 합니다.')
@@ -223,7 +223,7 @@ export default {
               return;
             } else {
               //값 성공 입력 처리 axios 호출
-              this.setThresholdData(saveEquipNum,todCaution,todWarning);
+              this.setThresholdData(saveEquipNum,todCaution,todWarning,num);
             }
           }
         //주의 값을 입력하지 않았을때
@@ -232,7 +232,7 @@ export default {
           if(todWarning != ''){
             if(this.threshCautionValue == '사용 안함'){
               //값 성공 입력 처리 axios 호출
-              this.setThresholdData(saveEquipNum,todCaution,todWarning);
+              this.setThresholdData(saveEquipNum,todCaution,todWarning,num);
             //입력한 경고값이 주의값보다 작으면
             }else if(parseInt(this.threshCautionValue) >= parseInt(todWarning)){
               alert('입력하신 경고 값은 주의 값보다 높아야 합니다.')
@@ -241,7 +241,7 @@ export default {
               return;
             } else {
               //값 성공 입력 처리 axios 호출
-              this.setThresholdData(saveEquipNum,todCaution,todWarning);
+              this.setThresholdData(saveEquipNum,todCaution,todWarning,num);
             }
           } else {
             alert('선택하신 장비의 주의 또는 경고값을 입력하셔야 합니다.')
@@ -250,7 +250,7 @@ export default {
         }
       }
     },
-    setThresholdData(saveEquipNum,todCaution,todWarning){
+    setThresholdData(saveEquipNum,todCaution,todWarning,num){
       axios({
         url: "/equipment/setThresholdData",
         method: "GET",
@@ -263,12 +263,20 @@ export default {
         if (status === 304) {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
-          alert(this.equipmentName + ' 장비 설정이 저장 되었습니다. 팝업창을 닫습니다.');
-          router.go();
+          //저장하기 - 팝업 종료(새로고침)
+          if(num == 1){
+            alert(this.equipmentName + ' 장비 설정이 저장 되었습니다. 팝업창을 닫습니다.');
+            router.go();
+          }else{
+            alert(this.equipmentName + ' 장비 설정이 적용 되었습니다.');
+            this.threshWarningValue = todWarning;
+            this.threshCautionValue = todCaution;
+            this.initInputData();
+          }
         }
       })
     },
-    enableThreshValue() {
+/*    enableThreshValue() {
       let enableEquipNum = this.equipSettingNum;
       if (enableEquipNum == 0) {
         alert('장비를 선택하셔야 합니다.');
@@ -276,7 +284,7 @@ export default {
       } else {
         alert(this.equipmentName + ' 장비 설정이 적용 되었습니다.');
       }
-    },
+    },*/
     initInputData(){
       $('#TODCaution').val('');
       $('#TODWarning').val('');
