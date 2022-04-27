@@ -29,23 +29,23 @@
             </div>
             <div class="selectBody">
               <div class="selectBodyContent">
-                <div class="totalbox box1">
+                <div class = "totalbox box1">
                   <div class="box_title">구분</div>
                   <div class="box_value">채취장비</div>
                 </div>
-                <div class="totalbox box2">
+                <div class = "totalbox box2">
                   <div class="box_title">모드</div>
                   <div class="box_value">수동</div>
                 </div>
-                <div class="totalbox box3">
+                <div class = "totalbox box3">
                   <div class="box_title">채집백</div>
                   <div class="box_value">교환필요</div>
                 </div>
-                <div class="totalbox box4">
+                <div class = "totalbox box4">
                   <div class="box_title">상태</div>
                   <div class="box_value">채취대기</div>
                 </div>
-                <div class="totalbox box5">
+                <div class = "totalbox box5">
                   <div class="box_title">채취시간</div>
                   <div class="box_value">
                     <div class="box_value1">04.13 11:22</div>
@@ -62,213 +62,7 @@
           <div id="showWindRoseArea">
             <span>풍배도</span>
             <div id="windRose"></div>
-            <div class="showWindCount" @click="showWindChart()">상세보기</div>
-            <div v-if="infoWindChart" id="windCountGraph">
-              <table>
-                <thead>
-                <tr class="head_title">
-                  <th>m/s</th>
-                  <th>0.5~</th>
-                  <th>1.0~</th>
-                  <th>1.5~</th>
-                  <th>2.0~</th>
-                  <th>2.5~</th>
-                  <th>3.0~</th>
-                  <th>3.5~</th>
-                  <th>합계</th>
-                </tr>
-                <tr class="head_subTitle">
-                  <th></th>
-                  <th class="legend_1"></th>
-                  <th class="legend_2"></th>
-                  <th class="legend_3"></th>
-                  <th class="legend_4"></th>
-                  <th class="legend_5"></th>
-                  <th class="legend_6"></th>
-                  <th class="legend_7"></th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="odd_row">
-                  <td class="windDirect_1">N</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_2">NNE</td>
-                  <td></td>
-                  <td></td>
-                  <td>3</td>
-                  <td></td>
-                  <td>2</td>
-                  <td></td>
-                  <td>1</td>
-                  <td></td>
-                </tr>
-                <tr class="odd_row">
-                  <td class="windDirect_3">NE</td>
-                  <td>5</td>
-                  <td></td>
-                  <td></td>
-                  <td>3</td>
-                  <td></td>
-                  <td></td>
-                  <td>2</td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_4">ENE</td>
-                  <td></td>
-                  <td>1</td>
-                  <td></td>
-                  <td>2</td>
-                  <td></td>
-                  <td>3</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="odd_row">
-                  <td class="windDirect_5">E</td>
-                  <td>4</td>
-                  <td></td>
-                  <td></td>
-                  <td>5</td>
-                  <td></td>
-                  <td>15</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_6">ESE</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>4</td>
-                  <td>32</td>
-                  <td>2</td>
-                  <td></td>
-                </tr>
-                <tr class="odd_row">
-                  <td class="windDirect_7">SE</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>3</td>
-                  <td>5</td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_8">SSE</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="odd_row">
-                  <td class="windDirect_9">S</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_10">SSW</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="odd_row">
-                  <td class="windDirect_11">SW</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_12">WSW</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="odd_row">
-                  <td class="windDirect_13">W</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_14">WNW</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="odd_row">
-                  <td class="windDirect_15">NW</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr class="even_row">
-                  <td class="windDirect_16">NNW</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+            <div class="showWindCount" @click="isWindChartView=true">상세보기</div>
             <div class="windLegend">
               <div class="windLevel windLevel_1">
                 <div class="color"></div>
@@ -301,6 +95,10 @@
           <button @click="displayInfoWindow">infowindow</button>
         </div>
       </div>
+      <windChartView v-if="isWindChartView" @windChart-close="isWindChartView=false">
+        <Content />
+
+      </windChartView>
     </div>
 
   </div>
@@ -314,6 +112,7 @@ import getWindRose from "../statistics/chart_attribute/windrose.js";
 import getLineChart from '../statistics/chart_attribute/lineChart2.js';
 import axios from "axios";
 import $ from 'jquery';
+import windChartView from '../../components/popup/winChartPopup';
 
 /*API 키*/
 dotenv.config();
@@ -322,8 +121,10 @@ let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
 /*Store helper*/
 
 export default {
+  name: 'monitoring',
   components: {
-    'main-header': MainHeader,
+    windChartView,
+    'main-header': MainHeader
   },
   data: function () {
     return {
@@ -352,7 +153,7 @@ export default {
       windRose: getWindRose,
       lineChart: getLineChart,
       responsive: true,
-      infoWindChart: false,
+      isWindChartView: false,
     };
   },
   created() {

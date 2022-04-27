@@ -242,7 +242,7 @@ const EquipmentCon = {
     //메인(악취)페이지 라인 차트 센서 데이터 가져오기
     getSensorChartData: (req, res) => {
         try {
-            dbConnect.query('SELECT DATE_FORMAT(DATA_DATE_TIME, "%H-%m-%s") DATA_DATE_TIME, ' +
+            dbConnect.query('SELECT DATE_FORMAT(DATA_DATE_TIME, "%H:%m:%s") DATA_DATE_TIME, ' +
                 'IFNULL(SENSOR_SIGNAL_DATA_TOD, 0) TOD,' +
                 'IFNULL(SENSOR_SIGNAL_DATA_VOC, 0) VOC,' +
                 'IFNULL(SENSOR_SIGNAL_DATA_MOS, 0) MOS,' +

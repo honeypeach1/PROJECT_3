@@ -56,7 +56,7 @@ export const lineChart = {
     showlegend: true,
     legend: {
       "orientation": "h",
-      xanchor: 'right',
+      xanchor: 'top',
       font: {
         color: "white"
       },
@@ -67,6 +67,7 @@ export const lineChart = {
         size: 12,
         color: '#fff'
       },
+      tickformat: ',.60%',
       showgrid : false,
     },
     yaxis: {
