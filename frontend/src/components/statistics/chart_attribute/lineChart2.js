@@ -1,16 +1,45 @@
+let time = [], h2s = [], nh3 = [], mos = [], tod = [], voc = [];
 export const lineChart = {
+  chartDraw: (data) => {
+    for (let sensorData in data){
+      time.push(data[sensorData].DATA_DATE_TIME);
+      h2s.push(data[sensorData].H2S);
+      nh3.push(data[sensorData].MOS);
+      mos.push(data[sensorData].NH3);
+      tod.push(data[sensorData].TOD);
+      voc.push(data[sensorData].VOC);
+    }
+  },
   data: [
     {
       name: 'TOD',
       type: 'scatter',
-      x: [1, 2, 3, 4],
-      y: [10, 15, 13, 17],
+      x: time,
+      y: tod,
     },
     {
       name: 'MOS',
       type: 'scatter',
-      x: [1, 2, 3, 4],
-      y: [16, 5, 11, 9],
+      x: time,
+      y: mos,
+    },
+    {
+      name: 'NH<sub>3</sub>',
+      type: 'scatter',
+      x: time,
+      y: nh3,
+    },
+    {
+      name: 'H<sub>2</sub>S',
+      type: 'scatter',
+      x: time,
+      y: h2s,
+    },
+    {
+      name: 'VOC',
+      type: 'scatter',
+      x: time,
+      y: voc,
     },
   ],
   layout: {
@@ -27,6 +56,7 @@ export const lineChart = {
     showlegend: true,
     legend: {
       "orientation": "h",
+      xanchor: 'right',
       font: {
         color: "white"
       },

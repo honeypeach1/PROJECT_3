@@ -88,9 +88,10 @@ exports.socketServer = net.createServer(function (socket) {
         makeDataArray.push("time");
         makeDataArray.push(timestamp());
         //추가로 장비 타입 번호도 구별 해야함. -> 즉, 1번은 악취, 2번은 채취, 3번은 분석
-        const rand_2_5 = Math.floor(Math.random() * 4) + 2;
+        const rand_1_5 = Math.floor(Math.random() * 4) + 1;
+        console.log("rand_1_5: ",rand_1_5)
         makeDataArray.push("absoluteId")
-        makeDataArray.push(rand_2_5)
+        makeDataArray.push(rand_1_5)
         //하지만 현재 테스트용으로 AMS제품군으로만 분류로 할것이기 때문에 별도 처리하지 않음.
         //평균 값 계산
         inputJson.inputDataJson(makeDataArray);
@@ -128,7 +129,11 @@ exports.socketServer = net.createServer(function (socket) {
                 } else if (makeDataArray[i] == 'PSD') {
                     socketJson.sensor_signal_data_psd = makeDataArray[i + 1];
                 } else if (makeDataArray[i] == 'absoluteId') {
+                    //임시로 해놈
                     socketJson.equipment_seq = makeDataArray[i + 1];
+                } else {
+                    //임시로 해놈
+                    socketJson.sensor_component_period_type = 1;
                 }
             }
             JSON.stringify(socketJson);

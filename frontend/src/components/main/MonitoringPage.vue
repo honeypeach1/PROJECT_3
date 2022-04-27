@@ -8,7 +8,7 @@
       <div id="leftArea">
         <div id="equipmentListArea">
           <div id="HeaderArea">
-            <select>
+            <select v-model="equipNum" @change="mainGetData">
               <option value="0" selected disabled>장비를 선택해주세요.</option>
               <optgroup v-for="(group, name) in selectOptions" :label="name">
                 <option v-for="option in group" :value="option.value">
@@ -29,23 +29,23 @@
             </div>
             <div class="selectBody">
               <div class="selectBodyContent">
-                <div class = "totalbox box1">
+                <div class="totalbox box1">
                   <div class="box_title">구분</div>
                   <div class="box_value">채취장비</div>
                 </div>
-                <div class = "totalbox box2">
+                <div class="totalbox box2">
                   <div class="box_title">모드</div>
                   <div class="box_value">수동</div>
                 </div>
-                <div class = "totalbox box3">
+                <div class="totalbox box3">
                   <div class="box_title">채집백</div>
                   <div class="box_value">교환필요</div>
                 </div>
-                <div class = "totalbox box4">
+                <div class="totalbox box4">
                   <div class="box_title">상태</div>
                   <div class="box_value">채취대기</div>
                 </div>
-                <div class = "totalbox box5">
+                <div class="totalbox box5">
                   <div class="box_title">채취시간</div>
                   <div class="box_value">
                     <div class="box_value1">04.13 11:22</div>
@@ -307,7 +307,7 @@
 </template>
 
 <script>
-import {mapState,mapActions,mapMutations,mapGetters} from 'vuex';
+import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import MainHeader from "../layout/header";
 import dotenv from 'dotenv';
 import getWindRose from "../statistics/chart_attribute/windrose.js";
@@ -330,6 +330,7 @@ export default {
       currentTab: 0,
       selectOptions: [],
       map: null,
+      equipNum: 0,
       markerPositions1: [
         [33.452278, 126.567803],
         [33.452671, 126.574792],
@@ -346,12 +347,16 @@ export default {
       ],
 
       markers: [],
+      Point: null,
       infowindow: null,
       windRose: getWindRose,
       lineChart: getLineChart,
       responsive: true,
       infoWindChart: false,
     };
+  },
+  created() {
+    this.$root.$refs.MonitoringPage = this;
   },
   mounted() {
     this.getEquipmentList();
@@ -365,14 +370,14 @@ export default {
       script.onload = () => kakao.maps.load(this.initMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
       document.head.appendChild(script);
-      this.initPlotlyChart();
-      window.onload = function() {
+      this.mainGetData();
+      window.onload = function () {
         Plotly.relayout('chartBar', {
           'xaxis.autorange': true,
           'yaxis.autorange': true,
           'layout.autosize': true,
         });
-        window.onresize = function() {
+        window.onresize = function () {
           Plotly.relayout('chartBar', {
             'xaxis.autorange': true,
             'yaxis.autorange': true,
@@ -380,7 +385,8 @@ export default {
           });
         };
       }
-    };
+    }
+    ;
   },
   methods: {
     /*웹소켓 파트 시작*/
@@ -413,10 +419,10 @@ export default {
         }
       })
     },
-    initPlotlyChart() {
-      Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.options);
-      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.options);
-    },
+    /*    initPlotlyChart() {
+          Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.options);
+          Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.options);
+        },*/
     /*
         sendMessage(e) {
           this.socket.send(this.message);
@@ -487,6 +493,57 @@ export default {
 
       this.map.setCenter(iwPosition);
     },
+    setEquipCood(equipMapNum, mapLat, mapLng) {
+      console.log("arr : ", equipMapNum, mapLat, mapLng)
+
+      let imageSrc = require('../../assets/images/svg/marker_image.svg'),
+        imageSize = new kakao.maps.Size(35, 45),
+        imageOption = {offset: new kakao.maps.Point(15, 40)};
+      let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+      this.Point = new kakao.maps.Marker({
+        map: this.map,
+        position: new kakao.maps.LatLng(mapLat, mapLng),
+        title: '장비 좌표 수정',
+        image: markerImage
+      })
+    },
+    mainGetData() {
+      this.getChartData();
+      this.getWindData();
+    },
+    getChartData() {
+      axios({
+        url: "/equipment/getSensorChartData",
+        method: "GET",
+        params: {
+          equipNum: this.equipNum
+        }
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.lineChart.chartDraw(data.sensorChartList)
+          Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.options);
+        }
+      })
+    },
+    getWindData() {
+      axios({
+        url: "/equipment/getWindChartData",
+        method: "GET",
+        params: {
+          equipNum: this.equipNum
+        }
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.windRose.windRoseDraw(data.windChartList)
+          Plotly.newPlot("windRose", data.windChartList, this.windRose.layout, this.options);
+        }
+      })
+    }
   },
 }
 

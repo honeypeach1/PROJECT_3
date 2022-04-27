@@ -12,7 +12,18 @@
                 <td>좌표설정</td>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+            <template v-for="dataList in mapEquipmentList">
+              <tr>
+                <td>
+                  <input class="map_equipment_name" :id="'mapEquipment_'+dataList.EQUIPMENT_SEQ" :placeholder="dataList.EQUIPMENT_NAME">
+                </td>
+                <td>
+                  <button class="map_change_Equip" @click="setEquipCood(dataList.EQUIPMENT_SEQ,dataList.EQUIPMENT_LAT,dataList.EQUIPMENT_LNG)">좌표설정</button>
+                </td>
+              </tr>
+            </template>
+            </tbody>
           </table>
         </div>
       </div>
@@ -30,22 +41,37 @@
 </template>
 
 <script>
-let Point;
+import $ from 'jquery';
+import axios from "axios";
+
 export default {
   data: function () {
     return {
-      Point: null
+      mapEquipmentList: []
     }
   },
   mounted() {
-
+    this.getMapEquipmentList();
   },
   methods: {
+    getMapEquipmentList() {
+      axios({
+        url: "/equipment/getEquipmentList",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.mapEquipmentList = data.equipmentList;
+        }
+      })
+    },
+    setEquipCood(equipMapNum,mapLat,mapLng){
+      this.$emit('map-close');
+      this.$root.$refs.MonitoringPage.setEquipCood(equipMapNum,mapLat,mapLng);
+    },
     accountCoord(){
       this.$emit('map-close');
-      Point = new kakao.maps.Marker({
-
-      })
     }
   }
 }

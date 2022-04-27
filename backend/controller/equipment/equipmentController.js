@@ -87,7 +87,7 @@ const EquipmentCon = {
     //장비 리스트 가져오기
     getEquipmentList: (req, res) => {
         try {
-            dbConnect.query('SELECT EQUIPMENT_SEQ, EQUIPMENT_NAME FROM EQUIPMENT_INFO',
+            dbConnect.query('SELECT EQUIPMENT_SEQ, EQUIPMENT_NAME, EQUIPMENT_LAT, EQUIPMENT_LNG FROM EQUIPMENT_INFO',
                 (err, data) => {
                     if (err) throw err;
                     res.json({
@@ -235,6 +235,56 @@ const EquipmentCon = {
                 success: true,
                 message: '장비의 악취 주의, 경고 값을 재설정 하였습니다.'
             })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
+    },
+    //메인(악취)페이지 라인 차트 센서 데이터 가져오기
+    getSensorChartData: (req, res) => {
+        try {
+            dbConnect.query('SELECT DATE_FORMAT(DATA_DATE_TIME, "%H-%m-%s") DATA_DATE_TIME, ' +
+                'IFNULL(SENSOR_SIGNAL_DATA_TOD, 0) TOD,' +
+                'IFNULL(SENSOR_SIGNAL_DATA_VOC, 0) VOC,' +
+                'IFNULL(SENSOR_SIGNAL_DATA_MOS, 0) MOS,' +
+                'IFNULL(SENSOR_SIGNAL_DATA_H2S, 0) H2S,' +
+                'IFNULL(SENSOR_SIGNAL_DATA_NH3, 0) NH3 ' +
+                'FROM SENSOR_COMPONENT ' +
+                'WHERE EQUIPMENT_SEQ = ? AND sensor_component_period_type = 1 AND ' +
+                'DATE_FORMAT(DATA_DATE_TIME, "%Y-%m-%d") = DATE_FORMAT(CURDATE(), "%Y-%m-%d") ' +
+                'ORDER BY DATA_DATE_TIME DESC ' +
+                'LIMIT 96',
+                req.query.equipNum,
+                (err, sensorChartList) => {
+                if(err) throw err;
+                    res.json({
+                        success: true,
+                        sensorChartList: sensorChartList,
+                        message: '차트 데이터를 호출하였습니다.'
+                    })
+                })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
+    },
+    //풍향 정보 가져오기
+    getWindChartData: (req, res) => {
+        try {
+            dbConnect.query('SELECT DATA_DATE_TIME, ' +
+                            'FLOOR(IFNULL(SENSOR_SIGNAL_DATA_OWD, 0)) OWD, ' +
+                            'IFNULL(SENSOR_SIGNAL_DATA_OWS, 0) OWS ' +
+                            'FROM sensor_component ' +
+                            'WHERE EQUIPMENT_SEQ = ? AND sensor_component_period_type = 1 AND ' +
+                            'DATE_FORMAT(DATA_DATE_TIME, "%Y-%m-%d") = DATE_FORMAT(CURDATE(), "%Y-%m-%d") ' +
+                            'ORDER BY DATA_DATE_TIME DESC',
+                req.query.equipNum,
+                (err,windChartList) => {
+                    if(err) throw err;
+                    res.json({
+                        success: true,
+                        windChartList: windChartList,
+                        message: '풍향 데이터를 호출하였습니다.'
+                    })
+                })
         } catch (err) {
             console.log("DB Connection Error!", err)
         }

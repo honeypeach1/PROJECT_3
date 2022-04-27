@@ -12,5 +12,8 @@ router.get('/getEquipmentList',equipmentController.getEquipmentList);
 router.get('/setChangeEquipName',equipmentController.setChangeEquipName);
 router.get('/deleteEquipment',equipmentController.deleteEquipment);
 router.get('/setThresholdData',equipmentController.setThresholdData);
+router.get('/getSensorChartData',equipmentController.getSensorChartData);
+router.get('/getWindChartData',equipmentController.getWindChartData);
+
 
 module.exports = router;

@@ -204,7 +204,7 @@ export default {
         alert(res.data.message);
         router.push("/");
       })*/
-    }
+    },
   }
 }
 </script>
