@@ -198,28 +198,6 @@
             background: linear-gradient(0deg, #2f4a5a 29%, #1c2e37 93%);
             display: flex;
             justify-content: center;
-
-            .plot-container {
-              color: #00CD00;
-
-              .user-select-none {
-                color: #00CED1;
-
-                svg {
-
-                  .angulardrag {
-                    fill: #063e6d !important;
-                  }
-
-                  .plotbg {
-
-                    path {
-                      fill: rgb(66, 64, 64) !important;
-                    }
-                  }
-                }
-              }
-            }
           }
 
           .showWindCount {
