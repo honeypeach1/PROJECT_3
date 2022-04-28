@@ -1,65 +1,84 @@
-let time = [], h2s = [], nh3 = [], mos = [], tod = [], voc = [];
 export const lineChart = {
-  chartDraw: (data) => {
-    for (let sensorData in data){
-      time.push(data[sensorData].DATA_DATE_TIME);
-      h2s.push(data[sensorData].H2S);
-      nh3.push(data[sensorData].MOS);
-      mos.push(data[sensorData].NH3);
-      tod.push(data[sensorData].TOD);
-      voc.push(data[sensorData].VOC);
+  chartDraw: (lineData) => {
+    const time = [];
+    const h2s = [];
+    const nh3 = [];
+    const mos = [];
+    const tod = [];
+    const voc = [];
+    //호출때 마다 초기화
+    for (let sensorData in lineData) {
+      time.push(lineData[sensorData].DATA_DATE_TIME);
+      h2s.push(lineData[sensorData].H2S);
+      nh3.push(lineData[sensorData].MOS);
+      mos.push(lineData[sensorData].NH3);
+      tod.push(lineData[sensorData].TOD);
+      voc.push(lineData[sensorData].VOC);
     }
-  },
-  data: [
-    {
+    const data = [];
+    data.push({
       name: 'TOD',
+      mode: 'lines+markers',
       type: 'scatter',
       x: time,
       y: tod,
-    },
-    {
+    })
+
+    data.push({
       name: 'MOS',
+      mode: 'lines+markers',
       type: 'scatter',
       x: time,
       y: mos,
-    },
-    {
-      name: 'NH<sub>3</sub>',
-      type: 'scatter',
-      x: time,
-      y: nh3,
-    },
-    {
-      name: 'H<sub>2</sub>S',
+    })
+
+    data.push({
+      name:  'H<sub>2</sub>S',
+      mode: 'lines+markers',
       type: 'scatter',
       x: time,
       y: h2s,
-    },
-    {
+    })
+
+    data.push({
+      name: 'NH<sub>3</sub>',
+      mode: 'lines+markers',
+      type: 'scatter',
+      x: time,
+      y: nh3,
+    })
+
+    data.push({
       name: 'VOC',
+      mode: 'lines+markers',
       type: 'scatter',
       x: time,
       y: voc,
-    },
-  ],
+    })
+    return data;
+  },
   layout: {
     plot_bgcolor: 'transparent',
     paper_bgcolor: 'transparent',
     autosize: true,
     maxHeight: 300,
     margin: {
-      t: 20,
-      b: 20,
-      l: 20,
-      r: 10,
+      t: 30,
+      b: 30,
+      l: 30,
+      r: 20,
     },
     showlegend: true,
     legend: {
-      "orientation": "h",
-      xanchor: 'top',
+      trace_groupgap: 5,
+      orientation: "h",
+      valign: 'middle',
       font: {
-        color: "white"
+        color: "#d9dfea",
+        size: 9,
       },
+      tracegroupgap: 1,
+      itemsizing: 'constant'
     },
     xaxis: {
       tickfont: {
@@ -67,8 +86,8 @@ export const lineChart = {
         size: 12,
         color: '#fff'
       },
-      tickformat: ',.60%',
-      showgrid : false,
+      nticks: 5,
+      showgrid: false,
     },
     yaxis: {
       tickfont: {
@@ -76,14 +95,15 @@ export const lineChart = {
         size: 12,
         color: '#fff'
       },
+      gridcolor: 'rgba(231,231,231,0.3)',
       showgrid: true,
       rangemode: 'normal',
-      fixedrange: true
+      fixedrange: false
     },
   },
   options: {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     aspectRatio: 1,
   },
 };

@@ -95,6 +95,7 @@
               padding: 3px;
             }
           }
+
           .selectBody {
             display: flex;
             flex: 1;
@@ -125,6 +126,7 @@
                   height: 30px;
                   background-color: #517285;
                 }
+
                 .box_value {
                   display: flex;
                   flex: 1;
@@ -139,8 +141,10 @@
                   font-size: 0.8em;
                 }
               }
+
               .totalbox.box5 {
                 border-right: 0px;
+
                 .box_title {
                   min-width: 130px;
                 }
@@ -148,6 +152,7 @@
             }
           }
         }
+
         #showChartArea {
           height: 39%;
           border: 1px solid;
@@ -166,7 +171,7 @@
 
           #chartBar {
             height: calc(100% - 41px);
-            background: linear-gradient(0deg,#2f4a5a 29%,#1c2e37 93%);
+            background: linear-gradient(0deg, #2f4a5a 29%, #1c2e37 93%);
           }
         }
 
@@ -188,11 +193,35 @@
             background: linear-gradient(to top, rgba(42, 77, 93, 0.65) 27%, rgba(65, 97, 113, 0.65) 85%, rgba(119, 147, 159, 0.65));
             border-bottom: 1px solid black;
           }
+
           #windRose {
-            background: linear-gradient(0deg,#2f4a5a 29%,#1c2e37 93%);
+            background: linear-gradient(0deg, #2f4a5a 29%, #1c2e37 93%);
             display: flex;
             justify-content: center;
+
+            .plot-container {
+              color: #00CD00;
+
+              .user-select-none {
+                color: #00CED1;
+
+                svg {
+
+                  .angulardrag {
+                    fill: #063e6d !important;
+                  }
+
+                  .plotbg {
+
+                    path {
+                      fill: rgb(66, 64, 64) !important;
+                    }
+                  }
+                }
+              }
+            }
           }
+
           .showWindCount {
             display: flex;
             background: #d8efff;
@@ -207,7 +236,8 @@
             display: flex;
             flex: 1;
             justify-content: space-around;
-            background: linear-gradient(0deg,rgba(42,77,93,.65) 27%,rgba(65,97,113,.65) 85%,rgba(119,147,159,.65));
+            background: linear-gradient(0deg, rgba(42, 77, 93, .65) 27%, rgba(65, 97, 113, .65) 85%, rgba(119, 147, 159, .65));
+
             .windLevel {
               display: flex;
               justify-content: center;
@@ -219,35 +249,39 @@
                 font-family: "NanumSquare", sans-serif;
               }
             }
+
             .windLevel.windLevel_1 {
               .color {
                 height: 10px;
                 width: 10px;
-                background-color: rgb(242,240,247);
+                background-color: rgb(242, 240, 247);
                 margin-right: 3px;
               }
             }
+
             .windLevel.windLevel_2 {
               .color {
                 height: 10px;
                 width: 10px;
-                background-color: rgb(203,201,226);
+                background-color: rgb(203, 201, 226);
                 margin-right: 3px;
               }
             }
+
             .windLevel.windLevel_3 {
               .color {
                 height: 10px;
                 width: 10px;
-                background-color: rgb(158,154,200);
+                background-color: rgb(158, 154, 200);
                 margin-right: 3px;
               }
             }
+
             .windLevel.windLevel_4 {
               .color {
                 height: 10px;
                 width: 10px;
-                background-color: rgb(106,81,163);
+                background-color: rgb(106, 81, 163);
                 margin-right: 3px;
               }
             }
@@ -278,6 +312,7 @@
       }
     }
   }
+
   #footer {
     background-color: aliceblue;
     width: 100%;
@@ -322,11 +357,14 @@
           #selectEquipment {
             height: 25%;
           }
+
           #showChartArea {
             height: 190px;
+
             span {
               height: 25px;
             }
+
             #chartBar {
               height: calc(100% - 26px);
             }
@@ -343,6 +381,7 @@
 
             .showWindCount {
             }
+
             #windCountGraph {
               width: 90%;
               height: 400px;
@@ -350,6 +389,7 @@
           }
         }
       }
+
       #rightArea {
         width: 99%;
         margin-left: 5px;

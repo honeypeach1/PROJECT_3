@@ -324,8 +324,7 @@ export default {
         if (status === 304) {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
-          this.lineChart.chartDraw(data.sensorChartList)
-          Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.options);
+          Plotly.newPlot("chartBar", this.lineChart.chartDraw(data.sensorChartList), this.lineChart.layout, this.options);
         }
       })
     },
@@ -340,8 +339,7 @@ export default {
         if (status === 304) {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
-          this.windRose.windRoseDraw(data.windChartList)
-          Plotly.newPlot("windRose", data.windChartList, this.windRose.layout, this.options);
+          Plotly.newPlot("windRose", this.windRose.windRoseDraw(data.windChartList), this.windRose.layout, this.options);
         }
       })
     }
