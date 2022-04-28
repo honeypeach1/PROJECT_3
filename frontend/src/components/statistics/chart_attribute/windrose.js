@@ -99,10 +99,13 @@ export const windRose = {
     const data = [];
     for (let i = 0; i < speedCrteria.length - 1; i++) {
       const index = speedCrteria.length - 1 - i;
+
+      console.log("eachSpeedEachDirectionCountSumPecentbyTotal[index] : ",eachSpeedEachDirectionCountSumPecentbyTotal[index])
+      console.log("eachSpeedEachDirectionCountPecentbyTotal[index] : ",eachSpeedEachDirectionCountPecentbyTotal[index])
       data.push({
         r: eachSpeedEachDirectionCountSumPecentbyTotal[index],
         text: eachSpeedEachDirectionCountPecentbyTotal[index],
-        thetas,
+        theta: thetas,
         name: speedName[index],
         marker: {color: color[index]},
         width: 0.4,
