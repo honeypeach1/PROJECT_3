@@ -109,7 +109,7 @@ import {mapState, mapActions, mapMutations, mapGetters} from 'vuex';
 import MainHeader from "../layout/header";
 import dotenv from 'dotenv';
 import getWindRose from "../statistics/chart_attribute/windrose.js";
-import getLineChart from '../statistics/chart_attribute/lineChart2.js';
+import getLineChart from '../statistics/chart_attribute/lineChart.js';
 import axios from "axios";
 import $ from 'jquery';
 import windChartView from '../../components/popup/winChartPopup';

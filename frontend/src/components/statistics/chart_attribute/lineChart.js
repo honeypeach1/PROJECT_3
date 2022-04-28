@@ -1,89 +1,110 @@
 export const lineChart = {
-  data: [
-    {
-      mode: 'markers+lines',
-      name: 'OECD',
+  chartDraw: (lineData) => {
+    const time = [];
+    const h2s = [];
+    const nh3 = [];
+    const mos = [];
+    const tod = [];
+    const voc = [];
+    //호출때 마다 초기화
+    for (let sensorData in lineData) {
+      time.push(lineData[sensorData].DATA_DATE_TIME);
+      h2s.push(lineData[sensorData].H2S);
+      nh3.push(lineData[sensorData].MOS);
+      mos.push(lineData[sensorData].NH3);
+      tod.push(lineData[sensorData].TOD);
+      voc.push(lineData[sensorData].VOC);
+    }
+    const data = [];
+    data.push({
+      name: 'TOD',
+      mode: 'lines+markers',
       type: 'scatter',
-      x: [1870, 1880, 1890, 1900, 1913, 1929, 1938, 1950, 1960, 1970, 1980, 1990, 2000, 2007],
-      y: [0.175, 0.192, 0.22, 0.24600000000000002, 0.27699999999999997, 0.33399999999999996, 0.366, 0.41700000000000004, 0.48200000000000004, 0.541, 0.593, 0.6579999999999999, 0.745, 0.809],
-    },
-    {
-      mode: 'markers+lines',
-      name: 'Central & Eastern Europe (incl. Russia)',
-      type: 'scatter',
-      x: [1870, 1880, 1890, 1900, 1913, 1929, 1938, 1950, 1960, 1970, 1980, 1990, 2000, 2007],
-      y: [0.073, 0.08199999999999999, 0.09699999999999999, 0.11900000000000001, 0.133, 0.187, 0.266, 0.335, 0.413, 0.48200000000000004, 0.49, 0.509, 0.49700000000000005, 0.537],
+      x: time,
+      y: tod,
+    })
 
-    },
-    {
-      mode: 'markers+lines',
-      name: 'Latin America',
+    data.push({
+      name: 'MOS',
+      mode: 'lines+markers',
       type: 'scatter',
-      x: [1870, 1880, 1890, 1900, 1913, 1929, 1938, 1950, 1960, 1970, 1980, 1990, 2000, 2007],
-      y: [0.055, 0.06, 0.071, 0.083, 0.106, 0.13699999999999998, 0.156, 0.215, 0.263, 0.313, 0.374, 0.40299999999999997, 0.48100000000000004, 0.52],
-    },
-  ],
+      x: time,
+      y: mos,
+    })
+
+    data.push({
+      name:  'H<sub>2</sub>S',
+      mode: 'lines+markers',
+      type: 'scatter',
+      x: time,
+      y: h2s,
+    })
+
+    data.push({
+      name: 'NH<sub>3</sub>',
+      mode: 'lines+markers',
+      type: 'scatter',
+      x: time,
+      y: nh3,
+    })
+
+    data.push({
+      name: 'VOC',
+      mode: 'lines+markers',
+      type: 'scatter',
+      x: time,
+      y: voc,
+    })
+    return data;
+  },
   layout: {
-    autosize: true,
-    height: 300,
     plot_bgcolor: 'transparent',
     paper_bgcolor: 'transparent',
-    showlegend : true,
-    title: {
-      text :'대기 환경 지수(ppb)',
+    autosize: true,
+    maxHeight: 300,
+    margin: {
+      t: 30,
+      b: 30,
+      l: 30,
+      r: 20,
+    },
+    showlegend: true,
+    legend: {
+      trace_groupgap: 5,
+      orientation: "h",
+      valign: 'middle',
       font: {
-        color: '#fff',
-        family: "NanumSquare",
-      }
+        color: "#d9dfea",
+        size: 9,
+      },
+      tracegroupgap: 1,
+      itemsizing: 'constant'
     },
     xaxis: {
-      visible : true,
-      // dtick : 1,
-      gridcolor: '#585858',
       tickfont: {
         family: 'Arial',
         size: 12,
         color: '#fff'
       },
-      color : "#fff",
-      ticks : "outside",
-      showgrid : true,
+      nticks: 5,
+      showgrid: false,
     },
     yaxis: {
-      title : {
-        display : true,
-        text : 'ppb',
-        font : {
-          size: 14,
-          color: '#fff'
-        }
-      },
-      gridcolor: '#585858',
       tickfont: {
         family: 'Arial',
         size: 12,
         color: '#fff'
       },
-      color : "#fff",
-      ticks : "outside",
-      showgrid : true,
+      gridcolor: 'rgba(231,231,231,0.3)',
+      showgrid: true,
       rangemode: 'normal',
-      fixedrange: true
-    },
-/*    legend: {
-      font: {
-        color: '#fff'
-      },
-      x: 1,
-      xanchor: 'right',
-      y: 1
-    },*/
-    legend: {
-      "orientation": "h"
+      fixedrange: false
     },
   },
-  config: {
+  options: {
     responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 1,
   },
 };
 
