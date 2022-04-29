@@ -110,6 +110,8 @@ import MainHeader from "../layout/header";
 import dotenv from 'dotenv';
 import getWindRose from "../statistics/chart_attribute/windrose.js";
 import getLineChart from '../statistics/chart_attribute/lineChart.js';
+//plotly 설정 언어 변경
+import getPlotlyLang from '../statistics/chart_attribute/plotlyKoreanSetting.js';
 import axios from "axios";
 import $ from 'jquery';
 import windChartView from '../../components/popup/winChartPopup';
@@ -220,16 +222,6 @@ export default {
         }
       })
     },
-    /*    initPlotlyChart() {
-          Plotly.newPlot("windRose", this.windRose.data, this.windRose.layout, this.options);
-          Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.options);
-        },*/
-    /*
-        sendMessage(e) {
-          this.socket.send(this.message);
-          this.logs.push({ event: "메시지 전송", data: this.message });
-          this.message = "";
-        },*/
     /*웹소켓 파트 끝*/
     initMap() {
       const container = document.getElementById("map");
@@ -325,6 +317,7 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           Plotly.newPlot("chartBar", this.lineChart.chartDraw(data.sensorChartList), this.lineChart.layout, this.options);
+          getPlotlyLang.changePlotlyLang();
         }
       })
     },
@@ -340,6 +333,7 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           Plotly.newPlot("windRose", this.windRose.windRoseDraw(data.windChartList), this.windRose.layout, this.options);
+          getPlotlyLang.changePlotlyLang();
         }
       })
     }

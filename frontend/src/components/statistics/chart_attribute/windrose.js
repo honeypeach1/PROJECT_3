@@ -1,25 +1,37 @@
+const thetas = ["북", "북북동", "북동", "동북동", "동", "동남동", "남동", "남남동", "남", "남남서", "남서", "서남서", "서", "서북서", "북서", "북북서"];
+const color = ['#ffffff', '#0000ff', '#00ced1', '#00cd00', '#00ff00', '#ffab00', '#ff4747', '#ff0000'];
+const speedCrteria = [0.5, 5, 8, 11, 999999];
+const speedName = ['', '0.5 ~ 5.0', '5.0 ~ 8.0', '8.0 ~ 11', '11 ~'];
+
+//방향마다 집계
+const eachDirectionCount = [];
+//2차원 배열로 속도별 방향별 데이터가 몇개인지 저장
+const eachSpeedEachDirectionCount = [];
+//2차원 배열 속도별, 방향별 데이터 갯수 누적 값
+const eachSpeedEachDirectionCountSum = [];
+//방향마다 데이터가 몇개 있는지 비중을 저장
+const eachDirectionCountPercent = [];
+//2차원 배열로 속도마다, 방향마다 데이터가 몇개 있는지 비중
+const eachSpeedEachDirectionCountPecent = [];
+const eachSpeedEachDirectionCountPecentbyTotal = [];
+//2차원 배열 속도별, 방향별, 데이터 갯수 누적 값의 비중
+const eachSpeedEachDirectionCountSumPecent = [];
+const eachSpeedEachDirectionCountSumPecentbyTotal = [];
+const data = [];
+
+function getWindTableData(color, direction, dirSize, spdSize, percentData) {
+  data.color = color;
+  data.direction = direction;
+  data.dirSize = dirSize;
+  data.spdSize = spdSize;
+  data.percentData = percentData;
+  return data;
+}
+
 export const windRose = {
   windRoseDraw: (winData) => {
     const windSize = winData.length;
-    const thetas = ["북", "북북동", "북동", "동북동", "동", "동남동", "남동", "남남동", "남", "남남서", "남서", "서남서", "서", "서북서", "북서", "북북서"];
-    const color = ['#ffffff', '#0000ff', '#00ced1', '#00cd00', '00ff00', 'ffab00', '#ff4747', '#ff0000'];
-    const speedCrteria = [0.5, 5, 8, 11, 999999];
-    const speedName = ['', '0.5 ~ 5.0', '5.0 ~ 8.0', '8.0 ~ 11', '11 ~'];
 
-    //방향마다 집계
-    const eachDirectionCount = [];
-    //2차원 배열로 속도별 방향별 데이터가 몇개인지 저장
-    const eachSpeedEachDirectionCount = [];
-    //2차원 배열 속도별, 방향별 데이터 갯수 누적 값
-    const eachSpeedEachDirectionCountSum = [];
-    //방향마다 데이터가 몇개 있는지 비중을 저장
-    const eachDirectionCountPercent = [];
-    //2차원 배열로 속도마다, 방향마다 데이터가 몇개 있는지 비중
-    const eachSpeedEachDirectionCountPecent = [];
-    const eachSpeedEachDirectionCountPecentbyTotal = [];
-    //2차원 배열 속도별, 방향별, 데이터 갯수 누적 값의 비중
-    const eachSpeedEachDirectionCountSumPecent = [];
-    const eachSpeedEachDirectionCountSumPecentbyTotal = [];
     //배열 초기화
     for (const spdIndex in speedCrteria) {
       eachSpeedEachDirectionCount[spdIndex] = [];
@@ -99,9 +111,6 @@ export const windRose = {
     const data = [];
     for (let i = 0; i < speedCrteria.length - 1; i++) {
       const index = speedCrteria.length - 1 - i;
-
-      console.log("eachSpeedEachDirectionCountSumPecentbyTotal[index] : ",eachSpeedEachDirectionCountSumPecentbyTotal[index])
-      console.log("eachSpeedEachDirectionCountPecentbyTotal[index] : ",eachSpeedEachDirectionCountPecentbyTotal[index])
       data.push({
         r: eachSpeedEachDirectionCountSumPecentbyTotal[index],
         text: eachSpeedEachDirectionCountPecentbyTotal[index],
@@ -160,6 +169,18 @@ export const windRose = {
     maintainAspectRatio: false,
     aspectRatio: 1,
   },
+  getWindTableCallFunction() {
+    /*
+      풍배도 테이블에 표현하기 위한 function 호출
+    - 전달 파라미터
+      1. color 풍속별 색상표
+      2. direction 풍향
+      3. dirSize 방향 개수
+      4. spdSize 풍속 개수
+      5. percentage 방향별 풍속 빈도 데이터
+    */
+    return getWindTableData(color,thetas,thetas.length,speedCrteria.length,eachSpeedEachDirectionCountPecentbyTotal);
+  }
 }
 
 export default windRose;
