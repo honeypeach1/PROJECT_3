@@ -100,7 +100,96 @@
 
         <!--알람 정보 영역-->
         <div class="header_alert_area" v-if="alert_show">
-          <div class="alert_list">알람 발생</div>
+          <div class="alert_list">
+            <!--장비명 영역-->
+            <div class="alertEquipName">1.애경</div>
+            <div class="alertDelete">삭제</div>
+            <!--데이터 영역-->
+            <div class="alertValueArea">
+              <div class="alertValueHead">복합악취</div>
+              <div class="alertValue">100.5</div>
+            </div>
+            <!--알람 시각 영역-->
+            <div class="alertTimeArea">
+              <div class="alertTimeHead">발생시각</div>
+              <div class="alertTime">2022-05-02 23:59:59</div>
+            </div>
+          </div>
+          <div class="alert_list">
+            <!--장비명 영역-->
+            <div class="alertEquipName">2.정밀화학</div>
+            <div class="alertDelete">삭제</div>
+            <!--데이터 영역-->
+            <div class="alertValueArea">
+              <div class="alertValueHead">복합악취</div>
+              <div class="alertValue">11.5</div>
+            </div>
+            <!--알람 시각 영역-->
+            <div class="alertTimeArea">
+              <div class="alertTimeHead">발생시각</div>
+              <div class="alertTime">2022-05-02 23:59:59</div>
+            </div>
+          </div>
+          <div class="alert_list">
+            <!--장비명 영역-->
+            <div class="alertEquipName">3.동일파크맨션</div>
+            <div class="alertDelete">삭제</div>
+            <!--데이터 영역-->
+            <div class="alertValueArea">
+              <div class="alertValueHead">복합악취</div>
+              <div class="alertValue">3.5</div>
+            </div>
+            <!--알람 시각 영역-->
+            <div class="alertTimeArea">
+              <div class="alertTimeHead">발생시각</div>
+              <div class="alertTime">2022-05-02 23:59:59</div>
+            </div>
+          </div>
+          <div class="alert_list">
+            <!--장비명 영역-->
+            <div class="alertEquipName">4.디지털엠파이어</div>
+            <div class="alertDelete">삭제</div>
+            <!--데이터 영역-->
+            <div class="alertValueArea">
+              <div class="alertValueHead">복합악취</div>
+              <div class="alertValue">115.5</div>
+            </div>
+            <!--알람 시각 영역-->
+            <div class="alertTimeArea">
+              <div class="alertTimeHead">발생시각</div>
+              <div class="alertTime">2022-05-02 23:59:59</div>
+            </div>
+          </div>
+          <div class="alert_list">
+            <!--장비명 영역-->
+            <div class="alertEquipName">5.최대여덟글자까지..</div>
+            <div class="alertDelete">삭제</div>
+            <!--데이터 영역-->
+            <div class="alertValueArea">
+              <div class="alertValueHead">복합악취</div>
+              <div class="alertValue">30.5</div>
+            </div>
+            <!--알람 시각 영역-->
+            <div class="alertTimeArea">
+              <div class="alertTimeHead">발생시각</div>
+              <div class="alertTime">2022-05-02 23:59:59</div>
+            </div>
+          </div>
+          <div class="alert_list">
+            <!--장비명 영역-->
+            <div class="alertEquipName">6.주짓수법인단체</div>
+            <div class="alertDelete">삭제</div>
+            <!--데이터 영역-->
+            <div class="alertValueArea">
+              <div class="alertValueHead">복합악취</div>
+              <div class="alertValue">30.5</div>
+            </div>
+            <!--알람 시각 영역-->
+            <div class="alertTimeArea">
+              <div class="alertTimeHead">발생시각</div>
+              <div class="alertTime">2022-05-02 23:59:59</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

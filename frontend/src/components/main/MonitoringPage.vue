@@ -54,12 +54,38 @@
                 </div>
               </div>
             </div>
+            <div id="CollectorBody" v-if="isCollectShow">
+              <div class="collectorHeader">
+                <div class="checked"><input id='allCheck' type="checkbox" onclick="chekcedCollector()"/>
+                </div>
+                <div class="name">장비ID</div>
+                <div class="mode">모드</div>
+                <div class="bag">채취백</div>
+                <div class="status">동작상태</div>
+                <div class="start">시작</div>
+              </div>
+              <div id="collectorList" class="collectorList">
+                <div class="checked line">
+                  <input id="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                </div>
+                <div class="line name">대원화성</div>
+                <div class="line mode">수동</div>
+                <div class="line bag">미수거</div>
+                <div class="line status">채취완료</div>
+                <div class="line start">ㅁ</div>
+              </div>
+              <div class="collectorBtn">
+                <div onclick="startCollectorSelected()">선택시작</div>
+              </div>
+            </div>
           </div>
-          <div id="showChartArea">
+
+
+          <div id="showChartArea" v-show="!isCollectShow">
             <span>악취정보</span>
             <div id="chartBar"></div>
           </div>
-          <div id="showWindRoseArea">
+          <div id="showWindRoseArea" v-show="!isCollectShow">
             <span>풍배도</span>
             <div id="windRose"></div>
             <div class="showWindCount" @click="isWindChartView=true">상세보기</div>
@@ -86,14 +112,13 @@
       </div>
       <div id="rightArea">
         <div id="map"></div>
-        <div class="button-group">
+<!--        <div class="button-group">
           <button @click="changeSize(0)">Hide</button>
           <button @click="changeSize(400)">show</button>
-          <button @click="displayMarker(markerPositions1)">marker set 1</button>
-          <button @click="displayMarker(markerPositions2)">marker set 2</button>
-          <button @click="displayMarker([])">marker set 3 (empty)</button>
+          <button @click="displayMarker(markerPositions)">marker set</button>
+          <button @click="displayMarker([])">marker set(empty)</button>
           <button @click="displayInfoWindow">infowindow</button>
-        </div>
+        </div>-->
       </div>
       <windChartView v-if="isWindChartView" @windChart-close="isWindChartView=false">
         <Content />
@@ -134,21 +159,7 @@ export default {
       selectOptions: [],
       map: null,
       equipNum: 0,
-      markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
-      ],
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
-
+      markerPositions: [],
       markers: [],
       Point: null,
       infowindow: null,
@@ -163,6 +174,7 @@ export default {
   },
   mounted() {
     this.getEquipmentList();
+    this.displayMarker();
     this.connect();
     /*setInterval(this.connect.bind(this),30000)*/
     if (window.kakao && window.kakao.maps) {
@@ -234,18 +246,20 @@ export default {
     showWindChart() {
       this.infoWindChart = !this.infoWindChart;
     },
-    changeSize(size) {
+    /*changeSize(size) {
       const container = document.getElementById("map");
       container.style.width = `${size}px`;
       container.style.height = `${size}px`;
       this.map.relayout();
-    },
-    displayMarker(markerPositions) {
+    },*/
+    displayMarker() {
+      console.log("마커 찍기")
+      console.log("데이터 : ",this.markerPositions)
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
 
-      const positions = markerPositions.map(
+      const positions = this.markerPositions.map(
         (position) => new kakao.maps.LatLng(...position)
       );
 
@@ -304,7 +318,6 @@ export default {
     mainGetData() {
       this.getChartData();
       this.getWindData();
-      getPlotlyLang.changePlotlyLang();
     },
     getChartData() {
       axios({
@@ -318,6 +331,7 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           Plotly.newPlot("chartBar", this.lineChart.chartDraw(data.sensorChartList), this.lineChart.layout, this.options);
+          getPlotlyLang.changePlotlyLang();
         }
       })
     },
@@ -333,6 +347,7 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           Plotly.newPlot("windRose", this.windRose.windRoseDraw(data.windChartList), this.windRose.layout, this.options);
+          getPlotlyLang.changePlotlyLang();
         }
       })
     }

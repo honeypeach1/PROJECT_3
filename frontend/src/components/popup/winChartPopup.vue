@@ -237,9 +237,7 @@ export default {
       for (let dirIndex = 0; dirIndex < dirSize; dirIndex++) {
         let sum = 0;
         const tr = $('<tr class="windRoseTableBody ' + (dirIndex % 2 == 0 ? "even":"odd") + '">');
-
         tr.append("<td class='windRoseDirection'>" + direction[dirIndex] + "</td>");
-
         for (let spdIndex = 1; spdIndex < spdSize; spdIndex++) {
           const value = percentData[spdIndex][dirIndex];
           if (value > 0) {
