@@ -283,7 +283,7 @@ export default {
     },
     userLogout() {
       this.$store.dispatch("LOGOUT")
-      .then(success => {
+      .then(() => {
           this.$router.push("/");
       })
      /* axios({
