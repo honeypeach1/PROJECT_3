@@ -304,6 +304,7 @@ export default {
     mainGetData() {
       this.getChartData();
       this.getWindData();
+      getPlotlyLang.changePlotlyLang();
     },
     getChartData() {
       axios({
@@ -317,7 +318,6 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           Plotly.newPlot("chartBar", this.lineChart.chartDraw(data.sensorChartList), this.lineChart.layout, this.options);
-          getPlotlyLang.changePlotlyLang();
         }
       })
     },
@@ -333,7 +333,6 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           Plotly.newPlot("windRose", this.windRose.windRoseDraw(data.windChartList), this.windRose.layout, this.options);
-          getPlotlyLang.changePlotlyLang();
         }
       })
     }

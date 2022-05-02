@@ -6,13 +6,10 @@
         <thead>
         <tr class="head_title">
           <th>m/s</th>
-          <th>0.5~</th>
-          <th>1.0~</th>
-          <th>1.5~</th>
-          <th>2.0~</th>
-          <th>2.5~</th>
-          <th>3.0~</th>
-          <th>3.5~</th>
+          <th>~5</th>
+          <th>~8</th>
+          <th>~11</th>
+          <th>11~</th>
           <th>합계</th>
         </tr>
         <tr class="head_subTitle">
@@ -21,9 +18,6 @@
           <th class="legend_2"></th>
           <th class="legend_3"></th>
           <th class="legend_4"></th>
-          <th class="legend_5"></th>
-          <th class="legend_6"></th>
-          <th class="legend_7"></th>
           <th></th>
         </tr>
         </thead>

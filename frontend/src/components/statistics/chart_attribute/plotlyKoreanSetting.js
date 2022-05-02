@@ -4,6 +4,7 @@ export const plotlyKorSetting = {
   changePlotlyLang: () => {
     $(".modebar-btn").each(() => {
       const t = $(this);
+      console.log("t : ",t)
 
       switch (t.data('title')) {
         case 'Box Select':
