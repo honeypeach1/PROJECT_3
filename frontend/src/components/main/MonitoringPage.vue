@@ -20,10 +20,11 @@
           <div id="selectEquipment" class="selectEquipment">
             <div class="selectTitle">
               <span>채취상태</span>
-              <a class="collectarea" onclick="collectorControllView()">
+              <a class="collectarea" @click="collectorControllView()">
                 <div>
                   <span class="rightSpan">동작</span>
-                  <img id="collectorBtn" src="../../assets/images/layout/btn_down.png" alt="temp"/>
+                  <img id="collectorBtn" v-if="!isCollectShow" src="../../assets/images/layout/btn_down.png" alt="temp"/>
+                  <img id="collectorBtn" v-if="isCollectShow" src="../../assets/images/layout/btn_up.png" alt="temp"/>
                 </div>
               </a>
             </div>
@@ -54,7 +55,7 @@
                 </div>
               </div>
             </div>
-            <div id="CollectorBody" v-if="isCollectShow">
+            <div id="CollectorBody" v-show="isCollectShow">
               <div class="collectorHeader">
                 <div class="checked"><input id='allCheck' type="checkbox" onclick="chekcedCollector()"/>
                 </div>
@@ -65,14 +66,48 @@
                 <div class="start">시작</div>
               </div>
               <div id="collectorList" class="collectorList">
-                <div class="checked line">
-                  <input id="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                <div class="collectorItem">
+                  <div class="checked line">
+                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                  </div>
+                  <div class="line name">산동농장</div>
+                  <div class="line mode">수동</div>
+                  <div class="line bag">미수거</div>
+                  <div class="line status">채취대기</div>
+                  <div class="line start">
+                    <i class="fas fa-play"></i>
+<!--                    <i class="fas fa-spinner fa-spin"></i>-->
+<!--                    <i class="fas fa-exchange-alt"></i>-->
+                  </div>
                 </div>
-                <div class="line name">대원화성</div>
-                <div class="line mode">수동</div>
-                <div class="line bag">미수거</div>
-                <div class="line status">채취완료</div>
-                <div class="line start">ㅁ</div>
+                <div class="collectorItem">
+                  <div class="checked line">
+                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                  </div>
+                  <div class="line name">누리화학</div>
+                  <div class="line mode">수동</div>
+                  <div class="line bag">미수거</div>
+                  <div class="line status">채취중</div>
+                  <div class="line start">
+                    <!--                    <i class="fas fa-play"></i>-->
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <!--                    <i class="fas fa-exchange-alt"></i>-->
+                  </div>
+                </div>
+                <div class="collectorItem">
+                  <div class="checked line">
+                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                  </div>
+                  <div class="line name">에이스농장</div>
+                  <div class="line mode">수동</div>
+                  <div class="line bag">미수거</div>
+                  <div class="line status">채취완료</div>
+                  <div class="line start">
+<!--                <i class="fas fa-play"></i>-->
+<!--                <i class="fas fa-spinner fa-spin"></i>-->
+                    <i class="fas fa-exchange-alt"></i>
+                  </div>
+                </div>
               </div>
               <div class="collectorBtn">
                 <div onclick="startCollectorSelected()">선택시작</div>
@@ -167,6 +202,7 @@ export default {
       lineChart: getLineChart,
       responsive: true,
       isWindChartView: false,
+      isCollectShow: false,
     };
   },
   created() {
@@ -245,6 +281,9 @@ export default {
     },
     showWindChart() {
       this.infoWindChart = !this.infoWindChart;
+    },
+    collectorControllView() {
+      this.isCollectShow = !this.isCollectShow;
     },
     /*changeSize(size) {
       const container = document.getElementById("map");
