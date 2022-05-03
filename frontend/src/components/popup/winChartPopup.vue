@@ -70,7 +70,7 @@ export default {
       for (let dirIndex = 0; dirIndex < dirSize; dirIndex++) {
         let sum = 0;
         const tr = $('<tr class="windRoseTableBody ' + (dirIndex % 2 == 0 ? "even":"odd") + '" style="'+ (dirIndex % 2 == 0 ? "background:#303d44":"background:#18252B") +'">');
-        tr.append("<td class='windRoseDirection' style='background: #4b6b7c; width: 16%'>" + direction[dirIndex] + "</td>");
+        tr.append("<td class='windRoseDirection' style='background: #4e616a; width: 16%'>" + direction[dirIndex] + "</td>");
         for (let spdIndex = 1; spdIndex < spdSize; spdIndex++) {
           const value = percentData[spdIndex][dirIndex];
           if (value > 0) {

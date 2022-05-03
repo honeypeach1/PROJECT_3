@@ -8,8 +8,8 @@
       <div id="leftArea">
         <div id="equipmentListArea">
           <div id="HeaderArea">
-            <select v-model="equipNum" @change="mainGetData">
-              <option value="0" selected disabled>장비를 선택해주세요.</option>
+            <select id="equipSelect" v-model="equipNum" @change="mainGetData">
+              <option value="0" disabled>장비를 선택해주세요.</option>
               <optgroup v-for="(group, name) in selectOptions" :label="name">
                 <option v-for="option in group" :value="option.value">
                   {{ option.text }}
@@ -23,8 +23,8 @@
               <a class="collectarea" @click="collectorControllView()">
                 <div>
                   <span class="rightSpan">동작</span>
-                  <img id="collectorBtn" v-if="!isCollectShow" src="../../assets/images/layout/btn_down.png" alt="temp"/>
-                  <img id="collectorBtn" v-if="isCollectShow" src="../../assets/images/layout/btn_up.png" alt="temp"/>
+                  <img class="collectorBtn" v-if="!isCollectShow" src="../../assets/images/layout/btn_down.png" alt="temp"/>
+                  <img class="collectorBtn" v-if="isCollectShow" src="../../assets/images/layout/btn_up.png" alt="temp"/>
                 </div>
               </a>
             </div>
@@ -57,7 +57,8 @@
             </div>
             <div id="CollectorBody" v-show="isCollectShow">
               <div class="collectorHeader">
-                <div class="checked"><input id='allCheck' type="checkbox" onclick="chekcedCollector()"/>
+                <div class="checked">
+                  <input id="allCheck" type="checkbox" value="selectAll"/>
                 </div>
                 <div class="name">장비ID</div>
                 <div class="mode">모드</div>
@@ -82,7 +83,7 @@
                 </div>
                 <div class="collectorItem">
                   <div class="checked line">
-                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="2">
                   </div>
                   <div class="line name">누리화학</div>
                   <div class="line mode">수동</div>
@@ -96,7 +97,7 @@
                 </div>
                 <div class="collectorItem">
                   <div class="checked line">
-                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="3">
                   </div>
                   <div class="line name">에이스농장</div>
                   <div class="line mode">수동</div>
@@ -176,6 +177,23 @@ import axios from "axios";
 import $ from 'jquery';
 import windChartView from '../../components/popup/winChartPopup';
 
+// JQUERY //
+$(document).on('click', '#allCheck', function () {
+  if($('#allCheck').is(':checked')) {
+    $('input[name=collectorCk]').prop('checked', true);
+  } else {
+    $('input[name=collectorCk]').prop('checked', false);
+  }
+});
+$(document).on('click', 'input[name=collectorCk]', function () {
+  if($('#allCheck').is(':checked')) {
+    $('input[name=collectorCk]').prop('checked', true);
+  } else {
+    $('input[name=collectorCk]').prop('checked', false);
+  }
+})
+
+
 /*API 키*/
 dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
@@ -236,8 +254,7 @@ export default {
           });
         };
       }
-    }
-    ;
+    };
   },
   methods: {
     /*웹소켓 파트 시작*/
@@ -267,6 +284,11 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           this.selectOptions = data.equipmentList;
+
+          //만약 장비 정보가 있을 경우 첫번째 장비를 자동으로 선택한다.
+          if(this.selectOptions.length !== 'undefined'){
+            $("#equipSelect optgroup option:first").attr("selected", "selected");
+          }
         }
       })
     },
@@ -389,10 +411,9 @@ export default {
           getPlotlyLang.changePlotlyLang();
         }
       })
-    },
+    }
   },
 }
-
 </script>
 
 <style lang="scss" scoped>
