@@ -2,23 +2,22 @@ import $ from 'jquery';
 
 export const plotlyKorSetting = {
   changePlotlyLang: () => {
-    $(".modebar-btn").each(() => {
-      const t = $(this);
-      console.log("t : ",t)
-
-      switch (t.data('title')) {
+    $('.modebar-btn').each(function (index) {
+      /*console.log("t :  ",$(this).attr('data-title'))*/
+      switch ($(this).attr('data-title')) {
+        case 'Produced with Plotly.js (v2.9.0)':
         case 'Box Select':
         case 'Lasso Select':
-          t.hide();
+          $(this).hide();
           break;
         case 'Toggle show closest data on hover':
-          t.attr('data-title','데이터 값 표시&숨김');
+          $(this).attr('data-title','데이터 값 표시&숨김');
           break;
         case 'Zoom':
-          t.attr('data-title','확대');
+          $(this).attr('data-title','확대');
           break;
         case 'Download plot as a png':
-          t.attr('data-title','png 다운로드')
+          $(this).attr('data-title','png 다운로드');
           break;
       }
     })
