@@ -12,64 +12,102 @@
   background-color: #000000;
 }
 
-#windCountGraph {
-  opacity: 1;
-  z-index: 30;
-  position: absolute;
-  width: 500px;
-  height: 450px;
-  background: black;
-  top: 0;
+.windBackgroundArea {
+  left: 0;
   right: 0;
   bottom: 0;
-  left: 0;
+  top: -70px;
+  z-index: 30;
+  opacity: 0.9;
+  width: 520px;
+  height: 530px;
+  user-select: none;
   margin: auto auto;
+  position: absolute;
+  border-radius: 3px;
+  background: #e6e6e6;
 
-  table {
-    width: 100%;
-    height: 100%;
-    color: #FFFFFF;
-    font-size: 0.8rem;
+  .windFieldTitle {
+    display: flex;
+    align-items: baseline;
+    padding: 0 10px 0 10px;
+    justify-content: space-between;
     font-family: "NanumSquare", sans-serif;
 
-    thead {
-
-      .head_title {
-        border: 1px solid #000000;
-        background-image: linear-gradient(to top, rgba(59, 97, 116, 0.65) 27%, rgba(82, 121, 138, 0.65) 84%, rgba(134, 175, 193, 0.65));
-        border-left-color: rgba(216, 216, 216, 0.18);
-      }
-
-      .head_subTitle {
-        border: 1px solid #000000;
-        box-shadow: inset 0px 6px 0px 1px rgb(28, 45, 57, 70%);
-        background-image: linear-gradient(to top, rgba(47, 83, 108, 1), rgba(39, 70, 92, 1));
-        border-left-color: rgba(216, 216, 216, 0.18);
-
-      }
+    h4 {
+      font-weight: 500;
+      font-size: 1.1rem;
+      margin: 10px 0 0 0;
     }
 
-    tbody {
-      font-size: 80%;
-      text-align: center;
+    span {
+     color: #6a6a6a;
+    }
+  }
 
-      .windRoseTableBody {
-        td:first-child {
-          background: #4b6b7c;
+  #windCountGraph {
+    width: 515px;
+    height: 450px;
+    margin: 5px auto 0;
+    background: black;
+
+    table {
+      width: 100%;
+      height: 100%;
+      color: #FFFFFF;
+      font-size: 0.9rem;
+      border-spacing: 1px;
+      font-family: "NanumSquare", sans-serif;
+
+      thead {
+        .head_title {
+          border: 1px solid #000000;
+          background-image: linear-gradient(to top, rgba(59, 97, 116, 0.65) 27%, rgba(82, 121, 138, 0.65) 84%, rgba(134, 175, 193, 0.65));
+          border-left-color: rgba(216, 216, 216, 0.18);
         }
 
-        td {
-          color: #d1d0db;
-
+        .head_subTitle {
+          border: 1px solid #000000;
+          box-shadow: inset 0px 6px 0px 1px rgb(28, 45, 57, 70%);
+          background-image: linear-gradient(to top, rgba(47, 83, 108, 1), rgba(39, 70, 92, 1));
+          border-left-color: rgba(216, 216, 216, 0.18);
         }
       }
 
-      .odd {
-        background: #18252B;
-      }
+      tbody {
+        font-size: 80%;
+        text-align: center;
 
-      .even {
-        background: #303d44;
+        /*tr 부터 scss 적용이 안됨. 해당 태그 인라인에 강제 적용*/
+        tr {
+          td {
+            width: 16%;
+          }
+        }
+      }
+    }
+  }
+
+  .windFieldCloseArea {
+    margin: 3px;
+    height: 30px;
+    display: flex;
+    background: #d8efff;
+    border-top: 1px solid;
+    justify-content: center;
+    border-bottom: 1px solid;
+    -webkit-box-pack: center;
+
+    .windFieldClose {
+      width: 100%;
+      cursor: pointer;
+      font-weight: bold;
+      background: transparent;
+      font-family: "NanumSquare", sans-serif;
+
+      &:hover {
+        color: #001c30;
+        background: #b9ebef;
       }
     }
   }
@@ -77,9 +115,9 @@
 
 @media all and (max-width: 768px) {
   #windCountGraph {
+    top: auto;
     width: 90%;
     height: 300px;
-    top: auto;
     bottom: 100px;
   }
 
