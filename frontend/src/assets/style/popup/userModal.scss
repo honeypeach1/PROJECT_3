@@ -13,25 +13,26 @@
 }
 
 .user-modal-card {
-  opacity: 1;
   z-index: 30;
+  opacity: 0.9;
   width: 1200px;
   height: 650px;
   padding-top: 10px;
   padding-left: 50px;
+  border-radius: 3px;
   position: relative;
   padding-right: 50px;
   margin: 30px auto auto;
-  background-color: #ffffff;
+  background-color: #f1f1f1;
   font-family: "NanumSquare", sans-serif;
 
   .user-top-area {
     padding: 20px;
-    color: #666666;
+    color: #FFFFFF;
     font-size: 25px;
     text-align: center;
-    background: #f7f7f7;
     border: 2px solid #efefef;
+    background: linear-gradient(320deg, #1a4361, #001c30);
   }
 
   .user-center-area {
@@ -102,10 +103,12 @@
       width: 100px;
       height: 40px;
       float: right;
-      color: #f4f4f4;
-      font-size: 20px;
+      color: #000000;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
       border-radius: 5px;
-      background: #032136;
+      background: #f4f4f4;
       font-family: "NanumSquare", sans-serif;
     }
   }

@@ -13,20 +13,21 @@
 }
 
 .map-modal-card {
-  opacity: 1;
   z-index: 30;
+  opacity: 0.9;
   width: 730px;
   height: 620px;
   padding-top: 10px;
   padding-left: 50px;
   position: relative;
+  border-radius: 3px;
   padding-right: 50px;
   margin: 30px auto auto;
-  background-color: #ffffff;
+  background-color: #f1f1f1;
 
   .map-headerTab {
     //width: 100%;
-    color: #666666;
+    color: #FFFFFF;
     display: block;
     font-size: 22px;
     margin-top: 20px;
@@ -34,8 +35,8 @@
     text-align: center;
     padding: 10px 15px;
     margin-bottom: 25px;
-    background: #f7f7f7;
     border: 2px solid #efefef;
+    background: linear-gradient(320deg, #1a4361, #001c30);
   }
 
   .map-tab-content {
@@ -57,9 +58,16 @@
           tr {
 
             td {
-              width: 33%;
               color: #FFFFFF;
               background:#032136;
+            }
+
+            .equipLatLngHead {
+              width: 70%;
+            }
+
+            .equipLatLngValuev {
+              width: 30%;
             }
           }
         }
@@ -89,7 +97,7 @@
                 font-size: 1rem;
                 font-weight: bold;
                 border-radius: 5px;
-                background: #099999;
+                background: #187c7c;
                 font-family: "NanumSquare", sans-serif;
 
               }
@@ -144,7 +152,7 @@
         line-height: 20px;
         font-weight: bold;
         border-radius: 5px;
-        background: linear-gradient(320deg, #1a4361, #001c30);
+        background: #187c7c;
         font-family: "NanumSquare", sans-serif;
       }
     }
@@ -157,13 +165,13 @@
       width: 80px;
       height: 40px;
       float: right;
-      color: #FFFFFF;
-      font-size: 20px;
+      color: #000000;
+      font-size: 1rem;
       cursor: pointer;
       line-height: 20px;
       font-weight: bold;
       border-radius: 5px;
-      background: linear-gradient(320deg, #1a4361, #001c30);
+      background: #f4f4f4;
       font-family: "NanumSquare", sans-serif;
 
     }

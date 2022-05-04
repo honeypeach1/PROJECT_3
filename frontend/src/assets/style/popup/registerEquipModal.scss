@@ -13,20 +13,21 @@
 }
 
 .equipment-modal-card {
-  opacity: 1;
   z-index: 30;
+  opacity: 0.9;
   width: 730px;
   height: 620px;
   padding-top: 10px;
   padding-left: 50px;
   position: relative;
+  border-radius: 3px;
   padding-right: 50px;
   margin: 30px auto auto;
-  background-color: #ffffff;
+  background-color: #f1f1f1;
 
   .equipment-headerTab {
     //width: 100%;
-    color: #666666;
+    color: #FFFFFF;
     display: block;
     font-size: 22px;
     margin-top: 20px;
@@ -34,8 +35,8 @@
     text-align: center;
     padding: 10px 15px;
     margin-bottom: 5px;
-    background: #f7f7f7;
     border: 2px solid #efefef;
+    background: linear-gradient(320deg, #1a4361, #001c30);
   }
 
   #register_equipment_form {
@@ -113,7 +114,7 @@
               font-size: 1.1rem;
               font-weight: bold;
               border-radius: 5px;
-              background: linear-gradient(320deg, #507591, #1c4c6e);
+              background: #187c7c;
               font-family: "NanumSquare", sans-serif;
             }
           }

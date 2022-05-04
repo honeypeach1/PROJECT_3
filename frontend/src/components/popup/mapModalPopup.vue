@@ -8,17 +8,20 @@
           <table class="map-modal-table">
             <thead>
               <tr>
-                <td>장비명</td>
-                <td>좌표설정</td>
+                <td class="equipLatLngHead">장비명</td>
+                <td class="equipLatLngValue">좌표설정</td>
               </tr>
             </thead>
             <tbody>
             <template v-for="dataList in mapEquipmentList">
               <tr>
-                <td>
+                <td class="equipLatLngHead">
+<!--
                   <input class="map_equipment_name" :id="'mapEquipment_'+dataList.EQUIPMENT_SEQ" :placeholder="dataList.EQUIPMENT_NAME">
+-->
+                  <span :id="'mapEquipment_'+dataList.EQUIPMENT_SEQ">{{dataList.EQUIPMENT_NAME}}</span>
                 </td>
-                <td>
+                <td class="equipLatLngValue">
                   <button class="map_change_Equip" @click="setEquipCood(dataList.EQUIPMENT_SEQ,dataList.EQUIPMENT_LAT,dataList.EQUIPMENT_LNG)">좌표설정</button>
                 </td>
               </tr>
