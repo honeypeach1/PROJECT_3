@@ -66,6 +66,9 @@ export default {
         }
       })
     },
+    userSettingActivate(userSeq,userCk) {
+      console.log("유저 번호 : ", userSeq,userCk)
+    },
     drawUserTable(data) {
       //데이터테이블 초기화
       if (typeof (datatableUserList) != 'undefined') {
@@ -90,7 +93,7 @@ export default {
             },
             {
               render: (data, type, row) => {
-                return '<input type="password" autocomplete="on" class="changeUserPass" placeholder="비밀번호"><button class="changePassButton" value="' + row['MEMBER_SEQ'] + '">변경</button>';
+                return '<form><input type="password" autocomplete="on" class="changeUserPass" placeholder="비밀번호"><button class="changePassButton" value="' + row['MEMBER_SEQ'] + '">변경</button></form>';
               }
             },
             {
@@ -106,16 +109,21 @@ export default {
             {data: 'MEMBER_REG_DATE'},
             {
               render: function (data, type, row) {
-                return '<select class="changeUserReles"><option value="0">관리자</option><option value="1">일반유저</option>';
+                return '<select class="changeUserReles"><option v-if="'+(row['MEMBER_RELES'] == 0? 'selected':'')+'" value="0">관리자</option><option v-if="'+(row['MEMBER_RELES'] == 1? 'selected':'')+'" value="1">일반유저</option>';
               }
             },
             {
               render: (data, type, row) => {
+                let className;
+                let activateValue;
                 if (row['MEMBER_CK'] == 1) {
-                  return '<button class="changeUserActive on" value="' + row['MEMBER_SEQ'] + '">활성화</button>';
+                  className = 'on';
+                  activateValue = '활성화';
                 } else {
-                  return '<button class="changeUserActive off" value="' + row['MEMBER_SEQ'] + '">비활성화</button>';
+                  className = 'off';
+                  activateValue = '비활성화';
                 }
+                return '<button class="changeUserActive '+ className +'" @click="userSettingActivate(' + row['MEMBER_SEQ'] + ',' + row['MEMBER_CK'] + ')">' + activateValue + '</button>';
               },
             },
             {
@@ -130,24 +138,24 @@ export default {
             },
           ]
         });
-        $('#userTable tbody').on('click', 'button', (e) => {
+        /*$('#userTable tbody').on('click', 'button', (e) => {
           let ch = e.target.className;
           let member_seq = e.target.value;
-          let data = datatableUserList.row( $(this).parents('tr') ).data();
+          let data = datatableUserList.row($(this).parents('tr')).data();
           console.log("data : " + data)
-          if(ch == 'changePassButton'){
+          if (ch == 'changePassButton') {
 
-          }else if(ch == 'changeUserActive on' || ch == 'changeUserActive off'){
+          } else if (ch == 'changeUserActive on' || ch == 'changeUserActive off') {
 
-          }else if(ch == 'changeUserInfor'){
+          } else if (ch == 'changeUserInfor') {
 
-          }else if(ch == 'changeUserReset'){
+          } else if (ch == 'changeUserReset') {
 
-          }else if(ch == 'deleteUserInfor'){
+          } else if (ch == 'deleteUserInfor') {
 
           }
 
-          /*axios({
+          /!*axios({
             url:"/user/setUserPass",
             method: "POST",
             params: {
@@ -162,8 +170,8 @@ export default {
             }
           }).catch((err) => {
             console.log(error)
-          })*/
-        })
+          })*!/
+        })*/
       }
     },
   }

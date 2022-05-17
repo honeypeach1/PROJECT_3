@@ -76,7 +76,6 @@
         </div>
 
         <!--데이터 차트 영역-->
-        <!--데이터 차트 영역-->
         <div class="showChartArea">
           <div id="chartBar"></div>
         </div>
