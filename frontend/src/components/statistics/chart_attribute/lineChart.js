@@ -6,7 +6,6 @@ export const lineChart = {
     const mos = [];
     const tod = [];
     const voc = [];
-    
     //호출때 마다 초기화
     for (let sensorData in lineData) {
       time.push(lineData[sensorData].DATA_DATE_TIME);

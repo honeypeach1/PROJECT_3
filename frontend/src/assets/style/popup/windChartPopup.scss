@@ -46,7 +46,6 @@
   }
 
   #windCountGraph {
-    width: 515px;
     height: 450px;
     margin: 5px auto 0;
     background: black;
@@ -114,11 +113,11 @@
 }
 
 @media all and (max-width: 768px) {
-  #windCountGraph {
-    top: auto;
+  .windBackgroundArea {
     width: 90%;
-    height: 300px;
-    bottom: 100px;
-  }
+    top: 40%;
 
+    .windFieldTitle {
+    }
+  }
 }

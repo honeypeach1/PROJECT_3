@@ -204,6 +204,16 @@ import mapModalView from '../../components/popup/mapModalPopup'
 import settingModalView from '../../components/popup/settingModalPopup'
 import userModalView from '../../components/popup/userModalPopup'
 import registerEquipModalView from '../../components/popup/registerEquipPopup'
+import $ from "jquery";
+
+$(document).ready(function () {
+  $('#alert_info').click(function () {
+    alert($('.alertValue').text());
+    console.log($('.alertValue').text());
+    // 경고#db0f26
+    // 주의#f89b00
+  });
+})
 
 export default {
   name: 'main-header',

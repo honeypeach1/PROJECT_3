@@ -4,8 +4,6 @@
   width: 100%;
   height: 60px;
   user-select: none;
-  position: sticky;
-  top: 0;
 
   .row {
     display: flex;
@@ -100,6 +98,8 @@
       }
 
       .header_alert_area {
+        display: flex;
+        flex-flow: column;
         height: 380px;
         width: 280px;
         background: #f4f4f4;
@@ -111,6 +111,8 @@
         z-index: 10;
 
         .alert_list {
+          display: flex;
+          flex-flow: wrap;
           height: 80px;
           width: 100%;
           color: #f6f6f6;
@@ -119,66 +121,89 @@
           font-family: "NanumSquare", sans-serif;
 
           .alertEquipName {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 80%;
-            float: left;
-            height: 25px;
-            font-size: 20px;
-            padding-top: 7px;
+            height: 30px;
+            font-size: 1.3rem;
             background: #1d303a;
           }
 
+          .caution {
+            background: #f89b00;
+          }
+
+          .warning {
+            background: #db0f26;
+          }
+
           .alertDelete {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 20%;
-            float: right;
-            height: 25px;
-            font-size: 14px;
-            padding-top: 7px;
+            height: 30px;
+            font-size: 1rem;
             background: #000000;
           }
 
           .alertValueArea {
+            display: flex;
+            flex-flow: wrap;
             width: 100%;
             height: 25px;
 
             .alertValueHead {
+              display: flex;
+              justify-content: center;
+              align-items: center;
               width: 30%;
-              float: left;
               height: 100%;
               background: #1c4c6e;
             }
 
             .alertValue {
+              display: flex;
+              justify-content: center;
+              align-items: center;
               width: 70%;
-              float: right;
               height: 100%;
               background: #4b6b7c;
             }
           }
 
           .alertTimeArea {
+            display: flex;
+            flex-flow: wrap;
             width: 100%;
             height: 25px;
 
             .alertTimeHead {
+              display: flex;
+              justify-content: center;
+              align-items: center;
               width: 30%;
-              float: left;
               height: 100%;
               background: #1c4c6e;
             }
 
             .alertTime {
+              display: flex;
+              justify-content: center;
+              align-items: center;
               width: 70%;
-              float: right;
               height: 100%;
               background: #4b6b7c;
             }
           }
-
-          &:hover {
-            box-shadow: inset 0px 0px 0.5px 0.5px #02acc0, 0px 0px 1px 1px #02acc0;
-            -moz-box-shadow: inset 0px 0px 0.5px 0.5px #02acc0, 0px 0px 1px 1px #02acc0;
-            -webkit-box-shadow: inset 0px 0px 0.5px 0.5px #02acc0, 0px 0px 1px 1px #02acc0;
-          }
+        }
+        .alert_list:hover {
+          z-index: 20;
+          box-shadow: inset 0px 0px 0.5px 0.5px #02acc0, 0px 0px 1px 1px #02acc0;
+          -moz-box-shadow: inset 0px 0px 0.5px 0.5px #02acc0, 0px 0px 1px 1px #02acc0;
+          -webkit-box-shadow: inset 0px 0px 0.5px 0.5px #02acc0, 0px 0px 1px 1px #02acc0;
+          opacity: 0.9;
         }
       }
 
