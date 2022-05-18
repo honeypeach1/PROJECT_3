@@ -233,8 +233,7 @@ export default {
     }
 
     const loggedIn = localStorage.getItem('vuex');
-    console.log("헤더 vuex 확인 : ",loggedIn)
-
+    // console.log("헤더 vuex 확인 : ",loggedIn)
   },
   data: function () {
     return {

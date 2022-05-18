@@ -315,7 +315,6 @@ export default {
       this.map.relayout();
     },*/
     displayMarker() {
-      console.log("악취 페이지의 마커 찍기 좌표 불러오")
       console.log("데이터 : ",this.markerPositions)
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
