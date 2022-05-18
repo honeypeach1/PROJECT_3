@@ -217,6 +217,11 @@ export default {
     registerEquipModalView
   },
   mounted() {
+    if(this.$store.state.user.token == null) {
+      alert("비정상적인 접근입니다. 로그인을 해주세요.");
+      return this.$router.push("/");
+    }
+
     const loggedIn = localStorage.getItem('vuex');
     console.log("헤더 vuex 확인 : ",loggedIn)
 
@@ -255,6 +260,7 @@ export default {
             router.go();
           });
         } else {
+          alert("계정이 만료 되었습니다. 다시 로그인 해주세요.")
           this.$router.push("/");
         }
       }).catch((error) => {
@@ -276,6 +282,7 @@ export default {
             router.go();
           });
         } else {
+          alert("계정이 만료 되었습니다. 다시 로그인 해주세요.")
           this.$router.push("/");
         }
       }).catch((error) => {

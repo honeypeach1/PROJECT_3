@@ -77,9 +77,9 @@ const userCon = {
                                         3. 로컬 - 로컬스토리지로 서버 접근은 안되지만 반 영구적인 저장 가능, Persistent cookies와 비슷(5 ~ 10MB)
                                         XSS 공격 방어가 가능한 만큼 쿠키를 이용한 방법이 좀더 좋음
                                      */
+
                                     res.cookie('x-auth', jwtToken, {
                                         expires: expiryDate,
-                                        path: '/static',
                                         httpOnly: true, //http 통신
                                         //secure: true //https 통신
                                     })
@@ -234,6 +234,7 @@ const userCon = {
     userLogout: (req, res) => {
         req.session.destroy();
         res.clearCookie('user_cookie');
+        res.clearCookie('x-auth');
         res.json({
             message: '로그아웃 되었습니다.'
         })

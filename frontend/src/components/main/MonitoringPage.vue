@@ -229,6 +229,7 @@ export default {
   mounted() {
     this.getEquipmentList();
     this.displayMarker();
+    this.mainGetData();
     this.connect();
     /*setInterval(this.connect.bind(this),30000)*/
     if (window.kakao && window.kakao.maps) {
@@ -239,7 +240,7 @@ export default {
       script.onload = () => kakao.maps.load(this.initMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
       document.head.appendChild(script);
-      this.mainGetData();
+
       window.onload = function () {
         Plotly.relayout('chartBar', {
           'xaxis.autorange': true,
