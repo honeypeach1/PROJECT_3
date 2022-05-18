@@ -215,21 +215,29 @@ export default {
       markerPositions: [],
       markers: [],
       Point: null,
-      infowindow: null,
+      infowindow: [],
       windRose: getWindRose,
       lineChart: getLineChart,
       responsive: true,
       isWindChartView: false,
       isCollectShow: false,
+      customOverlay: null,
+      startX: null,
+      startY: null,
+      startOverlayPoint: null
     };
   },
   created() {
     this.$root.$refs.MonitoringPage = this;
   },
   mounted() {
+    //맵 좌표 정보 가져오기
+    this.getMapEquipmentList();
+    //셀렉트 리스트 그룹 장비 리스트 가져오기
     this.getEquipmentList();
-    this.displayMarker();
+    //악취 센서 선형차트 & 풍배도 & 풍속빈도 처리하기
     this.mainGetData();
+    //웹 소켓 연결하기
     this.connect();
     /*setInterval(this.connect.bind(this),30000)*/
     if (window.kakao && window.kakao.maps) {
@@ -276,6 +284,19 @@ export default {
       this.status = "disconnected";
       this.logs = [];
     },
+    getMapEquipmentList() {
+      axios({
+        url: "/equipment/getEquipmentList",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.markerPositions = data.equipmentList;
+          console.log("this.markerPositions : ",this.markerPositions)
+        }
+      })
+    },
     getEquipmentList() {
       axios({
         url: "/equipment/getThreshold",
@@ -297,10 +318,13 @@ export default {
     initMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: new kakao.maps.LatLng(33.451616, 126.56672),
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+
+      //지도 좌표 설정하기
+      this.displayMarker();
     },
     showWindChart() {
       this.infoWindChart = !this.infoWindChart;
@@ -315,14 +339,49 @@ export default {
       this.map.relayout();
     },*/
     displayMarker() {
-      console.log("데이터 : ",this.markerPositions)
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
 
-      const positions = this.markerPositions.map(
+      let imageSrc = require('../../assets/images/svg/marker_image_1.svg'),
+        imageSize = new kakao.maps.Size(35, 45),
+        imageOption = {offset: new kakao.maps.Point(15, 40)};
+      let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+      this.markerPositions.forEach((datas) => {
+        this.marker = new kakao.maps.Marker({
+          map: this.map,
+          title: datas.EQUIPMENT_NAME,
+          position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT,datas.EQUIPMENT_LNG),
+          image: markerImage
+        });
+
+        let iwContent = '<div style="padding:5px;">' + datas.EQUIPMENT_NAME + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+        this.infowindow = new kakao.maps.InfoWindow({
+          content: iwContent,
+          removable: true,// removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+        });
+        this.infowindow.open(this.map, this.marker);
+
+        /*let content = document.createElement('div');
+        content.className = 'overlay';
+        content.innerHTML = datas.EQUIPMENT_NAME;
+
+        this.customOverlay = new kakao.maps.CustomOverlay({
+          content: content,
+        })
+
+        this.addEventHandle(content, 'mousedown', this.onMouseDown());
+        this.addEventHandle(content, 'mouseup', this.onMouseUp());
+
+        this.customOverlay.open(this.map,this.marker)*/
+      })
+      //this.displayInfoWindow();
+     /* const positions = this.markerPositions.map(
         (position) => new kakao.maps.LatLng(...position)
       );
+      console.log("positions : ",positions)
 
       if (positions.length > 0) {
         this.markers = positions.map(
@@ -339,7 +398,60 @@ export default {
         );
 
         this.map.setBounds(bounds);
+      }*/
+    },
+    onMouseDown(e){
+      console.log("마우스 다운 : ",e)
+      if(e.preventDefault()){
+        e.preventDefault();
+      }else{
+        e.returnValue = false;
       }
+
+      let proj = this.map.getProjection(),
+        overlayPos = this.customOverlay.getPosition();
+
+      kakao.maps.event.preventMap();
+
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+
+      this.startOverlayPoint = proj.containerPointFromCoords(overlayPos);
+
+      this.addEventHandle(document, 'mousemove', this.onMouseMove())
+    },
+    onMouseUp(){
+      this.removeEventHandle(document, 'mousemove', this.onMouseMove())
+    },
+    addEventHandle(target, type, callback) {
+      if(target.addEventListener){
+        target.addEventListener(type, callback);
+      } else {
+        target.attachEvent('on'+type,callback);
+      }
+    },
+    removeEventHandle(target, type, callback) {
+      if(target.removeEventListener){
+        target.removeEventListener(type, callback);
+      } else {
+        target.detachEvent('on'+type,callback);
+      }
+    },
+    onMouseMove(e){
+      console.log("마우스 무브 : ",e)
+      if(e.preventDefault()){
+        e.preventDefault();
+      }else{
+        e.returnValue = false;
+      }
+
+      let proj = map.getProjection(),
+        deltaX = this.startX - e.clientX,
+        deltaY = this.startY - e.clientY,
+        newPoint = new kakao.maps.Point(this.startOverlayPoint.x - deltaX, this.startOverlayPoint.y - deltaY),
+        newPos = proj.coordsFromContainerPoint(newPoint);
+
+      this.customOverlay.setPosition(newPos);
     },
     displayInfoWindow() {
       if (this.infowindow && this.infowindow.getMap()) {
@@ -348,9 +460,12 @@ export default {
         return;
       }
 
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+      for (var i = 0; i < this.markerPositions.length; i++) {
+        var iwContent = '<div style="padding:5px;">'+this.markerPositions[i].EQUIPMENT_NAME+'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+          iwPosition = new kakao.maps.LatLng(this.markerPositions[i].EQUIPMENT_LAT, this.markerPositions[i].EQUIPMENT_LNG), //인포윈도우 표시 위치입니다
+          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+      }
 
       this.infowindow = new kakao.maps.InfoWindow({
         map: this.map, // 인포윈도우가 표시될 지도
@@ -359,7 +474,7 @@ export default {
         removable: iwRemoveable,
       });
 
-      this.map.setCenter(iwPosition);
+      //this.map.setCenter(iwPosition);
     },
     setEquipCood(equipMapNum, mapLat, mapLng) {
       console.log("arr : ", equipMapNum, mapLat, mapLng)
