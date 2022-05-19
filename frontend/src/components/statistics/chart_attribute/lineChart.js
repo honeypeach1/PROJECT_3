@@ -8,11 +8,10 @@ export const lineChart = {
     const voc = [];
     //호출때 마다 초기화
     for (let sensorData in lineData) {
-      console.log("lineData[sensorData] : ",lineData[sensorData])
       time.push(lineData[sensorData].DataDateTime);
       h2s.push(lineData[sensorData].H2S);
-      nh3.push(lineData[sensorData].MOS);
-      mos.push(lineData[sensorData].NH3);
+      nh3.push(lineData[sensorData].NH3);
+      mos.push(lineData[sensorData].MOS);
       tod.push(lineData[sensorData].TOD);
       voc.push(lineData[sensorData].VOC);
     }
