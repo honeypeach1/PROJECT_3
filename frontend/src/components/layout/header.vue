@@ -301,6 +301,7 @@ export default {
     userLogout() {
       this.$store.dispatch("LOGOUT")
       .then(() => {
+        alert("로그아웃 되었습니다.")
           this.$router.push("/");
       })
      /* axios({

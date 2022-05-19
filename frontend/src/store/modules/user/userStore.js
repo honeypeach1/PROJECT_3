@@ -93,7 +93,7 @@ export default {
         url: "/user/logout",
         method: "POST",
       }).then((res) => {
-        alert(res.data.message);
+        //alert(res.data.message);
         commit("LOGOUT_PROCESS")
       })
     }

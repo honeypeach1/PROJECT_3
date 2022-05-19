@@ -224,13 +224,26 @@ export default {
       customOverlay: null,
       startX: null,
       startY: null,
-      startOverlayPoint: null
+      startOverlayPoint: null,
+      socket: null,
+      status: null,
+      logs: []
     };
   },
   created() {
     this.$root.$refs.MonitoringPage = this;
   },
   mounted() {
+    /*setInterval(this.connect.bind(this),30000)*/
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement("script");
+      /* local kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
+      document.head.appendChild(script);
+    };
     //맵 좌표 정보 가져오기
     this.getMapEquipmentList();
     //셀렉트 리스트 그룹 장비 리스트 가져오기
@@ -239,31 +252,6 @@ export default {
     this.mainGetData();
     //웹 소켓 연결하기
     this.connect();
-    /*setInterval(this.connect.bind(this),30000)*/
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
-      document.head.appendChild(script);
-
-      window.onload = function () {
-        Plotly.relayout('chartBar', {
-          'xaxis.autorange': true,
-          'yaxis.autorange': true,
-          'layout.autosize': true,
-        });
-        window.onresize = function () {
-          Plotly.relayout('chartBar', {
-            'xaxis.autorange': true,
-            'yaxis.autorange': true,
-            'layout.autosize': true,
-          });
-        };
-      }
-    };
   },
   methods: {
     /*웹소켓 파트 시작*/
@@ -293,7 +281,8 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           this.markerPositions = data.equipmentList;
-          console.log("this.markerPositions : ",this.markerPositions)
+          //지도 좌표 설정하기
+          this.displayMarker();
         }
       })
     },
@@ -315,6 +304,8 @@ export default {
       })
     },
     /*웹소켓 파트 끝*/
+
+    /*초기 맵 세팅*/
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -324,7 +315,7 @@ export default {
       this.map = new kakao.maps.Map(container, options);
 
       //지도 좌표 설정하기
-      this.displayMarker();
+      //this.displayMarker();
     },
     showWindChart() {
       this.infoWindChart = !this.infoWindChart;
@@ -342,14 +333,13 @@ export default {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
-
       let imageSrc = require('../../assets/images/svg/marker_image_1.svg'),
         imageSize = new kakao.maps.Size(35, 45),
         imageOption = {offset: new kakao.maps.Point(15, 40)};
       let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
       this.markerPositions.forEach((datas) => {
-        this.marker = new kakao.maps.Marker({
+        this.markers = new kakao.maps.Marker({
           map: this.map,
           title: datas.EQUIPMENT_NAME,
           position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT,datas.EQUIPMENT_LNG),
@@ -362,7 +352,8 @@ export default {
           content: iwContent,
           removable: true,// removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
         });
-        this.infowindow.open(this.map, this.marker);
+        this.infowindow.open(this.map, this.markers);
+
 
         /*let content = document.createElement('div');
         content.className = 'overlay';
@@ -508,6 +499,21 @@ export default {
         } else {
           Plotly.newPlot("chartBar", this.lineChart.chartDraw(data.sensorChartList), this.lineChart.layout, this.options);
           getPlotlyLang.changePlotlyLang();
+
+          window.onload = function () {
+            Plotly.relayout('chartBar', {
+              'xaxis.autorange': true,
+              'yaxis.autorange': true,
+              'layout.autosize': true,
+            });
+            window.onresize = function () {
+              Plotly.relayout('chartBar', {
+                'xaxis.autorange': true,
+                'yaxis.autorange': true,
+                'layout.autosize': true,
+              });
+            };
+          }
         }
       })
     },

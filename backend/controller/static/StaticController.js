@@ -22,9 +22,17 @@ const staticCon = {
         }
     },
     getData: (req, res) => {
+        /*
+              전달 파라미터
+              1. start_date: 시작 시간,
+              2. end_date: 종료 시간,
+              3. isAlarm: 알람 체크 여부,
+              4. dataType: 1분 평균 -> 0 , 5분 평균 -> 1 , 10분 평균 -> 2 , 1시간 평균 -> 3 , 1일 평균 -> 4,
+              5. equipNum: 장비 번호
+         */
         let user_info = req.session.user_cookie;
         /*세션을 확인함. 세션이 끊기면 로그인 페이지로*/
-        if (user_info != null) {
+        /*if (user_info != null) {
             res.json({
                 success: true,
                 user_info: user_info[1],
@@ -35,25 +43,45 @@ const staticCon = {
                 success: false,
                 message: '세션이 만료되었습니다.'
             })
-        }
-
+        }*/
         //Select View Alarm Data.
-        /*if (req.query.isAlarm == true) {
+        if (req.query.isAlarm == true) {
             //Get Alarm table into Parameter
-            dbConnect.query('', req.query, function (err, data) {
+            dbConnect.query('SELECT ' +
+                'Data_Date_Time DataDateTime, ' +
+                'sensor_signal_data_tod TOD, ' +
+                'sensor_signal_data_tod todValue, ' +
+                'sensor_signal_data_h2s H2S, ' +
+                'sensor_signal_data_nh3 NH3, ' +
+                'sensor_signal_data_voc VOC, ' +
+                'sensor_signal_data_mos MOS, ' +
+                'sensor_signal_data_owd OWD, ' +
+                'sensor_signal_data_ows OWS, ' +
+                'sensor_signal_data_ott OTT, ' +
+                'sensor_signal_data_oth OTH, ' +
+                'sensor_signal_data_btv BTV ' +
+                'FROM sensor_component WHERE data_date_time BETWEEN ? AND ? AND equipment_seq = ? AND sensor_component_period_type = ?',
+                [
+                    req.query.start_date,
+                    req.query.end_date,
+                    req.query.equipNum,
+                    req.query.dataType
+                ],
+                function (err, data) {
                 if (err) throw err;
                 if (data != null) {
-
                     //json 데이터화
-
-
                     res.json({
                         success: true,
+                        user_info: user_info[1],
+                        tableData: data,
                         message: '일치하는 알람 데이터 조회에 성공하였습니다.'
                     })
                 } else {
-                    return res.json({
+                    res.json({
                         success: false,
+                        user_info: user_info[1],
+                        tableData: data,
                         message: '일치하는 알람 데이터 정보가 없습니다.'
                     })
                 }
@@ -62,26 +90,48 @@ const staticCon = {
         //Select View Normal(non-Alarm) Data.
         } else {
             //Get Normal(non-Alarm) table into Parameter
-            dbConnect.query('', req.query, function (err, data) {
+            dbConnect.query('SELECT ' +
+                'DATE_FORMAT(data_date_time,"%y-%m-%d %H:%i:%s") DataDateTime, ' +
+                'FLOOR(sensor_signal_data_tod) TOD, ' +
+                'IFNULL(sensor_signal_data_tod,"NULL") todValue, ' +
+                'IFNULL(sensor_signal_data_h2s,"NULL") H2S, ' +
+                'IFNULL(sensor_signal_data_nh3,"NULL") NH3, ' +
+                'IFNULL(sensor_signal_data_voc,"NULL") VOC, ' +
+                'IFNULL(FLOOR(sensor_signal_data_mos),"NULL") MOS, ' +
+                'IFNULL(sensor_signal_data_owd,"NULL") OWD, ' +
+                'IFNULL(sensor_signal_data_ows,"NULL") OWS, ' +
+                'IFNULL(sensor_signal_data_ott,"NULL") OTT, ' +
+                'IFNULL(sensor_signal_data_oth,"NULL") OTH, ' +
+                'IFNULL(sensor_signal_data_btv,"NULL") BTV ' +
+                'FROM sensor_component WHERE data_date_time BETWEEN ? AND ? AND equipment_seq = ? AND sensor_component_period_type = ?',
+                [
+                    req.query.start_date,
+                    req.query.end_date,
+                    req.query.equipNum,
+                    req.query.dataType
+                ],
+                function (err, data) {
                 if (err) throw err;
-                if (data != null) {
-
+                if (data != '') {
                     //json 데이터화
-
+                    console.log("데이터 있음 확인 하기 : ",data)
                     res.json({
                         success: true,
+                        tableData: data,
+                        user_info: user_info[1],
                         message: '일치하는 일반 데이터 조회에 성공하였습니다.'
                     })
                 } else {
-                    return res.json({
+                    console.log("데이터 없음 확인 하기 : ",data)
+                    res.json({
                         success: false,
+                        tableData: data,
+                        user_info: user_info[1],
                         message: '일치하는 일반 데이터 정보가 없습니다.'
                     })
                 }
             })
-
-        }*/
-
+        }
     },
     getRegister: (req, res) => {
         dbConnect.query('SELECT * FROM EQUIPMENT_INFO WHERE EQUIPMENT_TCP_PORT = ?', req.body.equipment_port,

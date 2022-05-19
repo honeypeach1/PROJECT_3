@@ -51,7 +51,8 @@
               <tr>
                 <th class="timeClass title" rowspan="3" style="min-width: 150px">시간</th>
                 <th class="badClass title" colspan="6">대기환경</th>
-                <th class="badClass title" colspan="5">기상정보</th>
+                <th class="badClass title" colspan="4">기상정보</th>
+                <th class="badClass title">전압</th>
               </tr>
               <tr>
                 <th class="badClass title" colspan="2" style="min-width: 110px; max-width: 200px">복합악취</th>
@@ -63,7 +64,7 @@
                 <th class="weatherClass subTitle" rowspan="2">풍속<br/>(m/s)</th>
                 <th class="weatherClass subTitle" rowspan="2">온도<br/>(℃)</th>
                 <th class="weatherClass subTitle" rowspan="2">습도<br/>(%)</th>
-                <th class="weatherClass subTitle" rowspan="2">대기압<br/>(mb)</th>
+                <th class="weatherClass subTitle" rowspan="2">전압<br/>(V)</th>
               </tr>
               <tr>
                 <th class="badClass subTitle" style="min-width: 60px; max-width: 100px">배수</th>
@@ -106,6 +107,7 @@ import "datatables.net-buttons/js/buttons.html5"
 
 import VMdDateRangePicker from "v-md-date-range-picker";
 import router from "../../router";
+import imageSrc from "../../assets/images/svg/marker_image_1.svg";
 
 Vue.use(VMdDateRangePicker);
 
@@ -120,34 +122,39 @@ export default {
   },
   data: function () {
     return {
-      map: null,
+      staticMap: null,
       currentTab: 1,
       selectOptions: [],
       values: [],
       equipNum: 0,
       dataType: 0,
       isAlarm: false,
+      staticMarkers: [],
+      markerPositions: [],
       start_date: '',
       end_date: '',
       lineChart: getLineChart,
       datatable: getDataTable,
       responsive: true,
+      tableData: null
     }
   },
   mounted() {
     this.$emit('currentTab', 1)
-    /*세션 확인*/
-    this.getEquipmentList();
     if (window.kakao && window.kakao.maps) {
       this.initStaticMap();
     } else {
       const script = document.createElement("script");
-      /* global kakao */
+      /* local kakao */
       script.onload = () => kakao.maps.load(this.initStaticMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
       document.head.appendChild(script);
-    }
-    this.initPlotlyChart();
+    };
+    //맵 좌표 정보 가져오기
+    this.getStaticMapEquipmentList();
+    //장비 리스트 가져오기
+    this.getEquipmentList();
+    //this.initPlotlyChart();
   },
   methods: {
     excelDown() {
@@ -168,19 +175,60 @@ export default {
         }
       })
     },
+    getStaticMapEquipmentList() {
+      axios({
+        url: "/equipment/getEquipmentList",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.markerPositions = data.equipmentList;
+          //지도 좌표 설정하기
+          this.displayStaticMarker();
+        }
+      })
+    },
+    displayStaticMarker() {
+      if (this.staticMarkers.length > 0) {
+        this.staticMarkers.forEach((marker) => marker.setMap(null));
+      }
+      let imageSrc = require('../../assets/images/svg/marker_image_1.svg'),
+        imageSize = new kakao.maps.Size(35, 45),
+        imageOption = {offset: new kakao.maps.Point(15, 40)};
+      let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+      this.markerPositions.forEach((datas) => {
+        this.staticMarkers = new kakao.maps.Marker({
+          map: this.staticMap,
+          title: datas.EQUIPMENT_NAME,
+          position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT,datas.EQUIPMENT_LNG),
+          image: markerImage
+        });
+
+        let iwContent = '<div style="padding:5px;">' + datas.EQUIPMENT_NAME + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+        this.infowindow = new kakao.maps.InfoWindow({
+          content: iwContent,
+          removable: true,// removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+        });
+        this.infowindow.open(this.staticMap, this.staticMarkers);
+      })
+    },
     initStaticMap() {
       const container = document.getElementById("staticMap");
       const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: new kakao.maps.LatLng(33.451616, 126.56672),
         level: 5,
       };
-      this.map = new kakao.maps.Map(container, options);
+      this.staticMap = new kakao.maps.Map(container, options);
     },
     initDataTable() {
       if (datatableValue != undefined) {
         datatableValue.clear();
         datatableValue.destroy();
       }
+      console.log("this.tableData : ",this.tableData)
       datatableValue = $('#datatable').DataTable({
         dom: 'Bfrtip',
         pageLength: 10,
@@ -209,7 +257,8 @@ export default {
             // ,title: '클립보드 복사 내용'
           },
         ],
-        data: this.datatable.data.rows,
+        // data: this.datatable.data.rows,
+        data: this.tableData,
         columns: [
           {data: 'DataDateTime'},
           {data: 'TOD'},
@@ -222,14 +271,14 @@ export default {
           {data: 'OWS'},
           {data: 'OTT'},
           {data: 'OTH'},
-          {data: 'ATM'}
+          {data: 'BTV'}
         ]
       });
       $(".dt-buttons").hide();
     },
-    initPlotlyChart() {
+    /*initPlotlyChart() {
       Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.config);
-    },
+    },*/
     datepicker(values) {
       /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/
 
@@ -240,11 +289,13 @@ export default {
         if (i == 0) {
           this.start_date = values[i].year() + '-'
             + (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1))
-            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 00:00:00';
+/*            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 00:00:00';*/
+            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date());
         } else {
           this.end_date = values[i].year() + '-'
             + (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1))
-            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 59:59:59';
+/*            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 59:59:59';*/
+            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date());
         }
       }
 
@@ -291,15 +342,13 @@ export default {
           equipNum: this.equipNum
         }
       }).then((res) => {
-        if (res.data.success) {
-          /*
-            데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
-          */
-          //데이터 테이블 그리기
-          this.initDataTable();
-        } else {
-          this.$router.push("/");
-        }
+        /*
+          데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
+        */
+        console.log("리턴 데이터 확인하기 : ", res.data.tableData)
+        this.tableData = res.data.tableData;
+        //데이터 테이블 그리기
+        this.initDataTable();
       }).catch((error) => {
         console.log('getData 호출 에러 : ',error)
       })
