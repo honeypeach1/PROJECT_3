@@ -88,8 +88,6 @@
 <script>
 import MainHeader from "../layout/header";
 import getLineChart from './chart_attribute/lineChart';
-//plotly 설정 언어 변경
-import getPlotlyLang from '../statistics/chart_attribute/plotlyKoreanSetting.js';
 import axios from "axios";
 import $ from 'jquery';
 
