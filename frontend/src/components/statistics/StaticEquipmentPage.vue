@@ -106,7 +106,7 @@ import "datatables.net-buttons/js/buttons.html5"
 
 import VMdDateRangePicker from "v-md-date-range-picker";
 import router from "../../router";
-import imageSrc from "../../assets/images/svg/marker_image_1.svg";
+import imageSrc from "../../assets/images/map/marker_image_2.png";
 import getPlotlyLang from "./chart_attribute/plotlyKoreanSetting";
 
 Vue.use(VMdDateRangePicker);
@@ -192,7 +192,7 @@ export default {
       if (this.staticMarkers.length > 0) {
         this.staticMarkers.forEach((marker) => marker.setMap(null));
       }
-      let imageSrc = require('../../assets/images/svg/marker_image_1.svg'),
+      let imageSrc = require('../../assets/images/map/marker_image_2.png'),
         imageSize = new kakao.maps.Size(35, 45),
         imageOption = {offset: new kakao.maps.Point(15, 40)};
       let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);

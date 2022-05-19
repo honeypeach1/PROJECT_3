@@ -119,7 +119,7 @@ export default {
       this.registMap = new kakao.maps.Map(container, options);
       ////////////////////
 
-      let imageSrc = require('../../assets/images/svg/marker_image.svg'),
+      let imageSrc = require('../../assets/images/map/marker_image_2.png'),
         imageSize = new kakao.maps.Size(35, 45),
         imageOption = {offset: new kakao.maps.Point(15, 40)};
       let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
