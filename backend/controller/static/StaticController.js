@@ -114,7 +114,6 @@ const staticCon = {
                 if (err) throw err;
                 if (data != '') {
                     //json 데이터화
-                    console.log("데이터 있음 확인 하기 : ",data)
                     res.json({
                         success: true,
                         tableData: data,
@@ -122,7 +121,6 @@ const staticCon = {
                         message: '일치하는 일반 데이터 조회에 성공하였습니다.'
                     })
                 } else {
-                    console.log("데이터 없음 확인 하기 : ",data)
                     res.json({
                         success: false,
                         tableData: data,
