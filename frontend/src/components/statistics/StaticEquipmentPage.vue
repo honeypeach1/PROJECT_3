@@ -133,7 +133,6 @@ export default {
       start_date: '',
       end_date: '',
       lineChart: getLineChart,
-      datatable: getDataTable,
       responsive: true,
       tableData: null
     }
@@ -227,7 +226,6 @@ export default {
         datatableValue.clear();
         datatableValue.destroy();
       }
-      console.log("this.tableData : ",this.tableData)
       datatableValue = $('#datatable').DataTable({
         dom: 'Bfrtip',
         pageLength: 10,
@@ -344,7 +342,6 @@ export default {
         /*
           데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
         */
-        console.log("리턴 데이터 확인하기 : ", res.data.tableData)
         this.tableData = res.data.tableData;
         //데이터 테이블 그리기
         this.initDataTable();
