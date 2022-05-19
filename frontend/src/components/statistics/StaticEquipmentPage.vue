@@ -78,7 +78,7 @@
 
         <!--데이터 차트 영역-->
         <div class="showChartArea">
-          <div id="chartBar"></div>
+          <div id="chartStaticBar"></div>
         </div>
       </div>
     </div>
@@ -147,12 +147,12 @@ export default {
       script.onload = () => kakao.maps.load(this.initStaticMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
       document.head.appendChild(script);
-    };
+    }
+    ;
     //맵 좌표 정보 가져오기
     this.getStaticMapEquipmentList();
     //장비 리스트 가져오기
     this.getEquipmentList();
-    //this.initPlotlyChart();
   },
   methods: {
     excelDown() {
@@ -200,7 +200,7 @@ export default {
         this.staticMarkers = new kakao.maps.Marker({
           map: this.staticMap,
           title: datas.EQUIPMENT_NAME,
-          position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT,datas.EQUIPMENT_LNG),
+          position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG),
           image: markerImage
         });
 
@@ -273,9 +273,9 @@ export default {
       });
       $(".dt-buttons").hide();
     },
-    /*initPlotlyChart() {
-      Plotly.newPlot("chartBar", this.lineChart.data, this.lineChart.layout, this.config);
-    },*/
+    lineStaticChart() {
+      Plotly.newPlot("chartStaticBar", this.lineChart.chartDraw(this.tableData), this.lineChart.layout, this.options);
+    },
     datepicker(values) {
       /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/
 
@@ -286,12 +286,12 @@ export default {
         if (i == 0) {
           this.start_date = values[i].year() + '-'
             + (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1))
-/*            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 00:00:00';*/
+            /*            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 00:00:00';*/
             + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date());
         } else {
           this.end_date = values[i].year() + '-'
             + (values[i].month() + 1 < 10 ? ('0' + (values[i].month() + 1)) : (values[i].month() + 1))
-/*            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 59:59:59';*/
+            /*            + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date()) + ' 59:59:59';*/
             + '-' + (values[i].date() < 10 ? ('0' + values[i].date()) : values[i].date());
         }
       }
@@ -345,14 +345,16 @@ export default {
         this.tableData = res.data.tableData;
         //데이터 테이블 그리기
         this.initDataTable();
+        //라인 차트 그리기
+        this.lineStaticChart();
       }).catch((error) => {
-        console.log('getData 호출 에러 : ',error)
+        console.log('getData 호출 에러 : ', error)
       })
     }
   },
 }
 
-window.onresize = function() {
+window.onresize = function () {
   Plotly.relayout('chartBar', {
     'xaxis.autorange': true,
     'yaxis.autorange': true,
