@@ -88,7 +88,6 @@
 <script>
 import MainHeader from "../layout/header";
 import getLineChart from './chart_attribute/lineChart'
-import getDataTable from './chart_attribute/datatable';
 import axios from "axios";
 import $ from 'jquery';
 
