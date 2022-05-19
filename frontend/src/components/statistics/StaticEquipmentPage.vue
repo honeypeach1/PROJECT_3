@@ -87,7 +87,9 @@
 
 <script>
 import MainHeader from "../layout/header";
-import getLineChart from './chart_attribute/lineChart'
+import getLineChart from './chart_attribute/lineChart';
+//plotly 설정 언어 변경
+import getPlotlyLang from '../statistics/chart_attribute/plotlyKoreanSetting.js';
 import axios from "axios";
 import $ from 'jquery';
 
@@ -107,6 +109,7 @@ import "datatables.net-buttons/js/buttons.html5"
 import VMdDateRangePicker from "v-md-date-range-picker";
 import router from "../../router";
 import imageSrc from "../../assets/images/svg/marker_image_1.svg";
+import getPlotlyLang from "./chart_attribute/plotlyKoreanSetting";
 
 Vue.use(VMdDateRangePicker);
 
@@ -275,6 +278,7 @@ export default {
     },
     lineStaticChart() {
       Plotly.newPlot("chartStaticBar", this.lineChart.chartDraw(this.tableData), this.lineChart.layout, this.options);
+      getPlotlyLang.changePlotlyLang();
     },
     datepicker(values) {
       /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/
