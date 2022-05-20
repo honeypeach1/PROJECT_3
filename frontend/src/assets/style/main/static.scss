@@ -8,7 +8,7 @@
     justify-content: space-between;
     width: calc(100% - 10px);
     height: calc(100% - 60px - 10px);
-    min-height: 868px;
+    min-height: 865px;
     margin: 5px;
 
     .staticLeftArea {
@@ -328,9 +328,11 @@
 
       .showChartArea {
         width: 100%;
+        height: 310px;
+        margin-top: auto;
         background-image: linear-gradient(320deg, #1a4361, #001c30);
 
-        #chartBar {
+        #chartStaticBar {
           display: flex;
           justify-content: center;
           align-items: center;

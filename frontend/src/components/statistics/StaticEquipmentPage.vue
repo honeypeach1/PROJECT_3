@@ -357,7 +357,7 @@ export default {
 }
 
 window.onresize = function () {
-  Plotly.relayout('chartBar', {
+  Plotly.relayout('chartStaticBar', {
     'xaxis.autorange': true,
     'yaxis.autorange': true,
   });
