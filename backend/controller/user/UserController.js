@@ -3,6 +3,12 @@
 const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
+
+let connection;
+//DB 연결 끊어졌을시 재연결 처리
+function handleDisconnect() {
+    connection = mariaDB.createConnection(dbConnect);
+}
 //////////
 const crypto = require('crypto');
 const path = require("path");
@@ -29,7 +35,11 @@ const userCon = {
             //먼저 로그인할 계정이 있는지 확인하고 있으면 salt값을 가져옴.
             dbConnect.query('SELECT MEMBER_SEQ, MEMBER_ID, SALT FROM MEMBER WHERE MEMBER_ID = ?', req.body.login_id,
                 async function (err, val) {
-                    if (err) throw err;
+                    if (err) {
+                        console.log("DataBase Query Error : ", err);
+                        console.log("Trying to reConnection")
+                        setTimeout(handleDisconnect, 2000);
+                    }
                     //로그인한 아이디가 존재하며 존재하는 salt값을 가져옴.
                     if (val != '') {
                         var dataList = [];
@@ -52,7 +62,11 @@ const userCon = {
                         const decryption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
                         dbConnect.query('SELECT MEMBER_SEQ, MEMBER_RELES, MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
                             [req.body.login_id, decryption.salt], async function (err, data) {
-                                if (err) throw err;
+                                if (err) {
+                                    console.log("DataBase Query Error : ", err);
+                                    console.log("Trying to reConnection")
+                                    setTimeout(handleDisconnect, 2000);
+                                }
                                 //암호가 일치하는 유저가 있음.
                                 if (data.length > 0) {
                                     login_check = await login_log('0');
@@ -124,7 +138,11 @@ const userCon = {
                         success,
                     ],
                     function (err) {
-                        if (err) throw err;
+                        if (err) {
+                            console.log("DataBase Query Error : ", err);
+                            console.log("Trying to reConnection")
+                            setTimeout(handleDisconnect, 2000);
+                        }
                     })
             }
 
@@ -165,7 +183,11 @@ const userCon = {
                                     '126.000'
                                 ],
                                 function (err, rows) {
-                                    if (err) throw err;
+                                    if (err) {
+                                        console.log("DataBase Query Error : ", err);
+                                        console.log("Trying to reConnection")
+                                        setTimeout(handleDisconnect, 2000);
+                                    }
                                     res.json({
                                         success: true,
                                         message: '회원가입에 성공하였습니다. 로그인 페이지로 이동합니다.'
@@ -193,7 +215,11 @@ const userCon = {
         dbConnect.query('SELECT MEMBER_SEQ, MAP_TYPE_SEQ, MEMBER_ID, MEMBER_NAME, MEMBER_TEL, MEMBER_CK, MEMBER_RELES,' +
             'MEMBER_MAP_LAT, MEMBER_MAP_LNG, MEMBER_MAP_ZOOM_SIZE, DATE_FORMAT(MEMBER_REG_DATE,"%y-%m-%d") AS MEMBER_REG_DATE FROM MEMBER',
             function (err, data) {
-                if (err) throw err;
+                if (err) {
+                    console.log("DataBase Query Error : ", err);
+                    console.log("Trying to reConnection")
+                    setTimeout(handleDisconnect, 2000);
+                }
                 let userInfor = data;
                 if (data.length == 0) {
                     res.json({
@@ -225,7 +251,11 @@ const userCon = {
                 req.body.member_seq
             ],
             function (err, data) {
-                if (err) throw err;
+                if (err) {
+                    console.log("DataBase Query Error : ", err);
+                    console.log("Trying to reConnection")
+                    setTimeout(handleDisconnect, 2000);
+                }
                 console.log("data : ", data);
             })
     },

@@ -4,6 +4,12 @@ const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
 
+let connection;
+//DB 연결 끊어졌을시 재연결 처리
+function handleDisconnect() {
+    connection = mariaDB.createConnection(dbConnect);
+}
+
 const monitoringCon = {
     getMonitorData: (req, res) => {
         let user_info = req.session.user_cookie;

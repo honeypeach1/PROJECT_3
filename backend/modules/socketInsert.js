@@ -20,7 +20,11 @@ exports.socketInsert = (socketJson) => {
         dbConnect.query('INSERT INTO sensor_component set ?',
             socketJson,
             function (err,res) {
-                if (err) throw err;
+                if (err) {
+                    console.log("DataBase Query Error : ", err);
+                    console.log("Trying to reConnection")
+                    setTimeout(handleDisconnect, 2000);
+                }
             })
     }catch (err) {
         console.log("TCP/IP 데이터 스트링 INSERT Error!",err)

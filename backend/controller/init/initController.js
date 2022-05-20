@@ -4,6 +4,12 @@ const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
 
+let connection;
+//DB 연결 끊어졌을시 재연결 처리
+function handleDisconnect() {
+    connection = mariaDB.createConnection(dbConnect);
+}
+
 const initCon = {
     getEquipment: async () =>
         new Promise((resolve,reject) => {
@@ -11,7 +17,11 @@ const initCon = {
         try {
            dbConnect.query('SELECT * FROM EQUIPMENT_INFO',
                 (err, val) => {
-                    if (err) throw err;
+                    if (err) {
+                        console.log("DataBase Query Error : ", err);
+                        console.log("Trying to reConnection")
+                        setTimeout(handleDisconnect, 2000);
+                    }
                     if (val.length > 0) {
                         for (let data of val) {
                             dataList.push(data.equipment_tcp_port)
