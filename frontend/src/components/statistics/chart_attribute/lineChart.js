@@ -61,7 +61,7 @@ export const lineChart = {
     plot_bgcolor: 'transparent',
     paper_bgcolor: 'transparent',
     autosize: true,
-    Height: 264,
+    height: 264,
     margin: {
       t: 30,
       b: 30,

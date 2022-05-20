@@ -11,7 +11,7 @@
             <select id="equipSelect" v-model="equipNum" @change="mainGetData">
               <option value="0" disabled>장비를 선택해주세요.</option>
               <optgroup v-for="(group, name) in selectOptions" :label="name">
-                <option v-for="option in group" :value="option.value">
+                <option v-for="option in group" :selected="equipNum==1" :value="option.value">
                   {{ option.text }}
                 </option>
               </optgroup>
@@ -193,7 +193,6 @@ $(document).on('click', 'input[name=collectorCk]', function () {
   }
 })
 
-
 /*API 키*/
 dotenv.config();
 let KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API;
@@ -211,7 +210,7 @@ export default {
       currentTab: 0,
       selectOptions: [],
       map: null,
-      equipNum: 0,
+      equipNum: 1,
       markerPositions: [],
       markers: [],
       Point: null,
@@ -295,11 +294,6 @@ export default {
           alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
         } else {
           this.selectOptions = data.equipmentList;
-
-          //만약 장비 정보가 있을 경우 첫번째 장비를 자동으로 선택한다.
-          if(this.selectOptions.length !== 'undefined'){
-            $("#equipSelect optgroup option:first").attr("selected", "selected");
-          }
         }
       })
     },
@@ -499,21 +493,6 @@ export default {
         } else {
           Plotly.newPlot("chartBar", this.lineChart.chartDraw(data.sensorChartList), this.lineChart.layout, this.options);
           getPlotlyLang.changePlotlyLang();
-
-          window.onload = function () {
-            Plotly.relayout('chartBar', {
-              'xaxis.autorange': true,
-              'yaxis.autorange': true,
-              'layout.autosize': true,
-            });
-            window.onresize = function () {
-              Plotly.relayout('chartBar', {
-                'xaxis.autorange': true,
-                'yaxis.autorange': true,
-                'layout.autosize': true,
-              });
-            };
-          }
         }
       })
     },
@@ -534,6 +513,13 @@ export default {
       })
     }
   },
+}
+
+window.onresize = function () {
+  Plotly.relayout('chartBar', {
+    'xaxis.autorange': true,
+    'yaxis.autorange': true,
+  });
 }
 </script>
 
