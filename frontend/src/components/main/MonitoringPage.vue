@@ -11,7 +11,7 @@
             <select id="equipSelect" v-model="equipNum" @change="mainGetData">
               <option value="0" disabled>장비를 선택해주세요.</option>
               <optgroup v-for="(group, name) in selectOptions" :label="name">
-                <option v-for="option in group" :selected="equipNum==1" :value="option.value">
+                <option v-for="option in group" :selected="option.rownum===1" :value="option.value">
                   {{ option.text }}
                 </option>
               </optgroup>
@@ -481,6 +481,7 @@ export default {
       this.getWindData();
     },
     getChartData() {
+      console.log("this.equipNum : ",this.equipNum)
       axios({
         url: "/equipment/getSensorChartData",
         method: "GET",

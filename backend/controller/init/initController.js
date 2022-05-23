@@ -1,5 +1,6 @@
 //서버 실행시 받아오는 정보
 /*DB 연동*/
+/*
 const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
@@ -9,13 +10,19 @@ let connection;
 function handleDisconnect() {
     connection = mariaDB.createConnection(dbConnect);
 }
+*/
+
+let dbConfig = require("../../config/database");
+let connection;
+connection = dbConfig.dbconn(connection);
 
 const initCon = {
     getEquipment: async () =>
         new Promise((resolve,reject) => {
         let dataList = [];
         try {
-           dbConnect.query('SELECT * FROM EQUIPMENT_INFO',
+           /*dbConnect.query('SELECT * FROM EQUIPMENT_INFO',*/
+            connection.query('SELECT * FROM EQUIPMENT_INFO',
                 (err, val) => {
                     if (err) {
                         console.log("DataBase Query Error : ", err);

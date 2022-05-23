@@ -1,5 +1,6 @@
 //서버 실행시 받아오는 정보
 /*DB 연동*/
+/*
 const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
@@ -9,6 +10,11 @@ let connection;
 function handleDisconnect() {
     connection = mariaDB.createConnection(dbConnect);
 }
+*/
+
+let dbConfig = require("../../config/database");
+let connection;
+connection = dbConfig.dbconn(connection);
 
 //그룹화 설정 전연 함수
 const groupBy = function (data, key) {
@@ -37,7 +43,7 @@ const EquipmentCon = {
             let equipList = new Object();
             let lastList = new Array();
             let data = [];
-            dbConnect.query('SELECT a.EQUIPMENT_SEQ EQUIPMENT_SEQ, a.EQUIPMENT_NAME EQUIPMENT_NAME, b.EQUIPMENT_TYPE_SEQ EQUIPMENT_TYPE_SEQ ,b.EQUIPMENT_TYPE_NAME EQUIPMENT_TYPE_NAME ' +
+            connection.query('SELECT ROW_NUMBER() OVER (ORDER BY a.EQUIPMENT_SEQ) AS ROW_NUM, a.EQUIPMENT_SEQ EQUIPMENT_SEQ, a.EQUIPMENT_NAME EQUIPMENT_NAME, b.EQUIPMENT_TYPE_SEQ EQUIPMENT_TYPE_SEQ ,b.EQUIPMENT_TYPE_NAME EQUIPMENT_TYPE_NAME ' +
                 'FROM equipment_info a JOIN equipment_type b ON a.equipment_type_seq = b.equipment_type_seq',
                 (err, equpiment) => {
                     if (err) {
@@ -48,16 +54,17 @@ const EquipmentCon = {
                     // const result = Object.values(JSON.parse(JSON.stringify(equpiment)));
                     for (let list of equpiment) {
                         equipList = {
-                            num: list.EQUIPMENT_TYPE_NAME,
+                            type: list.EQUIPMENT_TYPE_NAME,
                             text: list.EQUIPMENT_NAME,
-                            value: list.EQUIPMENT_SEQ
+                            value: list.EQUIPMENT_SEQ,
+                            rownum: list.ROW_NUM
                         }
                         lastList.push(equipList);
                     }
 
                     res.json({
                         success: true,
-                        equipmentList: groupBy(lastList, 'num'),
+                        equipmentList: groupBy(lastList, 'type'),
                     })
                 }
             )
@@ -68,7 +75,7 @@ const EquipmentCon = {
     //장비 주의 경고 값 가져오기(GET)
     getEquipmentThresholdValue: (req, res) => {
         try {
-            dbConnect.query('SELECT c.equipment_name equipment_name, d.* ' +
+            connection.query('SELECT c.equipment_name equipment_name, d.* ' +
                 'FROM equipment_info c JOIN ' +
                 '(SELECT ' +
                 'a.threshold_over_event_values_seq threshold_over_event_values_seq, ' +
@@ -101,7 +108,7 @@ const EquipmentCon = {
     //장비 리스트 가져오기
     getEquipmentList: (req, res) => {
         try {
-            dbConnect.query('SELECT EQUIPMENT_SEQ, EQUIPMENT_NAME, EQUIPMENT_LAT, EQUIPMENT_LNG FROM EQUIPMENT_INFO',
+            connection.query('SELECT EQUIPMENT_SEQ, EQUIPMENT_NAME, EQUIPMENT_LAT, EQUIPMENT_LNG FROM EQUIPMENT_INFO',
                 (err, data) => {
                     if (err) {
                         console.log("DataBase Query Error : ", err);
@@ -120,7 +127,7 @@ const EquipmentCon = {
     //장비 명칭 바꾸기
     setChangeEquipName: (req, res) => {
         try {
-            dbConnect.query('UPDATE EQUIPMENT_INFO SET EQUIPMENT_NAME = ? WHERE EQUIPMENT_SEQ = ?',
+            connection.query('UPDATE EQUIPMENT_INFO SET EQUIPMENT_NAME = ? WHERE EQUIPMENT_SEQ = ?',
                 [req.query.equipment_data,req.query.num],
                 (err, data) => {
                     if (err) {
@@ -140,7 +147,7 @@ const EquipmentCon = {
     //장비 삭제하기
     deleteEquipment: (req, res) => {
         try {
-            dbConnect.query('DELETE FROM EQUIPMENT_INFO WHERE EQUIPMENT_SEQ = ?',
+            connection.query('DELETE FROM EQUIPMENT_INFO WHERE EQUIPMENT_SEQ = ?',
                 req.query.num,
                 (err, data) => {
                     if (err) {
@@ -167,7 +174,7 @@ const EquipmentCon = {
         */
         try {
             if(req.query.todCaution != ''){
-                dbConnect.query('SELECT a.threshold_over_event_values_seq threshold_over_event_values_seq ' +
+                connection.query('SELECT a.threshold_over_event_values_seq threshold_over_event_values_seq ' +
                     'FROM THRESHOLD_OVER_EVENT_VALUES a JOIN THRESHOLD_OVER_EVENT_TYPE b ' +
                     'ON a.threshold_over_event_type_seq = b.threshold_over_event_type_seq ' +
                     'WHERE a.equipment_seq = ? AND b.threshold_over_event_name = "악취주의"',
@@ -184,7 +191,7 @@ const EquipmentCon = {
                             for (let data of cautionData){
                                 cautionDataSeq = data.threshold_over_event_values_seq;
                             };
-                            dbConnect.query('UPDATE THRESHOLD_OVER_EVENT_VALUES SET THRESHOLD_OVER_EVENT_VALUES = ? WHERE THRESHOLD_OVER_EVENT_SENSOR = "TOD" AND threshold_over_event_values_seq = ?',
+                            connection.query('UPDATE THRESHOLD_OVER_EVENT_VALUES SET THRESHOLD_OVER_EVENT_VALUES = ? WHERE THRESHOLD_OVER_EVENT_SENSOR = "TOD" AND threshold_over_event_values_seq = ?',
                                 [
                                     req.query.todCaution,
                                     cautionDataSeq
@@ -202,7 +209,7 @@ const EquipmentCon = {
                                     })*/
                                 })
                         } else {
-                            dbConnect.query('INSERT INTO THRESHOLD_OVER_EVENT_VALUES (EQUIPMENT_SEQ, THRESHOLD_OVER_EVENT_TYPE_SEQ, THRESHOLD_OVER_EVENT_SENSOR, THRESHOLD_OVER_EVENT_VALUES) ' +
+                            connection.query('INSERT INTO THRESHOLD_OVER_EVENT_VALUES (EQUIPMENT_SEQ, THRESHOLD_OVER_EVENT_TYPE_SEQ, THRESHOLD_OVER_EVENT_SENSOR, THRESHOLD_OVER_EVENT_VALUES) ' +
                                 'VALUES (?,?,?,?)',
                                 [
                                     req.query.saveEquipNum,
@@ -226,7 +233,7 @@ const EquipmentCon = {
                     })
             }
             if(req.query.todWarning != ''){
-                dbConnect.query('SELECT a.threshold_over_event_values_seq threshold_over_event_values_seq ' +
+                connection.query('SELECT a.threshold_over_event_values_seq threshold_over_event_values_seq ' +
                     'FROM THRESHOLD_OVER_EVENT_VALUES a JOIN THRESHOLD_OVER_EVENT_TYPE b ' +
                     'ON a.threshold_over_event_type_seq = b.threshold_over_event_type_seq ' +
                     'WHERE a.equipment_seq = ? AND b.threshold_over_event_name = "악취경고"',
@@ -243,7 +250,7 @@ const EquipmentCon = {
                             for (let data of warningData){
                                 warningDataSeq = data.threshold_over_event_values_seq;
                             };
-                            dbConnect.query('UPDATE THRESHOLD_OVER_EVENT_VALUES SET THRESHOLD_OVER_EVENT_VALUES = ? WHERE THRESHOLD_OVER_EVENT_SENSOR = "TOD" AND threshold_over_event_values_seq = ?',
+                            connection.query('UPDATE THRESHOLD_OVER_EVENT_VALUES SET THRESHOLD_OVER_EVENT_VALUES = ? WHERE THRESHOLD_OVER_EVENT_SENSOR = "TOD" AND threshold_over_event_values_seq = ?',
                                 [
                                     req.query.todWarning,
                                     warningDataSeq
@@ -258,7 +265,7 @@ const EquipmentCon = {
 
                                 })
                         } else {
-                            dbConnect.query('INSERT INTO THRESHOLD_OVER_EVENT_VALUES (EQUIPMENT_SEQ, THRESHOLD_OVER_EVENT_TYPE_SEQ, THRESHOLD_OVER_EVENT_SENSOR, THRESHOLD_OVER_EVENT_VALUES) ' +
+                            connection.query('INSERT INTO THRESHOLD_OVER_EVENT_VALUES (EQUIPMENT_SEQ, THRESHOLD_OVER_EVENT_TYPE_SEQ, THRESHOLD_OVER_EVENT_SENSOR, THRESHOLD_OVER_EVENT_VALUES) ' +
                                 'VALUES (?,?,?,?)',
                                 [
                                     req.query.saveEquipNum,
@@ -292,7 +299,7 @@ const EquipmentCon = {
     //메인(악취)페이지 라인 차트 센서 데이터 가져오기
     getSensorChartData: (req, res) => {
         try {
-            dbConnect.query('SELECT DATE_FORMAT(DATA_DATE_TIME, "%H:%m:%s") DataDateTime, ' +
+            connection.query('SELECT DATE_FORMAT(DATA_DATE_TIME, "%H:%m:%s") DataDateTime, ' +
                 'IFNULL(SENSOR_SIGNAL_DATA_TOD, 0) TOD,' +
                 'IFNULL(SENSOR_SIGNAL_DATA_VOC, 0) VOC,' +
                 'IFNULL(SENSOR_SIGNAL_DATA_MOS, 0) MOS,' +
@@ -323,7 +330,7 @@ const EquipmentCon = {
     //풍향 정보 가져오기
     getWindChartData: (req, res) => {
         try {
-            dbConnect.query('SELECT DATA_DATE_TIME DataDateTime, ' +
+            connection.query('SELECT DATA_DATE_TIME DataDateTime, ' +
                             'FLOOR(IFNULL(SENSOR_SIGNAL_DATA_OWD, 0)) OWD, ' +
                             'IFNULL(SENSOR_SIGNAL_DATA_OWS, 0) OWS ' +
                             'FROM sensor_component ' +

@@ -1,5 +1,6 @@
 /*유저 처리 컨트롤러 통합*/
 /*DB 연동*/
+/*
 const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
@@ -9,7 +10,12 @@ let connection;
 function handleDisconnect() {
     connection = mariaDB.createConnection(dbConnect);
 }
-//////////
+*/
+
+let dbConfig = require("../../config/database");
+let connection;
+connection = dbConfig.dbconn(connection);
+
 const crypto = require('crypto');
 const path = require("path");
 const secret = require("../../config/crypto");
@@ -33,7 +39,7 @@ const userCon = {
         let member_seq = 0;
         try {
             //먼저 로그인할 계정이 있는지 확인하고 있으면 salt값을 가져옴.
-            dbConnect.query('SELECT MEMBER_SEQ, MEMBER_ID, SALT FROM MEMBER WHERE MEMBER_ID = ?', req.body.login_id,
+            connection.query('SELECT MEMBER_SEQ, MEMBER_ID, SALT FROM MEMBER WHERE MEMBER_ID = ?', req.body.login_id,
                 async function (err, val) {
                     if (err) {
                         console.log("DataBase Query Error : ", err);
@@ -60,7 +66,7 @@ const userCon = {
                             return 암호값
                         */
                         const decryption = secret.DECRYPTO(req.body.login_pass, dataList[1]);
-                        dbConnect.query('SELECT MEMBER_SEQ, MEMBER_RELES, MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
+                        connection.query('SELECT MEMBER_SEQ, MEMBER_RELES, MEMBER_ID, MEMBER_NAME FROM MEMBER WHERE MEMBER_ID = ? AND MEMBER_PASS = ?',
                             [req.body.login_id, decryption.salt], async function (err, data) {
                                 if (err) {
                                     console.log("DataBase Query Error : ", err);
@@ -129,7 +135,7 @@ const userCon = {
                 });
 
             let login_log = async (success) => {
-                await dbConnect.query('INSERT INTO LOGIN_LOG (MEMBER_SEQ, LOGIN_LOG_IP, LOGIN_LOG_AGENT, LOGIN_LOG_SUCCESS) ' +
+                await connection.query('INSERT INTO LOGIN_LOG (MEMBER_SEQ, LOGIN_LOG_IP, LOGIN_LOG_AGENT, LOGIN_LOG_SUCCESS) ' +
                     'VALUES (?,?,?,?);',
                     [
                         member_seq,
@@ -167,11 +173,11 @@ const userCon = {
         //model의 DTO 처리 user 클래스 변수 처리
         if (req.body.register_id != null) {
             try {
-                dbConnect.query('SELECT MEMBER_ID FROM MEMBER WHERE MEMBER_ID = ?',
+                connection.query('SELECT MEMBER_ID FROM MEMBER WHERE MEMBER_ID = ?',
                     req.body.register_id, function (err, rows) {
                         //일치하는 아이디가 없음.
                         if (rows.length == 0) {
-                            dbConnect.query('INSERT INTO MEMBER (MEMBER_ID, MEMBER_PASS, SALT, MEMBER_NAME, MEMBER_TEL, MEMBER_RELES, MEMBER_MAP_LAT, MEMBER_MAP_LNG) ' +
+                            connection.query('INSERT INTO MEMBER (MEMBER_ID, MEMBER_PASS, SALT, MEMBER_NAME, MEMBER_TEL, MEMBER_RELES, MEMBER_MAP_LAT, MEMBER_MAP_LNG) ' +
                                 'VALUES (?,?,?,?,?,?,?,?);',
                                 [req.body.register_id,
                                     pwd,
@@ -212,7 +218,7 @@ const userCon = {
 
     //3. 유저 정보 가져오기
     getUserInfor: (req, res) => {
-        dbConnect.query('SELECT MEMBER_SEQ, MAP_TYPE_SEQ, MEMBER_ID, MEMBER_NAME, MEMBER_TEL, MEMBER_CK, MEMBER_RELES,' +
+        connection.query('SELECT MEMBER_SEQ, MAP_TYPE_SEQ, MEMBER_ID, MEMBER_NAME, MEMBER_TEL, MEMBER_CK, MEMBER_RELES,' +
             'MEMBER_MAP_LAT, MEMBER_MAP_LNG, MEMBER_MAP_ZOOM_SIZE, DATE_FORMAT(MEMBER_REG_DATE,"%y-%m-%d") AS MEMBER_REG_DATE FROM MEMBER',
             function (err, data) {
                 if (err) {
@@ -244,7 +250,7 @@ const userCon = {
         const hash = await secret.CRYPTO(req.body.update_pass);
         const pwd = hash.pwd, salt = hash.salt;
 
-        dbConnect.query('UPDATE MEMBER SET MEMBER_PASS = ?, salt = ? WHERE MEMBER_SEQ = ?',
+        connection.query('UPDATE MEMBER SET MEMBER_PASS = ?, salt = ? WHERE MEMBER_SEQ = ?',
             [
                 pwd,
                 salt,

@@ -1,9 +1,20 @@
 /*TCP/IP 소켓 Receive Data 처리(Insert) 부분*/
 /*DB 연동*/
+/*
 const mariaDB = require('maria');
-const db = require("../config/database");
-const {response} = require("express");
+const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
+
+let connection;
+//DB 연결 끊어졌을시 재연결 처리
+function handleDisconnect() {
+    connection = mariaDB.createConnection(dbConnect);
+}
+*/
+
+let dbConfig = require("../config/database");
+let connection;
+connection = dbConfig.dbconn(connection);
 
 exports.socketInsert = (socketJson) => {
     /*
@@ -17,7 +28,7 @@ exports.socketInsert = (socketJson) => {
     * 초기 테스트 버전으로 따로 장비 구분없이 AMS 제품군으로만 INSERT DB 처리
     * */
     try {
-        dbConnect.query('INSERT INTO sensor_component set ?',
+        connection.query('INSERT INTO sensor_component set ?',
             socketJson,
             function (err,res) {
                 if (err) {

@@ -1,5 +1,6 @@
 /*통계 자료 컨트롤러 통합*/
 /*DB 연동*/
+/*
 const mariaDB = require('maria');
 const db = require("../../config/database");
 const dbConnect = mariaDB.createConnection(db.mariaConfig);
@@ -9,6 +10,11 @@ let connection;
 function handleDisconnect() {
     connection = mariaDB.createConnection(dbConnect);
 }
+*/
+
+let dbConfig = require("../../config/database");
+let connection;
+connection = dbConfig.dbconn(connection);
 
 const staticCon = {
     getPage: (req, res) => {
@@ -53,7 +59,7 @@ const staticCon = {
         //Select View Alarm Data.
         if (req.query.isAlarm == true) {
             //Get Alarm table into Parameter
-            dbConnect.query('SELECT ' +
+            connection.query('SELECT ' +
                 'Data_Date_Time DataDateTime, ' +
                 'sensor_signal_data_tod TOD, ' +
                 'sensor_signal_data_tod todValue, ' +
@@ -99,7 +105,7 @@ const staticCon = {
         //Select View Normal(non-Alarm) Data.
         } else {
             //Get Normal(non-Alarm) table into Parameter
-            dbConnect.query('SELECT ' +
+            connection.query('SELECT ' +
                 'DATE_FORMAT(data_date_time,"%y-%m-%d %H:%i:%s") DataDateTime, ' +
                 'FLOOR(sensor_signal_data_tod) TOD, ' +
                 'IFNULL(sensor_signal_data_tod,"NULL") todValue, ' +
@@ -145,7 +151,7 @@ const staticCon = {
         }
     },
     getRegister: (req, res) => {
-        dbConnect.query('SELECT * FROM EQUIPMENT_INFO WHERE EQUIPMENT_TCP_PORT = ?', req.body.equipment_port,
+        connection.query('SELECT * FROM EQUIPMENT_INFO WHERE EQUIPMENT_TCP_PORT = ?', req.body.equipment_port,
             function (err, val) {
                 if (err) {
                     console.log("DataBase Query Error : ", err);
@@ -155,7 +161,7 @@ const staticCon = {
                 //포트 넘버는 중복되면 안됨. 포트 넘버 확인하는 로직
                 if (val.length == 0) {
                     //일치하는 포트 넘버가 없으면 정상적으로 INSERT 수행
-                    dbConnect.query('INSERT INTO EQUIPMENT_INFO (EQUIPMENT_TYPE_SEQ, EQUIPMENT_LAT, EQUIPMENT_LNG, EQUIPMENT_NAME, EQUIPMENT_INSTALL_PLACE ,EQUIPMENT_INSTALL_COMPANY, EQUIPMENT_TCP_PORT) VALUES (?,?,?,?,?,?,?);',
+                    connection.query('INSERT INTO EQUIPMENT_INFO (EQUIPMENT_TYPE_SEQ, EQUIPMENT_LAT, EQUIPMENT_LNG, EQUIPMENT_NAME, EQUIPMENT_INSTALL_PLACE ,EQUIPMENT_INSTALL_COMPANY, EQUIPMENT_TCP_PORT) VALUES (?,?,?,?,?,?,?);',
                         [req.body.equipment_type, req.body.equipment_lat, req.body.equipment_lng, req.body.equipment_name, req.body.equipment_address, req.body.equipment_company, req.body.equipment_port],
                         function (err) {
                             if (err) {
