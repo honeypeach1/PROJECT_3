@@ -255,15 +255,31 @@ export default {
   methods: {
     /*웹소켓 파트 시작*/
     async connect() {
-      this.socket = new WebSocket("wss://echo.websocket.org");
-      this.socket.onopen = () => {
+      console.log("Web Socket has connected.")
+      this.socket = new WebSocket("wss://localhost:7070");
+      //"wss://echo.websocket.org"
+      this.socket.onmessage = function(event) {
+        console.log('onmessage : ',event);
+      }
+
+      this.socket.onopen = function(event) {
+        console.log("웹소켓1")
+        console.log(event)
+        console.log("Successfully connected to the echo websocket server...")
+      }
+
+
+      /*this.socket.onopen = () => {
+
         this.status = "connected";
         this.logs.push({event: "연결 완료: ", data: 'wss://echo.websocket.org'})
 
         this.socket.onmessage = ({data}) => {
+          console.log("웹소켓2")
+
           this.logs.push({event: "메세지 수신", data});
         };
-      };
+      };*/
       await this.disconnect();
     },
     async disconnect() {

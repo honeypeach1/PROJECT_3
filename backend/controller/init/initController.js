@@ -21,7 +21,6 @@ const initCon = {
         new Promise((resolve,reject) => {
         let dataList = [];
         try {
-           /*dbConnect.query('SELECT * FROM EQUIPMENT_INFO',*/
             connection.query('SELECT * FROM EQUIPMENT_INFO',
                 (err, val) => {
                     if (err) {

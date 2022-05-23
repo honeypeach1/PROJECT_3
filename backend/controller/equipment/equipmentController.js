@@ -308,7 +308,7 @@ const EquipmentCon = {
                 'FROM SENSOR_COMPONENT ' +
                 'WHERE EQUIPMENT_SEQ = ? AND sensor_component_period_type = 1 AND ' +
                 'DATE_FORMAT(DATA_DATE_TIME, "%Y-%m-%d") = DATE_FORMAT(CURDATE(), "%Y-%m-%d") ' +
-                'ORDER BY DATA_DATE_TIME DESC ' +
+                'ORDER BY DataDateTime DESC ' +
                 'LIMIT 96',
                 req.query.equipNum,
                 (err, sensorChartList) => {

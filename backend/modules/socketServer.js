@@ -92,7 +92,7 @@ exports.socketServer = net.createServer(function (socket) {
         console.log("rand_1_5: ",rand_1_5)
         makeDataArray.push("absoluteId")
         makeDataArray.push(rand_1_5)
-        //하지만 현재 테스트용으로 AMS제품군으로만 분류로 할것이기 때문에 별도 처리하지 않음.
+        //하지만 현재 테스트용으로 AMS 제품군으로만 분류로 할것이기 때문에 별도 처리하지 않음.
         //평균 값 계산
         inputJson.inputDataJson(makeDataArray);
 

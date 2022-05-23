@@ -30,7 +30,8 @@
     "vue-cookies": "^1.7.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.6.2",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex-persistedstate": "^4.1.0",
+    "ws": "^8.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
