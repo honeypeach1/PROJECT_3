@@ -25,6 +25,9 @@ global.arrayList = arrayList;
 
 //소켓 서버 생성
 var socketServer = require('./modules/socketServer');
+
+//웹 소켓 서버 생성
+var websocket = require('./modules/websocket');
 /*
  처음 서버 실행시 동작하는 컨트롤러
  장비 리스트를 불러옴. port 컬럼을 가져와서 동적으로 포트를 만들기
@@ -51,6 +54,8 @@ console.log("equipment : ", equipment)*/
 
 var app = express();
 app.use(require('connect-history-api-fallback')());
+
+//app.use(require('./modules/websocket').webSocketConig)
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

@@ -177,6 +177,8 @@ import axios from "axios";
 import $ from 'jquery';
 import windChartView from '../../components/popup/winChartPopup';
 
+import Stomp from "stomp";
+
 // JQUERY //
 $(document).on('click', '#allCheck', function () {
   if($('#allCheck').is(':checked')) {
@@ -255,19 +257,37 @@ export default {
   methods: {
     /*웹소켓 파트 시작*/
     async connect() {
+      this.socket = new WebSocket("/websockets");
+      let stompClient = Stomp.over(this.socket);
       console.log("Web Socket has connected.")
-      this.socket = new WebSocket("wss://localhost:7070");
-      //"wss://echo.websocket.org"
+      //this.socket = new WebSocket("wss://echo.websocket.org");
+
+      //데이터 수신 이벤트 헨들러
       this.socket.onmessage = function(event) {
         console.log('onmessage : ',event);
       }
 
+      //소켓 해제 이벤트 헨들러
+      this.socket.onclose = function (event) {
+        console.log('oneclose : ',event)
+      }
+
+      //소켓 에러 이벤트 헨들러
+      this.socket.onerror = function(event) {
+        console.log('onerror : ',event)
+      }
+
+      //소켓 연결 이벤트 헨들러
       this.socket.onopen = function(event) {
         console.log("웹소켓1")
         console.log(event)
         console.log("Successfully connected to the echo websocket server...")
       }
 
+      //소켓 데이터 전송
+      //this.socket.send('전송');
+      //소켓 종료
+      //this.socket.close();
 
       /*this.socket.onopen = () => {
 

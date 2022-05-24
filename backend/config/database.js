@@ -37,6 +37,8 @@ exports.dbconn = function handleDisconnect(connection) {
             } else if(err.code === 'ECONNRESET') {
                 connection.destroy();
                 handleDisconnect(connection);
+            } else if(err.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR') {
+                handleDisconnect(connection);
             } else {
                 throw err;
             }

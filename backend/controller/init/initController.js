@@ -23,11 +23,7 @@ const initCon = {
         try {
             connection.query('SELECT * FROM EQUIPMENT_INFO',
                 (err, val) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     if (val.length > 0) {
                         for (let data of val) {
                             dataList.push(data.equipment_tcp_port)

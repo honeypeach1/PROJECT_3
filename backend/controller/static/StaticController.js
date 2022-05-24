@@ -80,10 +80,7 @@ const staticCon = {
                     req.query.dataType
                 ],
                 function (err, data) {
-                if (err) {
-                    console.log("DataBase Query Error : ", err);
-                    setTimeout(handleDisconnect, 2000);
-                }
+                if (err) console.log("DataBase Query Error : ", err);
                 if (data != null) {
                     //json 데이터화
                     res.json({
@@ -126,11 +123,7 @@ const staticCon = {
                     req.query.dataType
                 ],
                 function (err, data) {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                 if (data != '') {
                     //json 데이터화
                     res.json({
@@ -153,22 +146,14 @@ const staticCon = {
     getRegister: (req, res) => {
         connection.query('SELECT * FROM EQUIPMENT_INFO WHERE EQUIPMENT_TCP_PORT = ?', req.body.equipment_port,
             function (err, val) {
-                if (err) {
-                    console.log("DataBase Query Error : ", err);
-                    console.log("Trying to reConnection")
-                    setTimeout(handleDisconnect, 2000);
-                }
+                if (err) console.log("DataBase Query Error : ", err);
                 //포트 넘버는 중복되면 안됨. 포트 넘버 확인하는 로직
                 if (val.length == 0) {
                     //일치하는 포트 넘버가 없으면 정상적으로 INSERT 수행
                     connection.query('INSERT INTO EQUIPMENT_INFO (EQUIPMENT_TYPE_SEQ, EQUIPMENT_LAT, EQUIPMENT_LNG, EQUIPMENT_NAME, EQUIPMENT_INSTALL_PLACE ,EQUIPMENT_INSTALL_COMPANY, EQUIPMENT_TCP_PORT) VALUES (?,?,?,?,?,?,?);',
                         [req.body.equipment_type, req.body.equipment_lat, req.body.equipment_lng, req.body.equipment_name, req.body.equipment_address, req.body.equipment_company, req.body.equipment_port],
                         function (err) {
-                            if (err) {
-                                console.log("DataBase Query Error : ", err);
-                                console.log("Trying to reConnection")
-                                setTimeout(handleDisconnect, 2000);
-                            }
+                            if (err) console.log("DataBase Query Error : ", err);
                             res.json({
                                 success: true,
                                 message: '장비 등록이 완료되었습니다.'

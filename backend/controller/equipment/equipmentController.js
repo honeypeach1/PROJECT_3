@@ -46,11 +46,7 @@ const EquipmentCon = {
             connection.query('SELECT ROW_NUMBER() OVER (ORDER BY a.EQUIPMENT_SEQ) AS ROW_NUM, a.EQUIPMENT_SEQ EQUIPMENT_SEQ, a.EQUIPMENT_NAME EQUIPMENT_NAME, b.EQUIPMENT_TYPE_SEQ EQUIPMENT_TYPE_SEQ ,b.EQUIPMENT_TYPE_NAME EQUIPMENT_TYPE_NAME ' +
                 'FROM equipment_info a JOIN equipment_type b ON a.equipment_type_seq = b.equipment_type_seq',
                 (err, equpiment) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     // const result = Object.values(JSON.parse(JSON.stringify(equpiment)));
                     for (let list of equpiment) {
                         equipList = {
@@ -90,11 +86,7 @@ const EquipmentCon = {
                 'WHERE d.equipment_seq = ?',
                 req.query.equipSettingNum,
                 (err, thresholdValue) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     res.json({
                         success: true,
                         thresholdValue: thresholdValue,
@@ -110,11 +102,7 @@ const EquipmentCon = {
         try {
             connection.query('SELECT EQUIPMENT_SEQ, EQUIPMENT_NAME, EQUIPMENT_LAT, EQUIPMENT_LNG FROM EQUIPMENT_INFO',
                 (err, data) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     res.json({
                         success: true,
                         equipmentList: data
@@ -130,11 +118,7 @@ const EquipmentCon = {
             connection.query('UPDATE EQUIPMENT_INFO SET EQUIPMENT_NAME = ? WHERE EQUIPMENT_SEQ = ?',
                 [req.query.equipment_data,req.query.num],
                 (err, data) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     res.json({
                         success: true,
                         message: '장비 이름이 수정 되었습니다.'
@@ -150,11 +134,7 @@ const EquipmentCon = {
             connection.query('DELETE FROM EQUIPMENT_INFO WHERE EQUIPMENT_SEQ = ?',
                 req.query.num,
                 (err, data) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     res.json({
                         success: true,
                         message: '해당 장비가 삭제 되었습니다.'
@@ -180,11 +160,7 @@ const EquipmentCon = {
                     'WHERE a.equipment_seq = ? AND b.threshold_over_event_name = "악취주의"',
                     req.query.saveEquipNum,
                     (err, cautionData) => {
-                        if (err) {
-                            console.log("DataBase Query Error : ", err);
-                            console.log("Trying to reConnection")
-                            setTimeout(handleDisconnect, 2000);
-                        }
+                        if (err) console.log("DataBase Query Error : ", err);
                         //주의 값이 있음.
                         if (cautionData.length > 0) {
                             let cautionDataSeq;
@@ -197,11 +173,7 @@ const EquipmentCon = {
                                     cautionDataSeq
                                 ],
                                 (err ,cautionUpdate) => {
-                                    if (err) {
-                                        console.log("DataBase Query Error : ", err);
-                                        console.log("Trying to reConnection")
-                                        setTimeout(handleDisconnect, 2000);
-                                    }
+                                    if (err) console.log("DataBase Query Error : ", err);
                                     console.log(cautionUpdate,'악취 주의 값 설정이 UPDATE 되었습니다.')
                                     /*res.json({
                                         success: true,
@@ -218,11 +190,7 @@ const EquipmentCon = {
                                     req.query.todCaution
                                 ],
                                 (err ,cautionInsert) => {
-                                    if (err) {
-                                        console.log("DataBase Query Error : ", err);
-                                        console.log("Trying to reConnection")
-                                        setTimeout(handleDisconnect, 2000);
-                                    }
+                                    if (err) console.log("DataBase Query Error : ", err);
                                     console.log(cautionInsert,'악취 주의 값 설정이 INSERT 되었습니다.')
                                     /*res.json({
                                         success: true,
@@ -239,11 +207,7 @@ const EquipmentCon = {
                     'WHERE a.equipment_seq = ? AND b.threshold_over_event_name = "악취경고"',
                     req.query.saveEquipNum,
                     (err, warningData) => {
-                        if (err) {
-                            console.log("DataBase Query Error : ", err);
-                            console.log("Trying to reConnection")
-                            setTimeout(handleDisconnect, 2000);
-                        }
+                        if (err) console.log("DataBase Query Error : ", err);
                         //경고 값이 있음.
                         if (warningData.length > 0) {
                             let warningDataSeq;
@@ -256,11 +220,7 @@ const EquipmentCon = {
                                     warningDataSeq
                                 ],
                                 (err ,WarningUpdate) => {
-                                    if (err) {
-                                        console.log("DataBase Query Error : ", err);
-                                        console.log("Trying to reConnection")
-                                        setTimeout(handleDisconnect, 2000);
-                                    }
+                                    if (err) console.log("DataBase Query Error : ", err);
                                     console.log(WarningUpdate,'악취 경고 값 설정이 UPDATE 되었습니다.')
 
                                 })
@@ -274,11 +234,7 @@ const EquipmentCon = {
                                     req.query.todWarning
                                 ],
                                 (err ,WarningInsert) => {
-                                    if (err) {
-                                        console.log("DataBase Query Error : ", err);
-                                        console.log("Trying to reConnection")
-                                        setTimeout(handleDisconnect, 2000);
-                                    }
+                                    if (err) console.log("DataBase Query Error : ", err);
                                     console.log(WarningInsert,'악취 경고 값 설정이 INSERT 되었습니다.')
                                     /*res.json({
                                         success: true,
@@ -312,11 +268,7 @@ const EquipmentCon = {
                 'LIMIT 96',
                 req.query.equipNum,
                 (err, sensorChartList) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     res.json({
                         success: true,
                         sensorChartList: sensorChartList,
@@ -339,11 +291,7 @@ const EquipmentCon = {
                             'ORDER BY DATA_DATE_TIME DESC',
                 req.query.equipNum,
                 (err,windChartList) => {
-                    if (err) {
-                        console.log("DataBase Query Error : ", err);
-                        console.log("Trying to reConnection")
-                        setTimeout(handleDisconnect, 2000);
-                    }
+                    if (err) console.log("DataBase Query Error : ", err);
                     res.json({
                         success: true,
                         windChartList: windChartList,
