@@ -6,6 +6,12 @@ const router = express.Router();
 const webSocketController = require('../controller/websocket/websocketController')
 const authUtil = require('../middlewares/auth').checkToken;
 
-/*router.post('/websocket',webSocketController.callSocket);*/
+/*const schedule = require('node-schedule');
 
+schedule.scheduledJobs('30 * * * *', function () {
+    router.get('/websockets',webSocketController.scheduleData);
+}, {
+    scheduled: true,
+    timeZone: "Asia/Seoul"
+});*/
 module.exports = router;

@@ -16,6 +16,13 @@ let dbConfig = require("../../config/database");
 let connection;
 connection = dbConfig.dbconn(connection);
 
+const cronTab = require('node-schedule');
+
+cronTab.scheduleJob('30 * * * * *', function () {
+    console.log("스케줄러 동작")
+    EquipmentCon.getSensorChartData();
+});
+
 //그룹화 설정 전연 함수
 const groupBy = function (data, key) {
     return data.reduce(function (carry, el) {
@@ -48,14 +55,17 @@ const EquipmentCon = {
                 (err, equpiment) => {
                     if (err) console.log("DataBase Query Error : ", err);
                     // const result = Object.values(JSON.parse(JSON.stringify(equpiment)));
-                    for (let list of equpiment) {
-                        equipList = {
-                            type: list.EQUIPMENT_TYPE_NAME,
-                            text: list.EQUIPMENT_NAME,
-                            value: list.EQUIPMENT_SEQ,
-                            rownum: list.ROW_NUM
+                    console.log("equpiment : ",equpiment)
+                    if(equpiment !== 'undefined' || equpiment !== null){
+                        for (let list of equpiment) {
+                            equipList = {
+                                type: list.EQUIPMENT_TYPE_NAME,
+                                text: list.EQUIPMENT_NAME,
+                                value: list.EQUIPMENT_SEQ,
+                                rownum: list.ROW_NUM
+                            }
+                            lastList.push(equipList);
                         }
-                        lastList.push(equipList);
                     }
 
                     res.json({

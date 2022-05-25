@@ -17,7 +17,9 @@ let connection;
 connection = dbConfig.dbconn(connection);
 
 const webSocketCon = {
-
+    scheduleData: (req, res) => {
+        console.log("백엔드 호출")
+    }
 }
 
 module .exports = webSocketCon;

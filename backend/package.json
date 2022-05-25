@@ -21,6 +21,7 @@
     "maria": "^0.0.1-a",
     "morgan": "~1.9.1",
     "net": "^1.0.2",
+    "node-schedule": "^2.1.0",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "pbkdf2-password": "^1.2.1",

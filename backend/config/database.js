@@ -31,7 +31,7 @@ exports.dbconn = function handleDisconnect(connection) {
         }
         connection.on('error', function (err) {
             console.log('MariaDB Error : ', err);
-            if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            /*if (err.code === 'PROTOCOL_CONNECTION_LOST') {
                 connection.destroy();
                 handleDisconnect(connection);
             } else if(err.code === 'ECONNRESET') {
@@ -41,7 +41,11 @@ exports.dbconn = function handleDisconnect(connection) {
                 handleDisconnect(connection);
             } else {
                 throw err;
-            }
+            }*/
+
+            console.log("err code : ",err.code)
+            connection.destroy();
+            handleDisconnect(connection);
         });
     })
     return connection;
