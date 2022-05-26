@@ -40,8 +40,12 @@ body {
             height: 63px;
             margin-bottom: 22px;
             font-size: 25px;
-            font-family: 'NanumSquare';
+            font-family: "NanumSquare", sans-serif;
 
+          }
+
+          #login_pass {
+            font-family: Arial;
           }
 
           .btn_small {
