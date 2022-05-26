@@ -360,11 +360,15 @@ export default {
   },
 }
 
-window.onresize = function () {
-  Plotly.relayout('chartStaticBar', {
-    'xaxis.autorange': true,
-    'yaxis.autorange': true,
-  });
+if('/static' === window.location.pathname) {
+  console.log('static 동작')
+  window.onresize = function () {
+    Plotly.relayout('chartStaticBar', {
+      'xaxis.autorange': true,
+      'yaxis.autorange': true,
+      'witdh': $('#chartStaticBar').width() - '10px'
+    });
+  }
 };
 
 </script>

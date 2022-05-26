@@ -389,8 +389,9 @@
           height: 70px;
 
           .sort_front_area {
-            flex-flow: column;
+            flex-flow: unset;
             align-items: flex-start;
+            flex-wrap: wrap !important;
 
             .front_area_periodType {
               .periodType {

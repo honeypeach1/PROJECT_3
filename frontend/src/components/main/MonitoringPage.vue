@@ -596,11 +596,15 @@ export default {
   },
 }
 
+if('/monitoring' === window.location.pathname){
+  console.log('monitoring 동작')
 window.onresize = function () {
-  Plotly.relayout('chartBar', {
-    'xaxis.autorange': true,
-    'yaxis.autorange': true,
-  });
+    Plotly.relayout('chartBar', {
+      'xaxis.autorange': true,
+      'yaxis.autorange': true,
+      'witdh': $('#chartBar').width() - '10px'
+    });
+  }
 }
 </script>
 
