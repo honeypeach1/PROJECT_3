@@ -26,9 +26,9 @@ function scheduleTimeStamp() {
 }
 
 cronTab.scheduleJob('30 * * * * *', function () {
-    console.log("===============================")
+    console.log("=============================================")
     console.log("스케줄러 동작 시간 : ",scheduleTimeStamp())
-    console.log("===============================")
+    console.log("=============================================")
     connection.query('select 1', (err, data) => {
             if (err) {
                 console.log("스케줄러 동작 에러")
