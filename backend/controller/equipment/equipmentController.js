@@ -17,9 +17,25 @@ let connection;
 connection = dbConfig.dbconn(connection);
 
 const cronTab = require('node-schedule');
+const {dbconn} = require("../../config/database");
+
+function scheduleTimeStamp() {
+    var today = new Date();
+    today.setHours(today.getHours() + 9);
+    return today.toISOString().replace('T', ' ').substring(0, 19);
+}
 
 cronTab.scheduleJob('30 * * * * *', function () {
-    console.log("스케줄러 동작")
+    console.log("===============================")
+    console.log("스케줄러 동작 시간 : ",scheduleTimeStamp())
+    console.log("===============================")
+    connection.query('select 1', (err, data) => {
+            if (err) {
+                console.log("스케줄러 동작 에러")
+                throw dbConfig.dbconn(connection);
+            }
+        }
+    )
 });
 
 //그룹화 설정 전연 함수
