@@ -20,19 +20,21 @@ const cronTab = require('node-schedule');
 
 cronTab.scheduleJob('30 * * * * *', function () {
     console.log("스케줄러 동작")
-    EquipmentCon.getSensorChartData();
 });
 
 //그룹화 설정 전연 함수
 const groupBy = function (data, key) {
-    return data.reduce(function (carry, el) {
-        var group = el[key];
-        if (carry[group] === undefined) {
-            carry[group] = []
-        }
-        carry[group].push(el)
-        return carry
-    }, {})
+    if(data != null || data != undefined){
+        return data.reduce(function (carry, el) {
+            var group = el[key];
+            if (carry[group] === undefined) {
+                carry[group] = []
+            }
+            carry[group].push(el)
+            return carry
+        }, {})
+    }
+    return null;
 }
 
 const EquipmentCon = {
@@ -52,12 +54,12 @@ const EquipmentCon = {
             let data = [];
             connection.query('SELECT ROW_NUMBER() OVER (ORDER BY a.EQUIPMENT_SEQ) AS ROW_NUM, a.EQUIPMENT_SEQ EQUIPMENT_SEQ, a.EQUIPMENT_NAME EQUIPMENT_NAME, b.EQUIPMENT_TYPE_SEQ EQUIPMENT_TYPE_SEQ ,b.EQUIPMENT_TYPE_NAME EQUIPMENT_TYPE_NAME ' +
                 'FROM equipment_info a JOIN equipment_type b ON a.equipment_type_seq = b.equipment_type_seq',
-                (err, equpiment) => {
+                (err, equipment) => {
                     if (err) console.log("DataBase Query Error : ", err);
                     // const result = Object.values(JSON.parse(JSON.stringify(equpiment)));
-                    console.log("equpiment : ",equpiment)
-                    if(equpiment !== 'undefined' || equpiment !== null){
-                        for (let list of equpiment) {
+                    console.log("equipment : ",equipment)
+                    if(equipment !== undefined || equipment !== null){
+                        for (let list of equipment) {
                             equipList = {
                                 type: list.EQUIPMENT_TYPE_NAME,
                                 text: list.EQUIPMENT_NAME,

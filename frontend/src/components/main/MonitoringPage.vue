@@ -236,17 +236,19 @@ export default {
   },
   mounted() {
     /*setInterval(this.connect.bind(this),30000)*/
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
+    if (!window.kakao || !window.kakao.maps) {
+      //스크립트 로드
       const script = document.createElement("script");
-      /* local kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
+      //script.onload = () => kakao.maps.load(this.initMap);
       document.head.appendChild(script);
+      script.addEventListener("load",() => {
+        kakao.maps.load(this.initMap);
+      })
+    } else {
+      this.initMap();
     };
-    //맵 좌표 정보 가져오기
-    this.getMapEquipmentList();
+
     //셀렉트 리스트 그룹 장비 리스트 가져오기
     this.getEquipmentList();
     //악취 센서 선형차트 & 풍배도 & 풍속빈도 처리하기
@@ -257,9 +259,18 @@ export default {
   methods: {
     /*웹소켓 파트 시작*/
     async connect() {
-      this.socket = new WebSocket("/websockets");
-      let stompClient = Stomp.over(this.socket);
-      console.log("Web Socket has connected.")
+      //동일 호스트 포트를 사용하기 위한 동적 주소 처리
+      let add = window.location, new_uri;
+      if (add.protocol === "https:") {
+        new_uri = "wss:";
+      } else {
+        new_uri = "ws:";
+      }
+      new_uri += "//" + add.host;
+      new_uri += add.pathname + "/ws";
+      this.socket = new WebSocket(new_uri);
+      //let stompClient = Stomp.over(this.socket);
+      console.log("WebSocket has connected.")
       //this.socket = new WebSocket("wss://echo.websocket.org");
 
       //데이터 수신 이벤트 헨들러
@@ -267,21 +278,53 @@ export default {
         console.log('onmessage : ',event);
       }
 
-      //소켓 해제 이벤트 헨들러
-      this.socket.onclose = function (event) {
-        console.log('oneclose : ',event)
-      }
-
-      //소켓 에러 이벤트 헨들러
-      this.socket.onerror = function(event) {
-        console.log('onerror : ',event)
-      }
-
       //소켓 연결 이벤트 헨들러
       this.socket.onopen = function(event) {
         console.log("웹소켓1")
         console.log(event)
         console.log("Successfully connected to the echo websocket server...")
+      }
+
+      //소켓 해제 이벤트 헨들러
+      this.socket.onclose = function (event) {
+        let reason;
+        //alert(event.code);
+        // See https://www.rfc-editor.org/rfc/rfc6455#section-7.4.1
+        if (event.code == 1000)
+          reason = "Normal closure, meaning that the purpose for which the connection was established has been fulfilled.";
+        else if(event.code == 1001)
+          reason = "An endpoint is \"going away\", such as a server going down or a browser having navigated away from a page.";
+        else if(event.code == 1002)
+          reason = "An endpoint is terminating the connection due to a protocol error";
+        else if(event.code == 1003)
+          reason = "An endpoint is terminating the connection because it has received a type of data it cannot accept (e.g., an endpoint that understands only text data MAY send this if it receives a binary message).";
+        else if(event.code == 1004)
+          reason = "Reserved. The specific meaning might be defined in the future.";
+        else if(event.code == 1005)
+          reason = "No status code was actually present.";
+        else if(event.code == 1006)
+          reason = "The connection was closed abnormally, e.g., without sending or receiving a Close control frame";
+        else if(event.code == 1007)
+          reason = "An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [https://www.rfc-editor.org/rfc/rfc3629] data within a text message).";
+        else if(event.code == 1008)
+          reason = "An endpoint is terminating the connection because it has received a message that \"violates its policy\". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.";
+        else if(event.code == 1009)
+          reason = "An endpoint is terminating the connection because it has received a message that is too big for it to process.";
+        else if(event.code == 1010) // Note that this status code is not used by the server, because it can fail the WebSocket handshake instead.
+          reason = "An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake. <br /> Specifically, the extensions that are needed are: " + event.reason;
+        else if(event.code == 1011)
+          reason = "A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.";
+        else if(event.code == 1015)
+          reason = "The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).";
+        else
+          reason = "Unknown reason";
+
+        console.log("Socket Error Log : ",reason)
+      };
+
+      //소켓 에러 이벤트 헨들러
+      this.socket.onerror = function(event) {
+        console.log('onerror : ',event)
       }
 
       //소켓 데이터 전송
@@ -345,7 +388,8 @@ export default {
       this.map = new kakao.maps.Map(container, options);
 
       //지도 좌표 설정하기
-      //this.displayMarker();
+      this.getMapEquipmentList();
+
     },
     showWindChart() {
       this.infoWindChart = !this.infoWindChart;

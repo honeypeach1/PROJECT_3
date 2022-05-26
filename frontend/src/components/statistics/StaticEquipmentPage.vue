@@ -140,18 +140,19 @@ export default {
   },
   mounted() {
     this.$emit('currentTab', 1)
-    if (window.kakao && window.kakao.maps) {
-      this.initStaticMap();
-    } else {
+    if (!window.kakao || !window.kakao.maps) {
       const script = document.createElement("script");
       /* local kakao */
-      script.onload = () => kakao.maps.load(this.initStaticMap);
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + KAKAO_API_KEY + "&libraries=services";
+      //script.onload = () => kakao.maps.load(this.initStaticMap);
       document.head.appendChild(script);
-    }
-    ;
-    //맵 좌표 정보 가져오기
-    this.getStaticMapEquipmentList();
+      script.addEventListener("load",() => {
+        kakao.maps.load(this.initStaticMap);
+      })
+    } else {
+      this.initStaticMap();
+    };
+
     //장비 리스트 가져오기
     this.getEquipmentList();
   },
@@ -221,6 +222,9 @@ export default {
         level: 5,
       };
       this.staticMap = new kakao.maps.Map(container, options);
+
+      //맵 좌표 정보 가져오기
+      this.getStaticMapEquipmentList();
     },
     initDataTable() {
       if (datatableValue != undefined) {

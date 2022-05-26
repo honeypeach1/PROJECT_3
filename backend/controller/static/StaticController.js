@@ -42,20 +42,7 @@ const staticCon = {
               4. dataType: 1분 평균 -> 0 , 5분 평균 -> 1 , 10분 평균 -> 2 , 1시간 평균 -> 3 , 1일 평균 -> 4,
               5. equipNum: 장비 번호
          */
-        let user_info = req.session.user_cookie;
-        /*세션을 확인함. 세션이 끊기면 로그인 페이지로*/
-        /*if (user_info != null) {
-            res.json({
-                success: true,
-                user_info: user_info[1],
-                message: '일치하는 알람 데이터 조회에 성공하였습니다.'
-            })
-        } else {
-            res.json({
-                success: false,
-                message: '세션이 만료되었습니다.'
-            })
-        }*/
+
         //Select View Alarm Data.
         if (req.query.isAlarm == true) {
             //Get Alarm table into Parameter
@@ -85,14 +72,12 @@ const staticCon = {
                     //json 데이터화
                     res.json({
                         success: true,
-                        user_info: user_info[1],
                         tableData: data,
                         message: '일치하는 알람 데이터 조회에 성공하였습니다.'
                     })
                 } else {
                     res.json({
                         success: false,
-                        user_info: user_info[1],
                         tableData: data,
                         message: '일치하는 알람 데이터 정보가 없습니다.'
                     })
@@ -129,14 +114,12 @@ const staticCon = {
                     res.json({
                         success: true,
                         tableData: data,
-                        user_info: user_info[1],
                         message: '일치하는 일반 데이터 조회에 성공하였습니다.'
                     })
                 } else {
                     res.json({
                         success: false,
                         tableData: data,
-                        user_info: user_info[1],
                         message: '일치하는 일반 데이터 정보가 없습니다.'
                     })
                 }
