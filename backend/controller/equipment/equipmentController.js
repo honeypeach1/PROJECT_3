@@ -32,7 +32,7 @@ cronTab.scheduleJob('30 * * * * *', function () {
     connection.query('select 1', (err, data) => {
             if (err) {
                 console.log("스케줄러 동작 에러")
-                throw dbConfig.dbconn(connection);
+                dbConfig.dbconn(connection);
             }
         }
     )
