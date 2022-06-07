@@ -7,7 +7,7 @@
       <!--장비 맵 영역-->
       <div class="staticLeftArea" id="staticMapArea">
         <div id="staticequipSelect">
-          <select class="inlineMapSelectList" v-model="equipNum" @change="getData">
+          <select class="inlineMapSelectList" v-model="equipNum" @change="getStaticData">
             <option value="0" selected disabled>장비를 선택해주세요.</option>
             <optgroup v-for="(group, name) in selectOptions" :label="name">
               <option v-for="option in group" :value="option.value">
@@ -27,7 +27,7 @@
             <v-md-date-range-picker @change="datepicker"></v-md-date-range-picker>
             <div class="periodType">데이터구분</div>
             <div class="selectPeriodArea">
-              <select class="selectPeriodData" v-model="dataType" @change="getData">
+              <select class="selectPeriodData" v-model="dataType" @change="getStaticData">
                 <option value="0">1분</option>
                 <option value="1">5분</option>
                 <option value="2">10분</option>
@@ -232,6 +232,13 @@ export default {
           removable: true,// removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
         });
         this.infowindow.open(this.staticMap, this.staticMarkers);
+
+        new kakao.maps.event.addListener(this.staticMarkers, 'click', () => {
+          //클릭 장비로 셀렉트 태그 정의
+          $(".inlineMapSelectList").val(datas.EQUIPMENT_SEQ).prop("selected", true);
+          this.equipNum = $(".inlineMapSelectList").val();
+          this.getStaticData();
+        });
       })
     },
     initStaticMap() {
@@ -361,11 +368,11 @@ export default {
 
       this.values = values;
       //axios 데이터 셀렉 호출
-      this.getData();
+      this.getStaticData();
     },
     goSelectData() {
       this.isAlarm = !this.isAlarm
-      this.getData();
+      this.getStaticData();
     },
     /*
       static 페이지에서 비동기식 데이터 호출 함수
@@ -390,7 +397,8 @@ export default {
          3.4 알람 조회 클릭
          3.5 상단 헤더에서의 특정 알람을 클릭
     */
-    getData() {
+    getStaticData() {
+      console.log('this.equipNum : ',this.equipNum)
       axios({
         url: "/static/getData",
         method: "GET",
