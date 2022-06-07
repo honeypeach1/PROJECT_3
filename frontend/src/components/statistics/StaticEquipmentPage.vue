@@ -36,6 +36,7 @@
               </select>
             </div>
             <div class="sensor_check_area">
+              <div class="dataLabel">센서조회</div>
               <div class="sensor_checkbox">
                 <div class="checkboxDiv">
                   <input class="checkbox" type="checkbox" name="h2s" value="1" checked @change="checkedData">
