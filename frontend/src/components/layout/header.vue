@@ -208,7 +208,7 @@ import $ from "jquery";
 
 $(document).ready(function () {
   $('#alert_info').click(function () {
-    alert($('.alertValue').text());
+    //alert($('.alertValue').text());
     console.log($('.alertValue').text());
     // 경고#db0f26
     // 주의#f89b00

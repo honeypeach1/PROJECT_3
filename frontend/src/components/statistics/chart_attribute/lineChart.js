@@ -66,7 +66,7 @@ export const lineChart = {
       t: 30,
       b: 30,
       l: 30,
-      r: 20,
+      r: 10,
     },
     showlegend: true,
     legend: {

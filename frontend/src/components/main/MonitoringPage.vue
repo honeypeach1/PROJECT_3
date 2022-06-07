@@ -432,43 +432,43 @@ export default {
         content.className = 'overlayInforWindow';
         content.innerHTML = datas.EQUIPMENT_NAME;*/
         let content = '<div class="wrap" style="background: #2f4a5a; opacity: 0.9; border-radius: 5px; position: absolute; padding: 5px; left: 0; bottom: 40px; width: 350px; height: 210px; margin-left: -144px; text-align: left; overflow: hidden; font-size: 12px; font-family: "NanumSquare"; line-height: 1.5;">' +
-                    '    <div class="info" style="width: 100%; height: 100%;">' +
-                    '    <div class="topArea" style="height: 15%; width: 100%; float: left; color: #FFFFFF">' +
-                    '        <div class="title" style="width: 100%; height: 20%; text-align: center; font-size: 20px; font-weight: bold;">' +
-                                  datas.EQUIPMENT_NAME +
-                    '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
-                    '        </div>' +
-                    '</div>' +
-                    '     <div class="leftArea" style="background: #1c2e37; float:left; width: 45%; height: 75%;">'  +
-                    '        <div class="topBody" style="width: 100%; height: 15%; color: #FFFFFF; text-align: center; font-size: 15px; line-height: 23px;">복합악취</div>' +
-                    '        <div class="centerBody" style="height: 70%; width: 100%">' +
-                    '            <div class="todValue" style="height: 75%; width: 100%; text-align: center;">' +
-                    '               <span style="font-size: 5rem; font-weight: bold; color: chocolate">17</span>' +
-                    '           </div>' +
-                    '        </div>' +
-                    '     <div class="bottomBody" style="width: 100%; height: 15%; font-size: 15px; color: #f1f1f1; text-align: center; font-weight: bold">(배수)</div>' +
-                    '     </div>' +
-                    '     <div class="rightArea" style="float:left; width: 55%; height: 75%; background: #bdc9e9">'  +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">황화수소</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">15 (ppb)</div>' +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">암모니아</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">10 (ppb)</div>' +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">MOS</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">62 (OU)</div>' +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">전압</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">1.2 V</div>' +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">함체 온도</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">16.2 (°C)</div>' +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">함체 습도</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">55 %</div>' +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">풍향</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">동북동</div>' +
-                    '       <div class="sensor title" style="float:left; height: 12.5%; background: #eef1f5; width: 50%">풍속</div>' +
-                    '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">1.2 m/s</div>' +
-                    '    </div>' +
-                    '    <div class="bottomArea" style="width: 100%; color: #FFFFFF; line-height: 22px; height: 10%; float: left; text-align: center">' +
-                    '    <div class="time" style="font-size: 0.9rem; text-align: left;">측정시각 : 2022-05-30 14:30:05</div>' +
-                    '</div>';
+          '    <div class="info" style="width: 100%; height: 100%;">' +
+          '    <div class="topArea" style="height: 15%; width: 100%; float: left; color: #FFFFFF">' +
+          '        <div class="title" style="width: 100%; height: 20%; text-align: center; font-size: 20px; font-weight: bold;">' +
+          datas.EQUIPMENT_NAME +
+          '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+          '        </div>' +
+          '</div>' +
+          '     <div class="leftArea" style="background: #1c2e37; float:left; width: 45%; height: 75%;">' +
+          '        <div class="topBody" style="width: 100%; height: 15%; color: #FFFFFF; text-align: center; font-size: 15px; line-height: 23px;">복합악취</div>' +
+          '        <div class="centerBody" style="height: 70%; width: 100%">' +
+          '            <div class="todValue" style="height: 75%; width: 100%; text-align: center;">' +
+          '               <span style="font-size: 5rem; font-weight: bold; color: chocolate">17</span>' +
+          '           </div>' +
+          '        </div>' +
+          '     <div class="bottomBody" style="width: 100%; height: 15%; font-size: 15px; color: #f1f1f1; text-align: center; font-weight: bold">(배수)</div>' +
+          '     </div>' +
+          '     <div class="rightArea" style="float:left; width: 55%; height: 75%; background: #bdc9e9">' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">황화수소</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">15 (ppb)</div>' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">암모니아</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">10 (ppb)</div>' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">MOS</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">62 (OU)</div>' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">전압</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">1.2 V</div>' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">함체 온도</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">16.2 (°C)</div>' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">함체 습도</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">55 %</div>' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">풍향</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">동북동</div>' +
+          '       <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">풍속</div>' +
+          '       <div class="sensor value" style="float:left; height: 12.5%; width: 50%">1.2 m/s</div>' +
+          '    </div>' +
+          '    <div class="bottomArea" style="width: 100%; color: #FFFFFF; line-height: 22px; height: 10%; float: left; text-align: center">' +
+          '    <div class="time" style="font-size: 0.9rem; text-align: left;">측정시각 : 2022-05-30 14:30:05</div>' +
+          '</div>';
 
         this.customOverlay = new kakao.maps.CustomOverlay({
           yAnchor: 1,

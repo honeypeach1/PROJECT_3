@@ -35,6 +35,26 @@
                 <option value="4">1일</option>
               </select>
             </div>
+            <div class="sensor_check_area">
+              <div class="sensor_checkbox">
+                <div class="checkboxDiv">
+                  <input class="checkbox" type="checkbox" name="h2s" value="1" checked @change="checkedData">
+                  <div class="checkLabel">H2S</div>
+                </div>
+              </div>
+              <div class="sensor_checkbox">
+                <div class="checkboxDiv">
+                  <input class="checkbox" type="checkbox" name="nh3" value="2" checked @change="checkedData">
+                  <div class="checkLabel">NH3</div>
+                </div>
+              </div>
+              <div class="sensor_checkbox">
+                <div class="checkboxDiv">
+                  <input class="checkbox" type="checkbox" name="voc" value="3" checked @change="checkedData">
+                  <div class="checkLabel">VOC</div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="sort_back_area">
             <button class="alarmButton" :class="{toggled: isAlarm}" @click="goSelectData">
@@ -52,22 +72,20 @@
                 <th class="timeClass title" rowspan="3" style="min-width: 150px">시간</th>
                 <th class="badClass title" colspan="6">대기환경</th>
                 <th class="badClass title" colspan="4">기상정보</th>
-                <th class="badClass title">전압</th>
               </tr>
               <tr>
                 <th class="badClass title" colspan="2" style="min-width: 110px; max-width: 200px">복합악취</th>
-                <th class="badClass subTitle" rowspan="2">H<sub>2</sub>S<br/>(ppb)</th>
-                <th class="badClass subTitle" rowspan="2">NH<sub>3</sub><br/>(ppb)</th>
-                <th class="badClass subTitle" rowspan="2">VOC<br/>(ppb)</th>
+                <th class="h2s subTitle" rowspan="2">H<sub>2</sub>S<br/>(ppb)</th>
+                <th class="nh3 subTitle" rowspan="2">NH<sub>3</sub><br/>(ppb)</th>
+                <th class="voc subTitle" rowspan="2">VOC<br/>(ppb)</th>
                 <th class="badClass subTitle" rowspan="2">MOS<br/>(OU)</th>
                 <th class="weatherClass subTitle" rowspan="2" style="min-width: 60px">풍향<br/></th>
                 <th class="weatherClass subTitle" rowspan="2">풍속<br/>(m/s)</th>
                 <th class="weatherClass subTitle" rowspan="2">온도<br/>(℃)</th>
                 <th class="weatherClass subTitle" rowspan="2">습도<br/>(%)</th>
-                <th class="weatherClass subTitle" rowspan="2">전압<br/>(V)</th>
               </tr>
               <tr>
-                <th class="badClass subTitle" style="min-width: 60px; max-width: 100px">배수</th>
+                <th class="badClass subTitle" style="min-width: 60px; max-width: 100px">희석배수</th>
                 <th class="badClass subTitle" style="min-width: 50px; max-width: 100px">상태</th>
               </tr>
               </thead>
@@ -265,22 +283,60 @@ export default {
           {data: 'DataDateTime'},
           {data: 'TOD'},
           {data: 'todValue'},
-          {data: 'H2S'},
-          {data: 'NH3'},
-          {data: 'VOC'},
+          {
+            data: 'H2S',
+            className: 'h2s'
+          },
+          {
+            data: 'NH3',
+            className: 'nh3'
+          },
+          {
+            data: 'VOC',
+            className: 'voc'
+          },
           {data: 'MOS'},
           {data: 'OWD'},
           {data: 'OWS'},
           {data: 'OTT'},
-          {data: 'OTH'},
-          {data: 'BTV'}
+          {data: 'OTH'}
         ]
       });
       $(".dt-buttons").hide();
+      $('#datatable').on('page.dt', function () {
+        setTimeout(function () {
+          this.checkedData()
+        },30)
+      })
     },
     lineStaticChart() {
       Plotly.newPlot("chartStaticBar", this.lineChart.chartDraw(this.tableData), this.lineChart.layout, this.options);
       getPlotlyLang.changePlotlyLang();
+    },
+    checkedData() {
+      $('input:checkbox').each(function () {
+        if ($(this).is(':checked')) {
+          if($(this).attr('name') == 'nh3') {
+            $('.nh3').css('display','table-cell');
+          }
+          if($(this).attr('name') == 'h2s') {
+            $('.h2s').css('display','table-cell');
+          }
+          if($(this).attr('name') == 'voc') {
+            $('.voc').css('display','table-cell');
+          }
+        } else {
+          if($(this).attr('name') == 'nh3') {
+            $('.nh3').css('display','none');
+          }
+          if($(this).attr('name') == 'h2s') {
+            $('.h2s').css('display','none');
+          }
+          if($(this).attr('name') == 'voc') {
+            $('.voc').css('display','none');
+          }
+        }
+      })
     },
     datepicker(values) {
       /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/

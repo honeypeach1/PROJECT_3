@@ -143,6 +143,28 @@
             cursor: pointer;
             border-radius: 5px;
           }
+
+          .selectPeriodArea {
+            margin-right: 10px;
+          }
+
+          .sensor_check_area {
+            display: flex;
+
+            .sensor_checkbox {
+
+              .checkboxDiv {
+
+                .checkbox {
+                  float: left;
+                }
+
+                .checkLabel {
+                  float: left;
+                }
+              }
+            }
+          }
         }
 
         .sort_back_area {
