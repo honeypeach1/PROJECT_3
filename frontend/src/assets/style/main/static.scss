@@ -283,19 +283,22 @@
               tr {
 
                 .sorting {
-                  background-image: url('http://cdn.datatables.net/1.10.1/images/sort_both.png'), linear-gradient(to top, rgba(56, 100, 122, 0.65) 27%, rgba(88, 130, 151, 0.65) 85%, rgba(153, 199, 219, 0.65));
+                  background: #25363f;
+                  //background-image: url('http://cdn.datatables.net/1.10.1/images/sort_both.png'), linear-gradient(to top, rgba(56, 100, 122, 0.65) 27%, rgba(88, 130, 151, 0.65) 85%, rgba(153, 199, 219, 0.65));
                   background-position: center right, left top;
                   background-repeat: no-repeat, no-repeat;
                 }
 
                 .sorting_asc {
-                  background-image: url('http://cdn.datatables.net/1.10.1/images/sort_asc.png'), linear-gradient(to top, rgba(56, 100, 122, 0.65) 27%, rgba(88, 130, 151, 0.65) 85%, rgba(153, 199, 219, 0.65));
+                  background: #25363f;
+                  //background-image: url('http://cdn.datatables.net/1.10.1/images/sort_asc.png'), linear-gradient(to top, rgba(56, 100, 122, 0.65) 27%, rgba(88, 130, 151, 0.65) 85%, rgba(153, 199, 219, 0.65));
                   background-position: center right, left top;
                   background-repeat: no-repeat, no-repeat;
                 }
 
                 .sorting_desc {
-                  background-image: url('http://cdn.datatables.net/1.10.1/images/sort_desc.png'), linear-gradient(to top, rgba(56, 100, 122, 0.65) 27%, rgba(88, 130, 151, 0.65) 85%, rgba(153, 199, 219, 0.65));
+                  background: #25363f;
+                  //background-image: url('http://cdn.datatables.net/1.10.1/images/sort_desc.png'), linear-gradient(to top, rgba(56, 100, 122, 0.65) 27%, rgba(88, 130, 151, 0.65) 85%, rgba(153, 199, 219, 0.65));
                   background-position: center right, left top;
                   background-repeat: no-repeat, no-repeat;
                 }
