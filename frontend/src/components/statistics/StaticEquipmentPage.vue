@@ -246,8 +246,8 @@ export default {
           $(".inlineMapSelectList").val(datas.EQUIPMENT_SEQ).prop("selected", true);
           this.equipNum = $(".inlineMapSelectList").val();
           //중심 좌표 이동
-          let movePoint = new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG);
-          this.staticMap.panTo(movePoint);
+          let moveStaticPoint = new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG);
+          this.staticMap.panTo(moveStaticPoint);
           //클릭 이벤트내에서 통계 데이터 가져오기
           this.getStaticData();
         });
