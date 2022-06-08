@@ -35,7 +35,7 @@
                 <option value="4">1일</option>
               </select>
             </div>
-            <div class="sensor_check_area">
+<!--            <div class="sensor_check_area">
               <div class="dataLabel">센서조회</div>
               <div class="sensor_checkbox">
                 <div class="checkboxDiv">
@@ -55,7 +55,7 @@
                   <div class="checkLabel">VOC</div>
                 </div>
               </div>
-            </div>
+            </div>-->
           </div>
           <div class="sort_back_area">
             <button class="alarmButton" :class="{toggled: isAlarm}" @click="goSelectData">
@@ -117,6 +117,7 @@ import "jszip/dist/jszip.min"
 import "jquery/dist/jquery.min"
 import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.css"
+import "datatables.net-buttons-dt/css/buttons.dataTables.css"
 import "datatables.net-buttons/js/dataTables.buttons"
 import "datatables.net-buttons/js/buttons.colVis"
 import "datatables.net-buttons/js/buttons.flash"
@@ -148,7 +149,6 @@ export default {
       equipNum: 0,
       dataType: 0,
       isAlarm: false,
-      staticMarkers: [],
       markerPositions: [],
       start_date: '',
       end_date: '',
@@ -209,34 +209,46 @@ export default {
       })
     },
     displayStaticMarker() {
-      if (this.staticMarkers.length > 0) {
+/*      if (this.staticMarkers.length > 0) {
         this.staticMarkers.forEach((marker) => marker.setMap(null));
-      }
+      }*/
       let imageSrc = require('../../assets/images/map/marker_image_2.png'),
         imageSize = new kakao.maps.Size(35, 75),
         imageOption = {offset: new kakao.maps.Point(15, 40)};
       let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-      this.markerPositions.forEach((datas) => {
-        this.staticMarkers = new kakao.maps.Marker({
+      this.markerPositions.forEach((datas,i) => {
+        const staticMarkers = new kakao.maps.Marker({
           map: this.staticMap,
           title: datas.EQUIPMENT_NAME,
           position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG),
           image: markerImage
         });
 
-        let iwContent = '<div style="padding:5px;">' + datas.EQUIPMENT_NAME + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-
-        this.infowindow = new kakao.maps.InfoWindow({
-          content: iwContent,
-          removable: true,// removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+        let CoContent = '<div style="padding:5px; bottom: -70px; width: 120px; height: 20px; font-family: NanumSquare; border-radius: 3px; background: #fff; opacity: .9; text-align: center">' + datas.EQUIPMENT_NAME + '</div>';
+        let customData = new kakao.maps.CustomOverlay({
+          content: CoContent,
+          zIndex: 1,
+          yAnchor: 1,
+          position: staticMarkers.getPosition(),
         });
-        this.infowindow.open(this.staticMap, this.staticMarkers);
 
-        new kakao.maps.event.addListener(this.staticMarkers, 'click', () => {
+        new kakao.maps.event.addListener(staticMarkers, 'mouseover', () => {
+          customData.setMap(this.staticMap);
+        });
+
+        new kakao.maps.event.addListener(staticMarkers, 'mouseout', () => {
+          customData.setMap(null);
+        });
+
+        new kakao.maps.event.addListener(staticMarkers, 'click', () => {
           //클릭 장비로 셀렉트 태그 정의
           $(".inlineMapSelectList").val(datas.EQUIPMENT_SEQ).prop("selected", true);
           this.equipNum = $(".inlineMapSelectList").val();
+          //중심 좌표 이동
+          let movePoint = new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG);
+          this.staticMap.panTo(movePoint);
+          //클릭 이벤트내에서 통계 데이터 가져오기
           this.getStaticData();
         });
       })
@@ -267,7 +279,19 @@ export default {
         language: {
           "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Korean.json"
         },
+        columnDefs: [
+          {
+            targets: 1,
+            className: 'noVis'
+          }
+        ],
         buttons: [
+          {
+            extend: 'colvis',
+            text: '컬럼선택',
+            columns: '3,4,5',
+            // columns: ':not(.noVis)',
+          },
           {
             extend: 'excelHtml5'
             , text: '엑셀출력'
@@ -279,11 +303,11 @@ export default {
             , text: 'csv출력'
             // ,filename: 'utf-8이라서 ms엑셀로 바로 열면 글자 깨짐'
           },
-          {
+          /*{
             extend: 'print'
             , text: '인쇄'
             // ,title: '클립보드 복사 내용'
-          },
+          },*/
         ],
         // data: this.datatable.data.rows,
         data: this.tableData,
@@ -398,7 +422,6 @@ export default {
          3.5 상단 헤더에서의 특정 알람을 클릭
     */
     getStaticData() {
-      console.log('this.equipNum : ',this.equipNum)
       axios({
         url: "/static/getData",
         method: "GET",

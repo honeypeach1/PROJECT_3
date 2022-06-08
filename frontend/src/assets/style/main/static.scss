@@ -214,6 +214,13 @@
             padding-top: 5px;
             .dt-buttons {
               float: left;
+
+              .dt-button {
+                height: 30px;
+                line-height: 1rem;
+                background: #f1f1f1;
+                font-family: 'NanumSquare';
+              }
             }
             #datatable_filter {
               padding-bottom: 5px;
