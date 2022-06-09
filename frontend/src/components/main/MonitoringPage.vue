@@ -36,7 +36,7 @@
                 </div>
                 <div class = "totalbox box2">
                   <div class="box_title">모드</div>
-                  <div class="box_value">수동</div>
+                  <div class="box_value mode">수동</div>
                 </div>
                 <div class = "totalbox box3">
                   <div class="box_title">채집백</div>
