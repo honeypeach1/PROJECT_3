@@ -220,7 +220,7 @@ export default {
           image: markerImage
         });
 
-        let CoContent = '<div style="padding:5px; bottom: -70px; width: 120px; height: 20px; font-family: NanumSquare; border-radius: 3px; background: #fff; opacity: .9; text-align: center">' + datas.EQUIPMENT_NAME + '</div>';
+        let CoContent = '<div style="padding:5px; bottom: -70px; width: 120px; height: 20px; font-family: NanumSquare; border-radius: 3px; border: #000000 1px dotted; background: #fff; opacity: .9; text-align: center">' + datas.EQUIPMENT_NAME + '</div>';
         let customData = new kakao.maps.CustomOverlay({
           content: CoContent,
           zIndex: 1,

@@ -76,7 +76,9 @@
                   <div class="line bag">미수거</div>
                   <div class="line status">채취대기</div>
                   <div class="line start">
-                    <i class="fas fa-play"></i>
+                    <button>
+                      <i class="fas fa-play"></i>
+                    </button>
 <!--                    <i class="fas fa-spinner fa-spin"></i>-->
 <!--                    <i class="fas fa-exchange-alt"></i>-->
                   </div>
@@ -91,7 +93,9 @@
                   <div class="line status">채취중</div>
                   <div class="line start">
                     <!--                    <i class="fas fa-play"></i>-->
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <button>
+                      <i class="fas fa-spinner fa-spin"></i>
+                    </button>
                     <!--                    <i class="fas fa-exchange-alt"></i>-->
                   </div>
                 </div>
@@ -106,7 +110,9 @@
                   <div class="line start">
 <!--                <i class="fas fa-play"></i>-->
 <!--                <i class="fas fa-spinner fa-spin"></i>-->
-                    <i class="fas fa-exchange-alt"></i>
+                    <button>
+                      <i class="fas fa-exchange-alt"></i>
+                    </button>
                   </div>
                 </div>
               </div>
