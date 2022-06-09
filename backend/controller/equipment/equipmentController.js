@@ -73,7 +73,6 @@ const EquipmentCon = {
                 (err, equipment) => {
                     if (err) console.log("DataBase Query Error : ", err);
                     // const result = Object.values(JSON.parse(JSON.stringify(equpiment)));
-                    console.log("equipment : ",equipment)
                     if(equipment !== undefined || equipment !== null){
                         for (let list of equipment) {
                             equipList = {
@@ -85,13 +84,35 @@ const EquipmentCon = {
                             lastList.push(equipList);
                         }
                     }
-
                     res.json({
                         success: true,
                         equipmentList: groupBy(lastList, 'type'),
                     })
                 }
             )
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
+    },
+    //장비 별 센서(TOD) 경고, 주의 값 리스트 가져오기(GET)
+    getThresholdDataList: (req, res) => {
+        try {
+            connection.query('SELECT ' +
+                'ROW_NUMBER() OVER (ORDER BY b.equipment_seq, b.threshold_over_event_type_seq) AS row_num, ' +
+                'b.equipment_seq, ' +
+                'a.threshold_over_event_type_seq, ' +
+                'b.threshold_over_event_sensor, ' +
+                'b.threshold_over_event_values, ' +
+                'a.threshold_over_event_name ' +
+                'FROM threshold_over_event_type a JOIN threshold_over_event_values b ' +
+                'ON a.threshold_over_event_type_seq = b.threshold_over_event_type_seq',
+                (err, thresholdDataList) => {
+                if (err) console.log("DataBase Query Error : ", err);
+                res.json({
+                    success: true,
+                    thresholdDataList: thresholdDataList,
+                })
+            })
         } catch (err) {
             console.log("DB Connection Error!", err)
         }

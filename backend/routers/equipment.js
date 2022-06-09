@@ -7,6 +7,7 @@ const equipmentController = require('../controller/equipment/equipmentController
 const authUtil = require('../middlewares/auth').checkToken;
 
 router.get('/getThreshold',authUtil,equipmentController.getEquipmentThreshold);
+router.get('/getThresholdDataList',authUtil,equipmentController.getThresholdDataList);
 router.get('/getThresholdValue',authUtil,equipmentController.getEquipmentThresholdValue);
 router.get('/getEquipmentList',authUtil,equipmentController.getEquipmentList);
 router.get('/setChangeEquipName',authUtil,equipmentController.setChangeEquipName);

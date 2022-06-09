@@ -529,7 +529,6 @@ export default {
       this.removeEventHandle(document, 'mousemove', this.onMouseMove)
     },
     addEventHandle(target, type, callback) {
-      console.log("target : ",target.addEventListener)
       if(target.addEventListener){
         target.addEventListener(type, callback);
       } else {

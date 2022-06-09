@@ -35,27 +35,6 @@
                 <option value="4">1일</option>
               </select>
             </div>
-<!--            <div class="sensor_check_area">
-              <div class="dataLabel">센서조회</div>
-              <div class="sensor_checkbox">
-                <div class="checkboxDiv">
-                  <input class="checkbox" type="checkbox" name="h2s" value="1" checked @change="checkedData">
-                  <div class="checkLabel">H2S</div>
-                </div>
-              </div>
-              <div class="sensor_checkbox">
-                <div class="checkboxDiv">
-                  <input class="checkbox" type="checkbox" name="nh3" value="2" checked @change="checkedData">
-                  <div class="checkLabel">NH3</div>
-                </div>
-              </div>
-              <div class="sensor_checkbox">
-                <div class="checkboxDiv">
-                  <input class="checkbox" type="checkbox" name="voc" value="3" checked @change="checkedData">
-                  <div class="checkLabel">VOC</div>
-                </div>
-              </div>
-            </div>-->
           </div>
           <div class="sort_back_area">
             <button class="alarmButton" :class="{toggled: isAlarm}" @click="goSelectData">
@@ -150,6 +129,7 @@ export default {
       dataType: 0,
       isAlarm: false,
       markerPositions: [],
+      thresholdValueDataList: [],
       start_date: '',
       end_date: '',
       lineChart: getLineChart,
@@ -158,6 +138,8 @@ export default {
     }
   },
   mounted() {
+    //장비 별 센서(TOD) 경고 주의 값 리스트
+    this.getThresholdValueList();
     this.$emit('currentTab', 1)
     if (!window.kakao || !window.kakao.maps) {
       const script = document.createElement("script");
@@ -181,6 +163,19 @@ export default {
     },
     printDown() {
       $(".buttons-print").click();
+    },
+    //장비 별 센서(TOD) 경고, 주의 값 리스트
+    getThresholdValueList() {
+      axios({
+        url: "/equipment/getThresholdDataList",
+        method: "GET",
+      }).then(({data, status}) => {
+        if (status === 304) {
+          alert("페이지 에러가 발생하였습니다. 관리자에게 문의하세요.")
+        } else {
+          this.thresholdValueDataList = data.thresholdDataList;
+        }
+      })
     },
     getEquipmentList() {
       axios({
@@ -314,7 +309,12 @@ export default {
         columns: [
           {data: 'DataDateTime'},
           {data: 'TOD'},
-          {data: 'todValue'},
+          {
+            render:
+              (data, type, row) => {
+               return this.getGrade(row['TOD']);
+              }
+          },
           {
             data: 'H2S',
             className: 'h2s'
@@ -335,40 +335,42 @@ export default {
         ]
       });
       $(".dt-buttons").hide();
-      $('#datatable').on('page.dt', function () {
-        setTimeout(function () {
-          this.checkedData()
-        },30)
-      })
+    },
+    getGrade(value) {
+      //return local variable
+      let result;
+      let getThresholdDataList = this.thresholdValueDataList;
+      if(isNaN(parseInt(value))){
+        result = "-";
+      }
+      getThresholdDataList.forEach((datas, index) => {
+        //현재 셀렉트한 장비(front단 장비 키 값)와 가져온 리스트 장비 키값(back단 호출 키 값)이 같으며, 센서 값이 TOD 일때
+        if (datas.equipment_seq == this.equipNum && datas.threshold_over_event_sensor == 'TOD') {
+          //threshold_over_event_type_seq == 주의 값 로우 가져오기
+          if (datas.threshold_over_event_type_seq == 1) {
+            //해당 데이터 테이블 로우의 값이 설정한 주의 값 보다 낮음. [좋음 상태]
+            if (datas.threshold_over_event_values <= value) {
+              result = '주의';
+            } else {
+              result = '좋음';
+            }
+          }
+          //만약 주의 값과 나쁨 값이 둘 다 있을 경우, 두번 연산이 처리되어야 함.
+          //예) 가져온 값 25, 주의값 15, 나쁨값 20 일때 -> 주의가 되었다가 나쁨으로 되서 리턴 되도록(주의 값 설정과 나쁨값 설정이 별개의 로우라 어쩔수 없음.)
+          //나쁨 값 설정 로우 가져오기
+          if (datas.threshold_over_event_type_seq == 2) {
+            //나쁨 값 보다 클때. [주의 상태]
+            if (datas.threshold_over_event_values <= value) {
+              result = '나쁨';
+            }
+          }
+        }
+      });
+      return result;
     },
     lineStaticChart() {
       Plotly.newPlot("chartStaticBar", this.lineChart.chartDraw(this.tableData), this.lineChart.layout, this.options);
       getPlotlyLang.changePlotlyLang();
-    },
-    checkedData() {
-      $('input:checkbox').each(function () {
-        if ($(this).is(':checked')) {
-          if($(this).attr('name') == 'nh3') {
-            $('.nh3').css('display','table-cell');
-          }
-          if($(this).attr('name') == 'h2s') {
-            $('.h2s').css('display','table-cell');
-          }
-          if($(this).attr('name') == 'voc') {
-            $('.voc').css('display','table-cell');
-          }
-        } else {
-          if($(this).attr('name') == 'nh3') {
-            $('.nh3').css('display','none');
-          }
-          if($(this).attr('name') == 'h2s') {
-            $('.h2s').css('display','none');
-          }
-          if($(this).attr('name') == 'voc') {
-            $('.voc').css('display','none');
-          }
-        }
-      })
     },
     datepicker(values) {
       /*해당 로직에서는 무조건 2개 이하의 데이터 호출*/
@@ -437,6 +439,8 @@ export default {
           데이터 호출이 성공했다면 아래에 라인 차트 & 데이터테이블 & 풍배도 & 풍향 빈도 구현
         */
         this.tableData = res.data.tableData;
+        //셀렉트 장비 중심 좌표로 이동하기
+        this.panToMove();
         //데이터 테이블 그리기
         this.initDataTable();
         //라인 차트 그리기
@@ -444,6 +448,17 @@ export default {
       }).catch((error) => {
         console.log('getData 호출 에러 : ', error)
       })
+    },
+    //중심 좌표 이동(해당 메소드 호출 때에는 이미 데이터를 불러온 상태로 null처리를 하지 않음. 데이터가 없으면(size -> 0, not Null) forEach 로 문제 없음.
+    panToMove() {
+      this.markerPositions.forEach((datas) => {
+        //일치하는 장비 번호(SELET 태그에서 선택을 했을 때 장비 번호 변수(EquipNum)은 특정 장비 번호로 초기화 됨.
+        if(this.equipNum == datas.EQUIPMENT_SEQ){
+          let movePanToPoint = new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG);
+          //또한 지도도 초기화 된 상태로 staticMap에서 panTo 동작이 실행됨.
+          this.staticMap.panTo(movePanToPoint);
+        }
+      });
     }
   },
 }
