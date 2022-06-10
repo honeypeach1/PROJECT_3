@@ -160,13 +160,6 @@
       </div>
       <div id="rightArea">
         <div id="map"></div>
-<!--        <div class="button-group">
-          <button @click="changeSize(0)">Hide</button>
-          <button @click="changeSize(400)">show</button>
-          <button @click="displayMarker(markerPositions)">marker set</button>
-          <button @click="displayMarker([])">marker set(empty)</button>
-          <button @click="displayInfoWindow">infowindow</button>
-        </div>-->
       </div>
       <windChartView v-if="isWindChartView" @windChart-close="isWindChartView=false">
         <Content />
@@ -228,7 +221,6 @@ export default {
       equipNum: 1,
       markerPositions: [],
       Point: null,
-      infowindow: [],
       windRose: getWindRose,
       lineChart: getLineChart,
       responsive: true,
@@ -412,6 +404,7 @@ export default {
     collectorControllView() {
       this.isCollectShow = !this.isCollectShow;
     },
+    //맵 사이즈 변경 함수
     /*changeSize(size) {
       const container = document.getElementById("map");
       container.style.width = `${size}px`;
@@ -497,7 +490,6 @@ export default {
         this.addEventHandle(content, 'mousedown', this.onMouseDown);
         this.addEventHandle(document, 'mouseup', this.onMouseUp);
       })
-      //this.displayInfoWindow();
 
      /* const positions = this.markerPositions.map(
         (position) => new kakao.maps.LatLng(...position)
@@ -574,29 +566,6 @@ export default {
 
       this.customOverlay.setPosition(newPos);
     },
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        this.map.setCenter(this.infowindow.getPosition());
-        return;
-      }
-
-      for (var i = 0; i < this.markerPositions.length; i++) {
-        var iwContent = '<div style="padding:5px;">'+this.markerPositions[i].EQUIPMENT_NAME+'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-          iwPosition = new kakao.maps.LatLng(this.markerPositions[i].EQUIPMENT_LAT, this.markerPositions[i].EQUIPMENT_LNG), //인포윈도우 표시 위치입니다
-          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-      }
-
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: this.map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      //this.map.setCenter(iwPosition);
-    },
     setEquipCood(equipMapNum, mapLat, mapLng) {
       console.log("arr : ", equipMapNum, mapLat, mapLng)
 
@@ -640,7 +609,22 @@ export default {
         //즉 DOM 구조에서 가져올 속성(Attribute)의 속성값(value)를 지정하면 해당 선택 체크 박스 로우의 value값(장비 번호)을 가져 올 수 있음.
         checkDataList.push(val.getAttribute('value'));
       });
-      alert(checkDataList)
+
+      /*
+        프로세스 로직 설명
+        선택 장비들(한대에서 다수)에 대한 채취 명령 전송 로직
+
+        1. 단일 명령 처리(체크 박스에 대한 채취 명령 전송 메소드를 가져와서 each문에 전송
+           체크된 반복문에서 명령 전송, 명령 전송,...
+           단일 처리를 위한 백엔드 메소드를 만들어 받은 데이터를 한개씩 소켓 리턴 데이터를 전송 설계
+
+        2. 다수 명령 처리(list)를 채취 명령 받는 백엔드 메소드에서 소수든 다수든 처리
+           체크 박스 리스트를 벡엔드 데이터에 전송
+           해당 메소드는 재활용성에 의거 단일 데이터나 리스트 데이터를 받아 각기 다른 장비들에 대하여
+           소켓 리턴 데이터를 전송하게 설계
+      */
+
+
     },
     getWindData() {
       axios({
