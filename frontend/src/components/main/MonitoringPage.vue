@@ -68,8 +68,9 @@
               </div>
               <div id="collectorList" class="collectorList">
                 <div class="collectorItem">
+                  <label for="ck_1">
                   <div class="checked line">
-                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="1">
+                    <input class="collector_td_ck_1" id="ck_1" type="checkbox" name="collectorCk" value="1">
                   </div>
                   <div class="line name">산동농장</div>
                   <div class="line mode">수동</div>
@@ -82,10 +83,12 @@
 <!--                    <i class="fas fa-spinner fa-spin"></i>-->
 <!--                    <i class="fas fa-exchange-alt"></i>-->
                   </div>
+                  </label>
                 </div>
                 <div class="collectorItem">
+                  <label for="ck_2">
                   <div class="checked line">
-                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="2">
+                    <input class="collector_td_ck_1" id="ck_2" type="checkbox" name="collectorCk" value="2">
                   </div>
                   <div class="line name">누리화학</div>
                   <div class="line mode">수동</div>
@@ -98,10 +101,12 @@
                     </button>
                     <!--                    <i class="fas fa-exchange-alt"></i>-->
                   </div>
+                  </label>
                 </div>
                 <div class="collectorItem">
+                  <label for="ck_3">
                   <div class="checked line">
-                    <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="3">
+                    <input class="collector_td_ck_1" id="ck_3" type="checkbox" name="collectorCk" value="3">
                   </div>
                   <div class="line name">에이스농장</div>
                   <div class="line mode">수동</div>
@@ -114,10 +119,11 @@
                       <i class="fas fa-exchange-alt"></i>
                     </button>
                   </div>
+                  </label>
                 </div>
               </div>
               <div class="collectorBtn">
-                <div onclick="startCollectorSelected()">선택시작</div>
+                <div @click="startCollectorSelected()">선택시작</div>
               </div>
             </div>
           </div>
@@ -193,13 +199,14 @@ $(document).on('click', '#allCheck', function () {
     $('input[name=collectorCk]').prop('checked', false);
   }
 });
-$(document).on('click', 'input[name=collectorCk]', function () {
+
+/*$(document).on('click', 'input[name=collectorCk]', function () {
   if($('#allCheck').is(':checked')) {
     $('input[name=collectorCk]').prop('checked', true);
   } else {
     $('input[name=collectorCk]').prop('checked', false);
   }
-})
+})*/
 
 /*API 키*/
 dotenv.config();
@@ -240,6 +247,10 @@ export default {
     this.$root.$refs.MonitoringPage = this;
   },
   mounted() {
+    /*$(".collectorItem").on('click', function() {
+      console.log("체크 확인 : ",$(this).children(".checked").children("input").checked())
+      $(this).children(".checked").children("input").prop('checked',true);
+    });*/
     /*setInterval(this.connect.bind(this),30000)*/
     if (!window.kakao || !window.kakao.maps) {
       //스크립트 로드
@@ -621,6 +632,15 @@ export default {
           getPlotlyLang.changePlotlyLang();
         }
       })
+    },
+    startCollectorSelected() {
+      let checkDataList = [];
+      $("input[name=collectorCk]:checked").each((index,val) => {
+        //val은 HTML DOM 형식으로 가져옴. -> <input class="collector_td_ck_1" type="checkbox" name="collectorCk" value="2">
+        //즉 DOM 구조에서 가져올 속성(Attribute)의 속성값(value)를 지정하면 해당 선택 체크 박스 로우의 value값(장비 번호)을 가져 올 수 있음.
+        checkDataList.push(val.getAttribute('value'));
+      });
+      alert(checkDataList)
     },
     getWindData() {
       axios({

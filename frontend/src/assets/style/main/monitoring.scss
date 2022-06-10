@@ -212,23 +212,28 @@
             height: calc(100% - 60px);
 
             .collectorItem {
-              display: flex;
               width: 100%;
+              display: flex;
 
-              .line {
-                color: white;
+              label {
+                width: 100%;
                 display: flex;
-                font-size: 1rem;
-                margin: 10px 0px;
-                align-items: center;
-                justify-content: center;
-              }
 
-              .mode {
-                color: #000;
-                font-size: 0.9rem;
-                box-shadow: 1px 2px 1px #000;
-                background-image: linear-gradient(to top, #fff, #d0d0d0 51%, #d0d0d0);
+                .line {
+                  color: white;
+                  display: flex;
+                  font-size: 1rem;
+                  margin: 10px 0px;
+                  align-items: center;
+                  justify-content: center;
+                }
+
+                .mode {
+                  color: #000;
+                  font-size: 0.9rem;
+                  box-shadow: 1px 2px 1px #000;
+                  background-image: linear-gradient(to top, #fff, #d0d0d0 51%, #d0d0d0);
+                }
               }
 
               &:hover {
