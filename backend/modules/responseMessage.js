@@ -35,27 +35,6 @@ module.exports = {
     SEARCH_SUCCESS: "검색 성공",
     SEARCH_FAIL: "검색 실패",
 
-    MYPAGE_READ_SUCCESS: "마이페이지 조회 성공",
-    MYPAGE_READ_FAIL: "마이페이지 조회 실패",
-    MYPAGE_UPDATE_SUCCESS: "마이페이지 수정 성공",
-
-    COMMENT_CREATE_SUCCESS: "댓글 생성 성공",
-    COMMENT_CREATE_FAIL: "댓글 생성 실패",
-    COMMENT_UPDATE_SUCCESS: "댓글 수정 성공",
-    COMMENT_UPDATE_FAIL: "댓글 수정 실패",
-    COMMENT_READ_SUCCESS: "댓글 조회 성공",
-    COMMENT_READ_FAIL: "댓글 조회 실패",
-    COMMENT_DELETE_SUCCESS: "댓글 삭제 성공",
-    COMMENT_DELETE_FAIL: "댓글 삭제 실패",
-
-    LIKE_CREATE_SUCCESS: "좋아요 생성 성공",
-    LIKE_CREATE_FAIL: "좋아요 생성 실패",
-    LIKE_READ_SUCCESS: "좋아요 조회 성공",
-    LIKE_READ_FAIL: "좋아요 조회 실패",
-    LIKE_DELETE_SUCCESS: "좋아요 삭제 성공",
-    LIKE_DELETE_FAIL: "좋아요 삭제 실패",
-    LIKE_ALREADY: "이미 좋아요 했습니다",
-
     X_NULL_VALUE: (x) => `${x}가 존재하지 않습니다.`,
     X_CREATE_SUCCESS: (x) => `${x} 작성 성공`,
     X_CREATE_FAIL: (x) => `${x} 작성 실패`,
