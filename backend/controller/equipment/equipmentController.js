@@ -147,9 +147,65 @@ const EquipmentCon = {
         }
     },
     //장비 리스트 가져오기
-    getEquipmentList: (req, res) => {
+    /*getEquipmentList: (req, res) => {
         try {
             connection.query('SELECT EQUIPMENT_SEQ, EQUIPMENT_NAME, EQUIPMENT_LAT, EQUIPMENT_LNG FROM EQUIPMENT_INFO',
+                (err, data) => {
+                    if (err) console.log("DataBase Query Error : ", err);
+                    res.json({
+                        success: true,
+                        equipmentList: data
+                    })
+                })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
+    },*/
+    /*
+        장비 리스트 가져오기 & 장비 별 최신 데이터 가져오기 LEFT INNER JOIN 속도 느려질수 있음
+        별도로 getRecentDataList 만들어둠.
+        만약 느려질 경우, getRecentDataList로 따로 장비별 최신 데이터 호출하여 프론트엔드 단에서 처리
+        getRecentDataList에서 호출하는 쿼리가 느릴 경우, DATA_DATE_TIME DESC로 인덱스 생성하여 사용할 것.
+
+        쿼리문에서 ES6 멀티 라인 문자열 적용
+    */
+    getEquipmentList: (req, res) => {
+        try {
+            connection.query(`SELECT
+                                  A.equipment_seq,
+                                  A.equipment_type_seq,
+                                  A.member_seq,
+                                  A.equipment_lat,
+                                  A.equipment_lng,
+                                  A.equipment_reg_date,
+                                  A.equipment_name,
+                                  A.equipment_install_place,
+                                  A.equipment_install_company,
+                                  A.equipment_tcp_port,
+                                  B.sensor_component_seq,
+                                  B.sensor_component_period_type,
+                                  DATE_FORMAT(B.data_date_time, "%y-%m-%d %H:%i:%s") data_date_time,
+                                  B.sensor_is_alarm,
+                                  IFNULL(FLOOR(B.sensor_signal_data_tod), "NULL") TOD,
+                                  IFNULL(FLOOR(B.sensor_signal_data_mos), "NULL") MOS,
+                                  IFNULL(B.sensor_signal_data_voc, "NULL") VOC,
+                                  IFNULL(B.sensor_signal_data_h2s, "NULL") H2S,
+                                  IFNULL(B.sensor_signal_data_nh3, "NULL") NH3,
+                                  IFNULL(B.sensor_signal_data_ott, "NULL") OTT,
+                                  IFNULL(B.sensor_signal_data_oth, "NULL") OTH,
+                                  IFNULL(B.sensor_signal_data_owd, "NULL") OWD,
+                                  IFNULL(B.sensor_signal_data_ows, "NULL") OWS,
+                                  IFNULL(B.sensor_signal_data_btv, "NULL") BTV,
+                                  IFNULL(B.sensor_signal_data_itt, "NULL") ITT,
+                                  IFNULL(B.sensor_signal_data_vsd, "NULL") VSD,
+                                  IFNULL(B.sensor_signal_data_PSD, "NULL") PSD
+                                    FROM equipment_info A LEFT OUTER JOIN (
+                                    SELECT * FROM
+                                    (SELECT  *, ROW_NUMBER() OVER (PARTITION BY EQUIPMENT_SEQ ORDER BY DATA_DATE_TIME DESC) AS RankNo
+                                    FROM SENSOR_COMPONENT
+                                    ) T
+                                    WHERE RankNo = 1) B
+                                    ON A.EQUIPMENT_SEQ = B.EQUIPMENT_SEQ`,
                 (err, data) => {
                     if (err) console.log("DataBase Query Error : ", err);
                     res.json({
@@ -350,7 +406,34 @@ const EquipmentCon = {
         } catch (err) {
             console.log("DB Connection Error!", err)
         }
-    }
+    },
+    /*
+        악취 페이지 커스텀 오버레이에 표시할 장비 별 최신 데이터
+        장비 별 호출 데이터는 동일한 최신 시간의 데이터를 가져오는 것이 아니라, 각각의 가장 마지막에 가져온 데이터들을
+        표시하도록 한다.
+
+        1번 장비의 가장 최신 데이터 시간이 2022-06-28 16:06:52 이라면 해다 데이터를 호출
+        2번 장비의 센서 데이터가 2022-05-05 16:06:50 이라면 해당 데이터를 호출
+
+        즉 각각 장비 별로 보여지는 시간 값은 다를 수 있음.
+    */
+    /*getRecentDataList: (req, res) => {
+        try {
+            connection.query('SELECT * FROM ' +
+                '(SELECT  *, ROW_NUMBER() OVER (PARTITION BY EQUIPMENT_SEQ ORDER BY DATA_DATE_TIME DESC) AS RankNo ' +
+                'FROM SENSOR_COMPONENT) T ' +
+                'WHERE RankNo = 1',(err, dataList) => {
+                if (err) console.log("DataBase Query Error : ", err);
+                res.json({
+                    success: true,
+                    getRecentDataList: dataList,
+                    message: '장비 별 최신 데이터를 조회하였습니다.'
+                })
+            })
+        } catch (err) {
+            console.log("DB Connection Error!", err)
+        }
+    }*/
 }
 
 module.exports = EquipmentCon;

@@ -15,6 +15,6 @@ router.get('/deleteEquipment',authUtil,equipmentController.deleteEquipment);
 router.get('/setThresholdData',authUtil,equipmentController.setThresholdData);
 router.get('/getSensorChartData',authUtil,equipmentController.getSensorChartData);
 router.get('/getWindChartData',authUtil,equipmentController.getWindChartData);
-
+//router.get('/getRecentDataList',authUtil,equipmentController.getRecentDataList);
 
 module.exports = router;

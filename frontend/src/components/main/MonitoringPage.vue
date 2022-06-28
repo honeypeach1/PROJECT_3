@@ -259,6 +259,7 @@ export default {
 
     //셀렉트 리스트 그룹 장비 리스트 가져오기
     this.getEquipmentList();
+    //센서 최신 데이터 가져오기
     //악취 센서 선형차트 & 풍배도 & 풍속빈도 처리하기
     this.mainGetData();
     //웹 소켓 연결하기
@@ -424,8 +425,8 @@ export default {
       this.markerPositions.forEach((datas) => {
         const markers = new kakao.maps.Marker({
           map: this.map,
-          title: datas.EQUIPMENT_NAME,
-          position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT,datas.EQUIPMENT_LNG),
+          title: datas.equipment_name,
+          position: new kakao.maps.LatLng(datas.equipment_lat,datas.equipment_lng),
           image: markerImage
         });
 
@@ -435,39 +436,57 @@ export default {
                                 <div class="info" style="width: 100%; height: 100%;">
                                 <div class="topArea" style="height: 15%; width: 100%; float: left; color: #FFFFFF">
                                     <div class="title" style="width: 100%; height: 20%; text-align: center; font-size: 20px; font-weight: bold;">
-                                         ` + datas.EQUIPMENT_NAME + `
-                                        <div class="close" onclick="closeOverlay()" title="닫기"></div>
+                                         ` + datas.equipment_name + `
+                                        <div class="close" onclick="this.closeOverlay()" title="닫기"></div>
                                     </div>
                             </div>
                                  <div class="leftArea" style="background: #1c2e37; float:left; width: 45%; height: 75%;">
                                     <div class="topBody" style="width: 100%; height: 15%; color: #FFFFFF; text-align: center; font-size: 15px; line-height: 23px;">복합악취</div>
                                     <div class="centerBody" style="height: 70%; width: 100%">
                                         <div class="todValue" style="height: 75%; width: 100%; text-align: center;">
-                                           <span style="font-size: 5rem; font-weight: bold; color: chocolate">17</span>
+                                           <span style="font-size: 5rem; font-weight: bold; color: chocolate">
+                                         ` + (datas.TOD != 'NULL' ? datas.TOD: '-') + `
+                                           </span>
                                        </div>
                                     </div>
                                  <div class="bottomBody" style="width: 100%; height: 15%; font-size: 15px; color: #f1f1f1; text-align: center; font-weight: bold">(배수)</div>
                                  </div>
                                  <div class="rightArea" style="float:left; width: 55%; height: 75%; background: #bdc9e9">
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">황화수소</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">15 (ppb)</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">
+                                   ` + (datas.H2S != 'NULL' ? datas.H2S: '-') + `
+                                   (ppb)</div>
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">암모니아</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">10 (ppb)</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">
+                                   ` + (datas.NH3 != 'NULL' ? datas.NH3: '-') + `
+                                   (ppb)</div>
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">MOS</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">62 (OU)</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">
+                                   ` + (datas.MOS != 'NULL' ? datas.MOS: '-') + `
+                                   (OU)</div>
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">전압</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">1.2 V</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">
+                                   ` + (datas.BTV != 'NULL' ? datas.BTV: '-') + `
+                                   V</div>
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">함체 온도</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">16.2 (°C)</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">
+                                   ` + (datas.ITT != 'NULL' ? datas.ITT: '-') + `
+                                   (°C)</div>
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">함체 습도</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">55 %</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">
+                                   ` + (datas.OTH != 'NULL' ? datas.OTH: '-') + `
+                                    %</div>
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">풍향</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">동북동</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">` + this.windDirect(datas.OWD) + `</div>
                                    <div class="sensor title" style="float:left; height: 12.5%; font-weight: bold; text-align: center; background: #eef1f5; width: 50%">풍속</div>
-                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">1.2 m/s</div>
+                                   <div class="sensor value" style="float:left; height: 12.5%; width: 50%">
+                                   ` + (datas.OWS != 'NULL' ? datas.OWS: '-') + `
+                                   m/s</div>
                                 </div>
                                 <div class="bottomArea" style="width: 100%; color: #FFFFFF; line-height: 22px; height: 10%; float: left; text-align: center">
-                                <div class="time" style="font-size: 0.9rem; text-align: left;">측정시각 : 2022-05-30 14:30:05</div>
+                                <div class="time" style="font-size: 0.9rem; text-align: left;">측정시각 :
+                                ` + (datas.data_date_time != 'NULL' ? datas.data_date_time: '-') + `
+                                </div>
                             </div>`
 
         this.customOverlay = new kakao.maps.CustomOverlay({
@@ -478,11 +497,11 @@ export default {
         })
 
         kakao.maps.event.addListener(markers,'click',() => {
-          $("#equipSelect").val(datas.EQUIPMENT_SEQ).prop("selected", true);
+          $("#equipSelect").val(datas.equipment_seq).prop("selected", true);
 
           this.equipNum = $("#equipSelect").val();
           //중심 좌표 이동
-          let movePoint = new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG);
+          let movePoint = new kakao.maps.LatLng(datas.equipment_lat, datas.equipment_lng);
           this.map.panTo(movePoint);
           //클릭 이벤트내에서 통계 데이터 가져오기
           this.mainGetData();
@@ -490,29 +509,8 @@ export default {
 
         this.addEventHandle(content, 'mousedown', this.onMouseDown);
         this.addEventHandle(document, 'mouseup', this.onMouseUp);
+
       })
-
-     /* const positions = this.markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
-      );
-      console.log("positions : ",positions)
-
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
-        );
-
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }*/
     },
     closeOverlay(){
       this.customOverlay.setMap(null);
@@ -558,7 +556,6 @@ export default {
       }else{
         e.returnValue = false;
       }
-
       let proj = this.map.getProjection(),
         deltaX = this.startX - e.clientX,
         deltaY = this.startY - e.clientY,
@@ -566,6 +563,40 @@ export default {
         newPos = proj.coordsFromContainerPoint(newPoint);
 
       this.customOverlay.setPosition(newPos);
+    },
+    windDirect(data){
+      var check = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣\-]/;
+      var windData;
+      if(check.test(data)) {
+        windData = 0;
+        return "-";
+      }
+      else {
+        windData = parseInt(data);
+      }
+      var result;
+      if(windData <0 ) windData=0;
+      else if(windData == 16) windData =0;
+      switch (windData) {
+        case 0: result="북";break;
+        case 1: result="북북동";break;
+        case 2: result="북동";break;
+        case 3: result="동북동";break;
+        case 4: result="동";break;
+        case 5: result="동남동";break;
+        case 6: result="남동";break;
+        case 7: result="남남동";break;
+        case 8: result="남";break;
+        case 9: result="남남서";break;
+        case 10: result="남서";break;
+        case 11: result="서남서";break;
+        case 12: result="서";break;
+        case 13: result="서북서";break;
+        case 14: result="북서";break;
+        case 15: result="북북서";break;
+      }
+      console.log("풍향 값은 : ",result)
+      return result;
     },
     setEquipCood(equipMapNum, mapLat, mapLng) {
       console.log("arr : ", equipMapNum, mapLat, mapLng)
