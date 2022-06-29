@@ -219,7 +219,7 @@ export default {
       selectOptions: [],
       map: null,
       equipNum: 1,
-      markerPositions: [],
+      polyline: [],
       Point: null,
       windRose: getWindRose,
       lineChart: getLineChart,
@@ -496,6 +496,7 @@ export default {
           position: markers.getPosition(),
         })
 
+        //마커 클릭 이벤트 - 셀렉트 리스트 클릭 장비, 데이터 가져오기
         kakao.maps.event.addListener(markers,'click',() => {
           $("#equipSelect").val(datas.equipment_seq).prop("selected", true);
 
@@ -506,14 +507,13 @@ export default {
           //클릭 이벤트내에서 통계 데이터 가져오기
           this.mainGetData();
         });
-        let mapInfor = this.map.getProjection();
+        let mapInfor = this.map;
         let overlayInfor = this.customOverlay;
 
         let startX, startY, startOverlayPoint;
         addEventHandle(content, 'mousedown', onMouseDown);
         addEventHandle(document, 'mouseup', onMouseUp);
 
-        ////////////////////////////////////////////////////////////
         function closeOverlay(){
           this.customOverlay.setMap(null);
         }
@@ -525,7 +525,7 @@ export default {
             e.returnValue = false;
           }
 
-          let proj = mapInfor,
+          let proj = mapInfor.getProjection(),
             overlayPos = overlayInfor.getPosition();
 
           kakao.maps.event.preventMap();
@@ -556,18 +556,38 @@ export default {
           }
         }
 
+        let polyline;
+
         function onMouseMove(e){
+          if(polyline != null){
+            polyline.setMap(null);
+          }
           if(e.preventDefault()){
             e.preventDefault();
           }else{
             e.returnValue = false;
           }
-          let proj = mapInfor,
+          let proj = mapInfor.getProjection(),
             deltaX = startX - e.clientX,
             deltaY = startY - e.clientY,
             newPoint = new kakao.maps.Point(startOverlayPoint.x - deltaX, startOverlayPoint.y - deltaY),
             newPos = proj.coordsFromContainerPoint(newPoint);
 
+          let lineCoord = [
+            //마커의 좌표
+            new kakao.maps.LatLng(datas.equipment_lat, datas.equipment_lng)
+          ];
+          lineCoord.push(newPos);
+
+          //마커와 장비 커스텀 오버레이(정보창)과 연결하는 라인 생성
+          polyline = new kakao.maps.Polyline({
+            map: mapInfor,
+            path: lineCoord,        // 선을 구성하는 좌표 배열
+            strokeWeight: 5,        // 선의 두께
+            strokeColor: '#646780', // 선의 색상
+            strokeOpacity: 0.7,     // 선의 불투명도 표시
+            strokeStyle: 'solid'    // 선의 스타일
+          })
           overlayInfor.setPosition(newPos);
         }
         ////////////////////////////////////////////////////////////
