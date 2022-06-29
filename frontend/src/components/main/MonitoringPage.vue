@@ -227,9 +227,9 @@ export default {
       isWindChartView: false,
       isCollectShow: false,
       customOverlay: [],
-      startX: null,
+      /*startX: null,
       startY: null,
-      startOverlayPoint: null,
+      startOverlayPoint: null,*/
       socket: null,
       status: null,
       logs: []
@@ -506,67 +506,77 @@ export default {
           //클릭 이벤트내에서 통계 데이터 가져오기
           this.mainGetData();
         });
+        let mapInfor = this.map.getProjection();
+        let overlayInfor = this.customOverlay;
 
-        this.addEventHandle(content, 'mousedown', this.onMouseDown);
-        this.addEventHandle(document, 'mouseup', this.onMouseUp);
+        let startX, startY, startOverlayPoint;
+        addEventHandle(content, 'mousedown', onMouseDown);
+        addEventHandle(document, 'mouseup', onMouseUp);
 
+        ////////////////////////////////////////////////////////////
+        function closeOverlay(){
+          this.customOverlay.setMap(null);
+        }
+
+        function onMouseDown(e){
+          if(e.preventDefault){
+            e.preventDefault();
+          }else{
+            e.returnValue = false;
+          }
+
+          let proj = mapInfor,
+            overlayPos = overlayInfor.getPosition();
+
+          kakao.maps.event.preventMap();
+
+          startX = e.clientX;
+          startY = e.clientY;
+          startOverlayPoint = proj.containerPointFromCoords(overlayPos);
+          addEventHandle(document, 'mousemove', onMouseMove)
+        }
+
+        function onMouseUp(){
+          removeEventHandle(document, 'mousemove', onMouseMove)
+        }
+
+        function addEventHandle(target, type, callback) {
+          if(target.addEventListener){
+            target.addEventListener(type, callback);
+          } else {
+            target.attachEvent('on'+type,callback);
+          }
+        }
+
+        function removeEventHandle(target, type, callback) {
+          if(target.removeEventListener){
+            target.removeEventListener(type, callback);
+          } else {
+            target.detachEvent('on'+type,callback);
+          }
+        }
+
+        function onMouseMove(e){
+          if(e.preventDefault()){
+            e.preventDefault();
+          }else{
+            e.returnValue = false;
+          }
+          let proj = mapInfor,
+            deltaX = startX - e.clientX,
+            deltaY = startY - e.clientY,
+            newPoint = new kakao.maps.Point(startOverlayPoint.x - deltaX, startOverlayPoint.y - deltaY),
+            newPos = proj.coordsFromContainerPoint(newPoint);
+
+          overlayInfor.setPosition(newPos);
+        }
+        ////////////////////////////////////////////////////////////
       })
     },
-    closeOverlay(){
-      this.customOverlay.setMap(null);
-    },
-    onMouseDown(e){
-      if(e.preventDefault){
-        e.preventDefault();
-      }else{
-        e.returnValue = false;
-      }
-
-      let proj = this.map.getProjection(),
-        overlayPos = this.customOverlay.getPosition();
-
-      kakao.maps.event.preventMap();
-
-      this.startX = e.clientX;
-      this.startY = e.clientY;
-
-      this.startOverlayPoint = proj.containerPointFromCoords(overlayPos);
-      this.addEventHandle(document, 'mousemove', this.onMouseMove)
-    },
-    onMouseUp(){
-      this.removeEventHandle(document, 'mousemove', this.onMouseMove)
-    },
-    addEventHandle(target, type, callback) {
-      if(target.addEventListener){
-        target.addEventListener(type, callback);
-      } else {
-        target.attachEvent('on'+type,callback);
-      }
-    },
-    removeEventHandle(target, type, callback) {
-      if(target.removeEventListener){
-        target.removeEventListener(type, callback);
-      } else {
-        target.detachEvent('on'+type,callback);
-      }
-    },
-    onMouseMove(e){
-      if(e.preventDefault()){
-        e.preventDefault();
-      }else{
-        e.returnValue = false;
-      }
-      let proj = this.map.getProjection(),
-        deltaX = this.startX - e.clientX,
-        deltaY = this.startY - e.clientY,
-        newPoint = new kakao.maps.Point(this.startOverlayPoint.x - deltaX, this.startOverlayPoint.y - deltaY),
-        newPos = proj.coordsFromContainerPoint(newPoint);
-
-      this.customOverlay.setPosition(newPos);
-    },
     windDirect(data){
-      var check = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣\-]/;
-      var windData;
+      let check = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣\-]/;
+      let windData;
+      let result;
       if(check.test(data)) {
         windData = 0;
         return "-";
@@ -574,9 +584,8 @@ export default {
       else {
         windData = parseInt(data);
       }
-      var result;
-      if(windData <0 ) windData=0;
-      else if(windData == 16) windData =0;
+      if (windData < 0) windData = 0;
+      else if (windData == 16) windData = 0;
       switch (windData) {
         case 0: result="북";break;
         case 1: result="북북동";break;
@@ -595,7 +604,6 @@ export default {
         case 14: result="북서";break;
         case 15: result="북북서";break;
       }
-      console.log("풍향 값은 : ",result)
       return result;
     },
     setEquipCood(equipMapNum, mapLat, mapLng) {
