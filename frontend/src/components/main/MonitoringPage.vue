@@ -498,11 +498,11 @@ export default {
 
         //마커 클릭 이벤트 - 셀렉트 리스트 클릭 장비, 데이터 가져오기
         kakao.maps.event.addListener(markers,'click',() => {
-          $("#equipSelect").val(datas.equipment_seq).prop("selected", true);
+          $("#equipSelect").val(datas.EQUIPMENT_SEQ).prop("selected", true);
 
           this.equipNum = $("#equipSelect").val();
           //중심 좌표 이동
-          let movePoint = new kakao.maps.LatLng(datas.equipment_lat, datas.equipment_lng);
+          let movePoint = new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG);
           this.map.panTo(movePoint);
           //클릭 이벤트내에서 통계 데이터 가져오기
           this.mainGetData();
@@ -582,7 +582,7 @@ export default {
             newPolyPos = proj.coordsFromContainerPoint(polyPoint);
           let lineCoord = [
             //마커의 좌표
-            new kakao.maps.LatLng(datas.equipment_lat, datas.equipment_lng)
+            new kakao.maps.LatLng(datas.EQUIPMENT_LAT, datas.EQUIPMENT_LNG)
           ];
           lineCoord.push(newPolyPos);
           console.log('폴리라인 : ',lineCoord)
