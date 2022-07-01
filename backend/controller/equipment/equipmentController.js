@@ -68,8 +68,8 @@ const EquipmentCon = {
             let equipList = new Object();
             let lastList = new Array();
             let data = [];
-            connection.query('SELECT ROW_NUMBER() OVER (ORDER BY a.EQUIPMENT_SEQ) AS ROW_NUM, a.EQUIPMENT_SEQ EQUIPMENT_SEQ, a.EQUIPMENT_NAME EQUIPMENT_NAME, b.EQUIPMENT_TYPE_SEQ EQUIPMENT_TYPE_SEQ ,b.EQUIPMENT_TYPE_NAME EQUIPMENT_TYPE_NAME ' +
-                'FROM equipment_info a JOIN equipment_type b ON a.equipment_type_seq = b.equipment_type_seq',
+            connection.query(`SELECT ROW_NUMBER() OVER (ORDER BY a.EQUIPMENT_SEQ) AS ROW_NUM, a.EQUIPMENT_SEQ EQUIPMENT_SEQ, a.EQUIPMENT_NAME EQUIPMENT_NAME, b.EQUIPMENT_TYPE_SEQ EQUIPMENT_TYPE_SEQ ,b.EQUIPMENT_TYPE_NAME EQUIPMENT_TYPE_NAME
+                FROM equipment_info a JOIN equipment_type b ON a.equipment_type_seq = b.equipment_type_seq`,
                 (err, equipment) => {
                     if (err) console.log("DataBase Query Error : ", err);
                     // const result = Object.values(JSON.parse(JSON.stringify(equpiment)));
@@ -172,19 +172,19 @@ const EquipmentCon = {
     getEquipmentList: (req, res) => {
         try {
             connection.query(`SELECT
-                                  A.equipment_seq,
-                                  A.equipment_type_seq,
-                                  A.member_seq,
-                                  A.equipment_lat,
-                                  A.equipment_lng,
-                                  A.equipment_reg_date,
-                                  A.equipment_name,
-                                  A.equipment_install_place,
-                                  A.equipment_install_company,
-                                  A.equipment_tcp_port,
+                                  A.EQUIPMENT_SEQ,
+                                  A.EQUIPMENT_TYPE_SEQ,
+                                  A.MEMBER_SEQ,
+                                  A.EQUIPMENT_LAT,
+                                  A.EQUIPMENT_LNG,
+                                  A.EQUIPMENT_REG_DATE,
+                                  A.EQUIPMENT_NAME,
+                                  A.EQUIPMENT_INSTALL_PLACE,
+                                  A.EQUIPMENT_INSTALL_COMPANY,
+                                  A.EQUIPMENT_TCP_PORT,
                                   B.sensor_component_seq,
                                   B.sensor_component_period_type,
-                                  IFNULL(DATE_FORMAT(B.data_date_time, "%y-%m-%d %H:%i:%s"), "NULL") data_date_time,
+                                  IFNULL(DATE_FORMAT(B.data_date_time, "%y-%m-%d %H:%i:%s"), "NULL") DATA_DATE_TIME,
                                   IFNULL(B.sensor_is_alarm, "NULL") sensor_is_alarm,
                                   IFNULL(FLOOR(B.sensor_signal_data_tod), "NULL") TOD,
                                   IFNULL(FLOOR(B.sensor_signal_data_mos), "NULL") MOS,

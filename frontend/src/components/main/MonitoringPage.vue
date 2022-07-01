@@ -436,7 +436,7 @@ export default {
                                 <div class="info" style="width: 100%; height: 100%;">
                                 <div class="topArea" style="height: 15%; width: 100%; float: left; color: #FFFFFF">
                                     <div class="title" style="width: 100%; height: 20%; text-align: center; font-size: 20px; font-weight: bold;">
-                                         ` + datas.equipment_name + `
+                                         ` + datas.EQUIPMENT_NAME + `
                                         <div class="close" onclick="this.closeOverlay()" title="닫기"></div>
                                     </div>
                             </div>
@@ -485,7 +485,7 @@ export default {
                                 </div>
                                 <div class="bottomArea" style="width: 100%; color: #FFFFFF; line-height: 22px; height: 10%; float: left; text-align: center">
                                 <div class="time" style="font-size: 0.9rem; text-align: left;">측정시각 :
-                                ` + (datas.data_date_time != 'NULL' ? datas.data_date_time: '-') + `
+                                ` + (datas.data_date_time != 'NULL' ? datas.DATA_DATE_TIME: '-') + `
                                 </div>
                             </div>`
 
