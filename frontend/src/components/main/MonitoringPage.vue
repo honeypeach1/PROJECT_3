@@ -425,8 +425,8 @@ export default {
       this.markerPositions.forEach((datas) => {
         const markers = new kakao.maps.Marker({
           map: this.map,
-          title: datas.equipment_name,
-          position: new kakao.maps.LatLng(datas.equipment_lat,datas.equipment_lng),
+          title: datas.EQUIPMENT_NAME,
+          position: new kakao.maps.LatLng(datas.EQUIPMENT_LAT,datas.EQUIPMENT_LNG),
           image: markerImage
         });
 
