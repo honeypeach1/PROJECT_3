@@ -432,7 +432,7 @@ export default {
 
         let content = document.createElement('div');
         content.className = 'overlayInforWindow';
-        content.innerHTML = `<div class="wrap" style="background: #2f4a5a; opacity: 0.9; border-radius: 5px; position: absolute; padding: 5px; left: 0; bottom: 40px; width: 350px; height: 210px; margin-left: -144px; text-align: left; overflow: hidden; font-size: 12px; font-family: "NanumSquare"; line-height: 1.5;">
+        content.innerHTML = `<div class="wrap" style="background: #2f4a5a; border-radius: 5px; position: absolute; padding: 5px; left: 0; bottom: 40px; width: 350px; height: 210px; margin-left: -144px; text-align: left; overflow: hidden; font-size: 12px; font-family: "NanumSquare"; line-height: 1.5;">
                                 <div class="info" style="width: 100%; height: 100%;">
                                 <div class="topArea" style="height: 15%; width: 100%; float: left; color: #FFFFFF">
                                     <div class="title" style="width: 100%; height: 20%; text-align: center; font-size: 20px; font-weight: bold;">
@@ -573,19 +573,27 @@ export default {
             newPoint = new kakao.maps.Point(startOverlayPoint.x - deltaX, startOverlayPoint.y - deltaY),
             newPos = proj.coordsFromContainerPoint(newPoint);
 
+
+          /*
+            바로 커스텀 오버레이 좌표로 마커 좌표와 연결하는 라인을 생성시 이상하게 나와서
+            커스텀 오버레이 좌측 상단 꼭지점 좌표로 바꾸기 위해서 좌표를 약간 깎기? 위해서 아래 생성
+          */
+          let polyPoint = new kakao.maps.Point(startOverlayPoint.x - (deltaX + 140), startOverlayPoint.y - (deltaY + 255)),
+            newPolyPos = proj.coordsFromContainerPoint(polyPoint);
           let lineCoord = [
             //마커의 좌표
             new kakao.maps.LatLng(datas.equipment_lat, datas.equipment_lng)
           ];
-          lineCoord.push(newPos);
+          lineCoord.push(newPolyPos);
+          console.log('폴리라인 : ',lineCoord)
 
           //마커와 장비 커스텀 오버레이(정보창)과 연결하는 라인 생성
           polyline = new kakao.maps.Polyline({
             map: mapInfor,
             path: lineCoord,        // 선을 구성하는 좌표 배열
-            strokeWeight: 5,        // 선의 두께
-            strokeColor: '#646780', // 선의 색상
-            strokeOpacity: 0.7,     // 선의 불투명도 표시
+            strokeWeight: 3,        // 선의 두께
+            strokeColor: '#596389', // 선의 색상
+            strokeOpacity: 0.3,     // 선의 불투명도 표시
             strokeStyle: 'solid'    // 선의 스타일
           })
           overlayInfor.setPosition(newPos);
